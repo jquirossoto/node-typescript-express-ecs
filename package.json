@@ -13,15 +13,20 @@
     "test": "jest --coverage --passWithNoTests",
     "test:watch": "jest --coverage --watchAll",
     "view:coverage": "serve coverage/lcov-report",
-    "clean": "rm -rf coverage src/**/*.js src/**/*.map",
+    "clean": "rm -rf dist coverage",
     "docker:up": "docker-compose -f ./docker-compose.yml up -d",
-    "docker:down": "docker-compose kill"
+    "docker:down": "docker-compose kill",
+    "prisma:migrate": "prisma migrate dev --schema prisma/schema.prisma",
+    "prisma:migrate:create": "prisma migrate dev --create-only --schema prisma/schema.prisma",
+    "speccy": "speccy resolve -o openapi.yml -j openapi.json",
+    "speccy:lint": "speccy lint -j openapi.json"
   },
   "author": "jquirossoto",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^3.0.2",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "speccy": "^0.11.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
