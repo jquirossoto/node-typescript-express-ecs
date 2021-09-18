@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export function create(category: Category): Promise<Category> {
     return new Promise<Category>((resolve, reject) => {
-        prisma.category.create({ data: category}).then((data: Category) => {
+        prisma.category.create({ data: category }).then((data: Category) => {
             resolve(data);
         }).catch((error) => {
             reject(new Error('Unable to process request'));

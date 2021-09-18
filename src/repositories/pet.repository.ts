@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export function create(pet: Pet): Promise<Pet> {
     return new Promise<Pet>((resolve, reject) => {
-        prisma.pet.create({ data: pet}).then((data: Pet) => {
+        prisma.pet.create({ data: pet }).then((data: Pet) => {
             resolve(data);
         }).catch((error) => {
             reject(new Error('Unable to process request'));
