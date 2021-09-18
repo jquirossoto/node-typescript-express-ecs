@@ -17,8 +17,10 @@
     "test:coverage:clean": "rm -rf coverage",
     "docker:up": "docker-compose -f ./docker-compose.yml up -d",
     "docker:down": "docker-compose kill",
+    "prisma:generate": "prisma generate --schema prisma/schema.prisma",
     "prisma:migrate": "prisma migrate dev --schema prisma/schema.prisma",
     "prisma:migrate:create": "prisma migrate dev --create-only --schema prisma/schema.prisma",
+    "prisma:migrate:deploy": "prisma migrate deploy --schema prisma/schema.prisma",
     "speccy": "speccy resolve -o openapi.yml -j openapi.json",
     "speccy:lint": "speccy lint -j openapi.json"
   },
