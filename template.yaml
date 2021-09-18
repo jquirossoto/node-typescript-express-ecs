@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+
+################################### APPLICATION PARAMETERS ####################################
+
+Parameters:
+
+  EnvironmentName:
+    Description: Specify the environment name.
+    Type: String
+    
+  EnvironmentType:
+    Description: Specify the type of environment to deploy.
+    Type: String
+
+################################### APPLICATION CONDITIONS ###################################
+
+Conditions:
+  IsNotLocalhost: !Not [!Equals [!Ref EnvironmentType, localhost]]
+
+################################### APPLICATION RESOURCES ################################### 
+
+Resources:
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster

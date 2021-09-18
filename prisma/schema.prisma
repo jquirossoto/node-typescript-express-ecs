@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://pets:pets123@localhost:5432/petsdb?schema=pets"
+}
+
+model Category {
+    id      Int     @id @default(autoincrement())
+    name    String
+    pets    Pet[]
+
+    @@map(name: "categories")
+}
+
+model Pet {
+    id          Int     @id @default(autoincrement())
+    name        String
+    status      PetStatus
+    category_id Int
+    category    Category    @relation(fields: [category_id], references: [id])
+
+    @@map(name: "pets")
+}
+
+enum PetStatus {
+  AVAILABLE
+  PENDING
+  SOLD
+
+  @@map(name: "pet_status_enum")
+}
