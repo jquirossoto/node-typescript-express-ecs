@@ -5,9 +5,6 @@
         "allowSyntheticDefaultImports": true,
         "target": "ES2018",
         "noImplicitAny": true,
-        "lib": ["esnext"],
-    "strict": true,
-
         "strictNullChecks": true,
         "moduleResolution": "node",
         "sourceMap": true,
