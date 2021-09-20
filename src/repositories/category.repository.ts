@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from './../utils/client.prisma';
 import { Category } from './../models/category.model';
-
-const prisma = new PrismaClient();
 
 export function create(category: Category): Promise<Category> {
     return new Promise<Category>((resolve, reject) => {
