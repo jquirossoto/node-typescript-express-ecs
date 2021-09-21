@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from './../utils/client.prisma';
 import { Pet } from './../models/pet.model';
-
-const prisma = new PrismaClient();
 
 export function create(pet: Pet): Promise<Pet> {
     return new Promise<Pet>((resolve, reject) => {
