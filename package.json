@@ -11,7 +11,7 @@
     "prestart": "npm run build",
     "start": "node .",
     "start:watch": "onchange 'dist/**/*.js' -- npm run start",
-    "test": "jest --coverage --passWithNoTests",
+    "test": "jest --coverage --verbose",
     "test:watch": "jest --coverage --watchAll",
     "test:coverage:view": "serve coverage/lcov-report",
     "test:coverage:clean": "rm -rf coverage",
