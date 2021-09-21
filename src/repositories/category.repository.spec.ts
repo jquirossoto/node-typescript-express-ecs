@@ -32,6 +32,7 @@ describe('Category Repository', () => {
             };
             prismaMock.category.create.mockRejectedValue(new Error('Unable to process request'));
             await expect(create(newCategory)).rejects.toThrow(Error);
+            expect(prismaMock.category.create).toHaveBeenCalledTimes(1);
         });
 
     });
@@ -56,6 +57,7 @@ describe('Category Repository', () => {
         it('Should throw error when finding one category', async () => {
             prismaMock.category.findUnique.mockRejectedValue(new Error('Unable to process request'));
             await expect(findUnique(1)).rejects.toThrow(Error);
+            expect(prismaMock.category.findUnique).toHaveBeenCalledTimes(1);
         });
 
     });
@@ -92,6 +94,7 @@ describe('Category Repository', () => {
         it('Should throw error when finding multiple categories', async () => {
             prismaMock.category.findMany.mockRejectedValue(new Error('Unable to process request'));
             await expect(findMany()).rejects.toThrow(Error);
+            expect(prismaMock.category.findMany).toHaveBeenCalledTimes(1);
         });
 
     });
@@ -121,6 +124,7 @@ describe('Category Repository', () => {
             };
             prismaMock.category.update.mockRejectedValue(new Error('Unable to process request'));
             await expect(update(1, dataToUpdate)).rejects.toThrow(Error);
+            expect(prismaMock.category.update).toHaveBeenCalledTimes(1);
         });
 
     });
@@ -144,6 +148,7 @@ describe('Category Repository', () => {
         it('Should throw error when deleting category', async () => {
             prismaMock.category.delete.mockRejectedValue(new Error('Unable to process request'));
             await expect(remove(1)).rejects.toThrow(Error);
+            expect(prismaMock.category.delete).toHaveBeenCalledTimes(1);
         });
 
     });
