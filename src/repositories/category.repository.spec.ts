@@ -1,7 +1,7 @@
 import { Category as PrismaCategory } from '@prisma/client';
 import { prismaMock } from './../../prisma/singleton';
 
-import { create, findUnique, findMany } from './category.repository';
+import { create, findUnique, findMany, update, remove } from './category.repository';
 import { Category } from './../models/category.model';
 
 describe('Category Repository', () => {
@@ -87,6 +87,63 @@ describe('Category Repository', () => {
             prismaMock.category.findMany.mockResolvedValue(foundCategories);
             await expect(findMany()).resolves.toEqual(returnedCategories);
             expect(prismaMock.category.findMany).toHaveBeenCalledTimes(1);
+        });
+
+        it('Should throw error when finding multiple categories', async () => {
+            prismaMock.category.findMany.mockRejectedValue(new Error('Unable to process request'));
+            await expect(findMany()).rejects.toThrow(Error);
+        });
+
+    });
+
+    describe('update()', () => {
+
+        it('Should update a category', async () => {
+            const updatedCategory: PrismaCategory = {
+                id: 1,
+                name: 'Updated category'
+            };
+            const returnedCategory: Category = {
+                id: 1,
+                name: 'Updated category'
+            };
+            const dataToUpdate: Category = {
+                name: 'Updated category'
+            };
+            prismaMock.category.update.mockResolvedValue(updatedCategory);
+            await expect(update(1, dataToUpdate)).resolves.toEqual(returnedCategory);
+            expect(prismaMock.category.update).toHaveBeenCalledTimes(1);
+        });
+
+        it('Should throw error when updating a category', async () => {
+            const dataToUpdate: Category = {
+                name: 'Updated category'
+            };
+            prismaMock.category.update.mockRejectedValue(new Error('Unable to process request'));
+            await expect(update(1, dataToUpdate)).rejects.toThrow(Error);
+        });
+
+    });
+
+    describe('remove()', () => {
+
+        it('Should delete a category', async () => {
+            const deletedCategory: PrismaCategory = {
+                id: 1,
+                name: 'My category'
+            };
+            const returnedCategory: Category = {
+                id: 1,
+                name: 'My category'
+            };
+            prismaMock.category.delete.mockResolvedValue(deletedCategory);
+            await expect(remove(1)).resolves.toEqual(returnedCategory);
+            expect(prismaMock.category.delete).toHaveBeenCalledTimes(1);
+        });
+
+        it('Should throw error when deleting category', async () => {
+            prismaMock.category.delete.mockRejectedValue(new Error('Unable to process request'));
+            await expect(remove(1)).rejects.toThrow(Error);
         });
 
     });
