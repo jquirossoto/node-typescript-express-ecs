@@ -1,4 +1,7 @@
-module.exports = {
+import type { Config } from '@jest/types';
+
+const config: Config.InitialOptions = {
+    verbose: true,
     roots: ['<rootDir>/src'],
     transform: {
         '^.+\\.tsx?$': 'ts-jest'
@@ -15,4 +18,5 @@ module.exports = {
         }
     },
     coverageReporters: ['json', 'lcov', 'text', 'clover']
-}
+};
+export default config;
