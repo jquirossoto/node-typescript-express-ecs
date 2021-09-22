@@ -85,7 +85,6 @@ describe('Category Repository', () => {
                     name: 'My second category'
                 }
             ];
-            /* @ts-ignore */
             prismaMock.category.findMany.mockResolvedValue(foundCategories);
             await expect(findMany()).resolves.toEqual(returnedCategories);
             expect(prismaMock.category.findMany).toHaveBeenCalledTimes(1);

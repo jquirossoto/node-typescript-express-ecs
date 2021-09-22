@@ -106,7 +106,6 @@ describe('Pet Repository', () => {
                     category_id: 1
                 }
             ];
-            /* @ts-ignore */
             prismaMock.pet.findMany.mockResolvedValue(foundPets);
             await expect(findMany()).resolves.toEqual(returnedPets);
             expect(prismaMock.pet.findMany).toHaveBeenCalledTimes(1);
