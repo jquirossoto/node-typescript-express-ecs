@@ -4,7 +4,7 @@ import * as petRepo from './../repositories/pet.repository';
 
 jest.mock('./../repositories/pet.repository');
 
-describe('Pet Repository', () => {
+describe('Pet Service', () => {
 
     describe('create()', () => {
 
