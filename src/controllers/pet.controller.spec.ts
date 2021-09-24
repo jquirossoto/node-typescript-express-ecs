@@ -1,95 +1,120 @@
 import { Request, Response } from 'express';
 import { getMockReq, getMockRes } from '@jest-mock/express'
 
-import { post, list, get, patch, remove } from './category.controller';
-import { Category } from './../models/category.model';
-import * as categoryService from './../services/category.service';
+import { post, list, get, patch, remove } from './pet.controller';
+import { Pet } from './../models/pet.model';
+import * as petService from './../services/pet.service';
 import { buildSuccessResponse, buildErrorResponse } from './../utils/api.utils';
+import { Category } from '.prisma/client';
 
-jest.mock('./../services/category.service');
+jest.mock('./../services/pet.service');
 
-describe('Category Controller', () => {
-
+describe('Pet Controller', () => {
+   
     describe('post', () => {
-
-        it('Should respond 200 with created category', async () => {
-            const newCategory: Category = {
-                name: 'My category'
+    
+        it('Should respond 200 with create pet', async () => {
+            const newPet: Pet = {
+                name: 'My pet',
+                status: 'AVAILABLE',
+                category_id: 1
             };
             const req: Request = getMockReq({
-                body: newCategory
+                body: newPet
             });
             const res: Response = getMockRes().res;
-            const createdCategory: Category = {
+            const createdCategory: Pet = {
                 id: 1,
-                name: 'My category'
+                name: 'My pet',
+                status: 'AVAILABLE',
+                category_id: 1
             };
             //@ts-ignore
-            categoryService.create.mockResolvedValue(createdCategory);
+            petService.create.mockResolvedValue(createdCategory);
 
             await post(req, res);
 
-            expect(categoryService.create).toHaveBeenCalledWith(newCategory);
+            expect(petService.create).toHaveBeenCalledWith(newPet);
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(createdCategory));
         });
 
         it('Should respond 500 with error response', async () => {
-            const newCategory: Category = {
-                name: 'My category'
+            const newPet: Pet = {
+                name: 'My pet',
+                status: 'AVAILABLE',
+                category_id: 1
             };
             const req: Request = getMockReq({
-                body: newCategory
+                body: newPet
             });
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
             //@ts-ignore
-            categoryService.create.mockRejectedValue(error);
+            petService.create.mockRejectedValue(error);
 
             await post(req, res);
 
-            expect(categoryService.create).toHaveBeenCalledWith(newCategory);
+            expect(petService.create).toHaveBeenCalledWith(newPet);
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
         });
-
+        
     });
 
     describe('list', () => {
-
-        it('Should responde 200 with list of categories', async () => {
-            const req: Request = getMockReq();
-            const res: Response = getMockRes().res;
-            const foundCategories: Category[] = [
+        
+        it('Should respond 200 with found pets', async () => {
+            const foundPets: Pet[] = [
                 {
                     id: 1,
-                    name: 'My category'
+                    name: 'My pet',
+                    status: 'AVAILABLE',
+                    category_id: 1
                 },
                 {
                     id: 2,
-                    name: 'Second category'
+                    name: 'Second pet',
+                    status: 'SOLD',
+                    category_id: 1
                 }
             ];
+            const req: Request = getMockReq();
+            const res: Response = getMockRes().res;
             //@ts-ignore
-            categoryService.list.mockResolvedValue(foundCategories);
+            petService.list.mockResolvedValue(foundPets);
 
             await list(req, res);
 
-            expect(categoryService.list).toHaveBeenCalled();
+            expect(petService.list).toHaveBeenCalled();
             expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundCategories));
+            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundPets));
         });
 
-        it('Should respond 500 with an error response', async () => {
+        it('Should respond 200 with no found pets', async () => {
+            const foundPets: Pet[] = [];
+            const req: Request = getMockReq();
+            const res: Response = getMockRes().res;
+            //@ts-ignore
+            petService.list.mockResolvedValue(foundPets);
+            
+            await list(req, res);
+
+            expect(petService.list).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundPets));
+        });
+
+        it('Should respond 500 with error response', async () => {
             const req: Request = getMockReq();
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
             //@ts-ignore
-            categoryService.list.mockRejectedValue(error);
+            petService.list.mockRejectedValue(error);
 
             await list(req, res);
 
-            expect(categoryService.list).toHaveBeenCalled();
+            expect(petService.list).toHaveBeenCalled();
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
         });
@@ -97,41 +122,54 @@ describe('Category Controller', () => {
     });
 
     describe('get', () => {
-        
-        it('Should respond 200 with a category', async () => {
+
+        it('Shoud respond 200 with found pet', async () => {
+            const newPet: Pet = {
+                name: 'My pet',
+                status: 'AVAILABLE',
+                category_id: 1
+            };
             const req: Request = getMockReq({
                 params: {
                     id: 1
                 }
             });
             const res: Response = getMockRes().res;
-            const foundCategory: Category = {
+            const foundPet: Pet = {
                 id: 1,
-                name: 'My category'
+                name: 'My pet',
+                status: 'AVAILABLE',
+                category_id: 1
             };
             //@ts-ignore
-            categoryService.get.mockResolvedValue(foundCategory);
+            petService.get.mockResolvedValue(foundPet);
 
             await get(req, res);
 
-            expect(categoryService.get).toHaveBeenCalledWith(1);
+            expect(petService.get).toHaveBeenCalledWith(1);
             expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundCategory));
+            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundPet));
         });
 
-        it('Should respond 200 without category', async () => {
+        it('Should respond 200 with no pet', async () => {
             const req: Request = getMockReq({
                 params: {
                     id: 999
                 }
             });
             const res: Response = getMockRes().res;
+            const foundPet: Pet = {
+                id: 1,
+                name: 'My pet',
+                status: 'AVAILABLE',
+                category_id: 1
+            };
             //@ts-ignore
-            categoryService.get.mockResolvedValue(null);
+            petService.get.mockResolvedValue(null);
 
             await get(req, res);
 
-            expect(categoryService.get).toHaveBeenCalledWith(999);
+            expect(petService.get).toHaveBeenCalledWith(999);
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(null));
         });
@@ -145,11 +183,11 @@ describe('Category Controller', () => {
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
             //@ts-ignore
-            categoryService.get.mockRejectedValue(error);
+            petService.get.mockRejectedValue(error);
 
             await get(req, res);
 
-            expect(categoryService.get).toHaveBeenCalledWith(998);
+            expect(petService.get).toHaveBeenCalledWith(998);
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
         });
@@ -157,10 +195,12 @@ describe('Category Controller', () => {
     });
 
     describe('patch', () => {
-        
-        it('Should respond 200 with patched category', async () => {
-            const dataToPatch: Category = {
-                name: 'Patched category'
+
+        it('Should respond 200 with patched pet', async () => {
+            const dataToPatch: Pet = {
+               name: 'Patched pet',
+               status: 'PENDING',
+               category_id: 2
             };
             const req: Request = getMockReq({
                 params: {
@@ -169,46 +209,51 @@ describe('Category Controller', () => {
                 body: dataToPatch
             });
             const res: Response = getMockRes().res;
-            const patchedCategory: Category = {
+            const patchedPet: Pet = {
                 id: 1,
-                name: 'Patched category'
+                name: 'Patched pet',
+                status: 'PENDING',
+                category_id: 2
             };
             //@ts-ignore
-            categoryService.update.mockResolvedValue(patchedCategory);
+            petService.update.mockResolvedValue(patchedPet);
 
             await patch(req, res);
 
-            expect(categoryService.update).toHaveBeenCalledWith(1, dataToPatch);
+            expect(petService.update).toHaveBeenCalledWith(1, dataToPatch);
             expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(patchedCategory));
+            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(patchedPet));
         });
 
         it('Should respond 500 with error response', async () => {
-            const dataToPatch: Category = {
-                name: 'Patched category'
-            };
+            const dataToPatch: Pet = {
+                name: 'Patched pet',
+                status: 'PENDING',
+                category_id: 2
+             };
             const req: Request = getMockReq({
                 params: {
-                    id: 1,
+                    id: 1
                 },
                 body: dataToPatch
             });
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
             //@ts-ignore
-            categoryService.update.mockRejectedValue(error);
+            petService.update.mockRejectedValue(error);
 
             await patch(req, res);
 
-            expect(categoryService.update).toHaveBeenCalledWith(1, dataToPatch);
+            expect(petService.update).toHaveBeenCalledWith(1, dataToPatch);
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
+
         });
 
     });
 
     describe('remove', () => {
-    
+
         it('Should respond 200', async () => {
             const req: Request = getMockReq({
                 params: {
@@ -216,38 +261,22 @@ describe('Category Controller', () => {
                 }
             });
             const res: Response = getMockRes().res;
-            const deletedCategory: Category = {
+            const deletedPet: Pet = {
                 id: 1,
-                name: 'My category'
+                name: 'Deleted pet',
+                status: 'AVAILABLE',
+                category_id: 1
             };
             //@ts-ignore
-            categoryService.remove.mockResolvedValue(deletedCategory);
+            petService.remove.mockResolvedValue(deletedPet);
 
             await remove(req, res);
 
-            expect(categoryService.remove).toHaveBeenCalledWith(1);
+            expect(petService.remove).toHaveBeenCalledWith(1);
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(null));
         });
 
-        it('Should respond 500', async () => {
-            const req: Request = getMockReq({
-                params: {
-                    id: 1
-                }
-            });
-            const res: Response = getMockRes().res;
-            const error: Error = new Error('Unable to process request');
-            //@ts-ignore
-            categoryService.remove.mockRejectedValue(error)
-
-            await remove(req, res);
-
-            expect(categoryService.remove).toHaveBeenCalledWith(1);
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
-        });
-
     });
-
+    
 });
