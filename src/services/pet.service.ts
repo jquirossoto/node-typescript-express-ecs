@@ -1,5 +1,5 @@
 import * as repo from './../repositories/pet.repository';
-import { Pet } from './../models/Pet.model';
+import { Pet } from './../models/pet.model';
 
 export async function create(pet: Pet): Promise<Pet> {
     return await repo.create(pet);

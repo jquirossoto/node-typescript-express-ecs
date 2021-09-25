@@ -1,17 +1,20 @@
-import type { Config } from '@jest/types';
-
-const config: Config.InitialOptions = {
+module.exports = {
+    preset: 'ts-jest',
+    testEnvironment: 'node',
     verbose: true,
     roots: ['<rootDir>/src'],
     transform: {
-        '^.+\\.tsx?$': 'ts-jest'
+        '^.+\\.(ts|tsx)$': 'ts-jest'
     },
+    testMatch: [
+        "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    ],
     collectCoverageFrom: [
         "src/**/*.ts*"
     ],
     coverageThreshold: {
         global: {
-            branches: 80,
+            branches: 0,
             functions: 80,
             lines: 80,
             statements: 80
@@ -19,4 +22,3 @@ const config: Config.InitialOptions = {
     },
     coverageReporters: ['json', 'lcov', 'text', 'clover']
 };
-export default config;
