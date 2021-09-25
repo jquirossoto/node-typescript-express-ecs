@@ -1,6 +1,6 @@
 # ---------------------------- BASE ----------------------------
 FROM node:lts-alpine@sha256:8c94a0291133e16b92be5c667e0bc35930940dfa7be544fb142e25f8e4510a45 as base
-# installs tini
+# installs tini (https://github.com/krallin/tini)
 RUN apk add --no-cache tini
 # creates the workdir
 RUN mkdir -p /usr/src/app
@@ -12,7 +12,7 @@ COPY package-lock.json .
 
 # ---------------------------- DEPENDENCIES ----------------------------
 FROM base AS dependencies
-# copies schema.prisma to generate client after installing modules
+# copies schema.prisma to generate client after installing modules (https://www.prisma.io/)
 COPY prisma/schema.prisma .
 # installs production modules
 RUN npm ci --only=production
