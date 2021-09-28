@@ -1,5 +1,5 @@
 # ---------------------------- BASE ----------------------------
-FROM public.ecr.aws/bitnami/node:latest as base
+FROM node:lts-alpine@sha256:8c94a0291133e16b92be5c667e0bc35930940dfa7be544fb142e25f8e4510a45 as base
 # installs tini (https://github.com/krallin/tini)
 RUN apk add --no-cache tini
 # creates the workdir
