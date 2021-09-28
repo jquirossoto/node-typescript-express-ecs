@@ -47,6 +47,8 @@ Resources:
 
   PetsAPICodeBuildBasePolicy:
     Type: AWS::IAM::Policy
+    DependsOn:
+      - PetsAPICodeBuildRole
     Properties: 
       PolicyDocument: {
           "Version": "2012-10-17",
@@ -99,6 +101,8 @@ Resources:
 
   PetsAPICodeBuildCloudwatchPolicy:
     Type: AWS::IAM::Policy
+    DependsOn:
+      - PetsAPICodeBuildRole
     Properties:
       PolicyDocument: {
           "Version": "2012-10-17",
@@ -124,15 +128,17 @@ Resources:
         
   PetsAPICodeBuild:
     Type: AWS::CodeBuild::Project
+    DependsOn:
+      - PetsAPICodeBuildRole
     Properties: 
       Artifacts: 
         Type: CODEPIPELINE
         EncryptionDisabled: false
-        Name": pets-api
+        Name: pets-api
         Packaging: NONE
       Cache:
         Type: NO_CACHE
-      BadgeEnabled: true
+      BadgeEnabled: false
       ConcurrentBuildLimit: 1
       Description: pets api codebuild
       Environment: 
@@ -173,79 +179,186 @@ Resources:
               "Action": "sts:AssumeRole"
           }]
       }
-      Description: PetsAPICodeBuildRole
-      RoleName: PetsAPICodeBuildRole
+      Description: PetsAPICodePipelineServiceRole
+      RoleName: PetsAPICodePipelineServiceRole
 
   PetsAPICodePipelinePolicy:
     Type: AWS::IAM::Policy
+    DependsOn:
+      - PetsAPICodePipelineServiceRole
     Properties: 
       PolicyDocument: {
           "Version": "2012-10-17",
           "Statement": [
               {
-                  "Action": ["iam:PassRole"],
+                  "Action": [
+                      "iam:PassRole"
+                  ],
                   "Resource": "*",
                   "Effect": "Allow",
                   "Condition": {
                       "StringEqualsIfExists": {
-                          "iam:PassedToService": ["cloudformation.amazonaws.com", "elasticbeanstalk.amazonaws.com", "ec2.amazonaws.com", "ecs-tasks.amazonaws.com"]
+                          "iam:PassedToService": [
+                              "cloudformation.amazonaws.com",
+                              "elasticbeanstalk.amazonaws.com",
+                              "ec2.amazonaws.com",
+                              "ecs-tasks.amazonaws.com"
+                          ]
                       }
                   }
-              }, {
-                  "Action": ["codecommit:CancelUploadArchive", "codecommit:GetBranch", "codecommit:GetCommit", "codecommit:GetRepository", "codecommit:GetUploadArchiveStatus", "codecommit:UploadArchive"],
+              },
+              {
+                  "Action": [
+                      "codecommit:CancelUploadArchive",
+                      "codecommit:GetBranch",
+                      "codecommit:GetCommit",
+                      "codecommit:GetRepository",
+                      "codecommit:GetUploadArchiveStatus",
+                      "codecommit:UploadArchive"
+                  ],
                   "Resource": "*",
                   "Effect": "Allow"
-              }, {
-                  "Action": ["codedeploy:CreateDeployment", "codedeploy:GetApplication", "codedeploy:GetApplicationRevision", "codedeploy:GetDeployment", "codedeploy:GetDeploymentConfig", "codedeploy:RegisterApplicationRevision"],
+              },
+              {
+                  "Action": [
+                      "codedeploy:CreateDeployment",
+                      "codedeploy:GetApplication",
+                      "codedeploy:GetApplicationRevision",
+                      "codedeploy:GetDeployment",
+                      "codedeploy:GetDeploymentConfig",
+                      "codedeploy:RegisterApplicationRevision"
+                  ],
                   "Resource": "*",
                   "Effect": "Allow"
-              }, {
-                  "Action": ["codestar-connections:UseConnection"],
+              },
+              {
+                  "Action": [
+                      "codestar-connections:UseConnection"
+                  ],
+                  # for some weird reason you need to explicitly defined the resource. * does not work
+                  "Resource": [
+                    ""
+                  ],
+                  "Effect": "Allow"
+              },
+              {
+                  "Action": [
+                      "elasticbeanstalk:*",
+                      "ec2:*",
+                      "elasticloadbalancing:*",
+                      "autoscaling:*",
+                      "cloudwatch:*",
+                      "s3:*",
+                      "sns:*",
+                      "cloudformation:*",
+                      "rds:*",
+                      "sqs:*",
+                      "ecs:*"
+                  ],
                   "Resource": "*",
                   "Effect": "Allow"
-              }, {
-                  "Action": ["elasticbeanstalk:*", "ec2:*", "elasticloadbalancing:*", "autoscaling:*", "cloudwatch:*", "s3:*", "sns:*", "cloudformation:*", "rds:*", "sqs:*", "ecs:*"],
+              },
+              {
+                  "Action": [
+                      "lambda:InvokeFunction",
+                      "lambda:ListFunctions"
+                  ],
                   "Resource": "*",
                   "Effect": "Allow"
-              }, {
-                  "Action": ["lambda:InvokeFunction", "lambda:ListFunctions"],
+              },
+              {
+                  "Action": [
+                      "opsworks:CreateDeployment",
+                      "opsworks:DescribeApps",
+                      "opsworks:DescribeCommands",
+                      "opsworks:DescribeDeployments",
+                      "opsworks:DescribeInstances",
+                      "opsworks:DescribeStacks",
+                      "opsworks:UpdateApp",
+                      "opsworks:UpdateStack"
+                  ],
                   "Resource": "*",
                   "Effect": "Allow"
-              }, {
-                  "Action": ["opsworks:CreateDeployment", "opsworks:DescribeApps", "opsworks:DescribeCommands", "opsworks:DescribeDeployments", "opsworks:DescribeInstances", "opsworks:DescribeStacks", "opsworks:UpdateApp", "opsworks:UpdateStack"],
+              },
+              {
+                  "Action": [
+                      "cloudformation:CreateStack",
+                      "cloudformation:DeleteStack",
+                      "cloudformation:DescribeStacks",
+                      "cloudformation:UpdateStack",
+                      "cloudformation:CreateChangeSet",
+                      "cloudformation:DeleteChangeSet",
+                      "cloudformation:DescribeChangeSet",
+                      "cloudformation:ExecuteChangeSet",
+                      "cloudformation:SetStackPolicy",
+                      "cloudformation:ValidateTemplate"
+                  ],
                   "Resource": "*",
                   "Effect": "Allow"
-              }, {
-                  "Action": ["cloudformation:CreateStack", "cloudformation:DeleteStack", "cloudformation:DescribeStacks", "cloudformation:UpdateStack", "cloudformation:CreateChangeSet", "cloudformation:DeleteChangeSet", "cloudformation:DescribeChangeSet", "cloudformation:ExecuteChangeSet", "cloudformation:SetStackPolicy", "cloudformation:ValidateTemplate"],
+              },
+              {
+                  "Action": [
+                      "codebuild:BatchGetBuilds",
+                      "codebuild:StartBuild",
+                      "codebuild:BatchGetBuildBatches",
+                      "codebuild:StartBuildBatch"
+                  ],
                   "Resource": "*",
                   "Effect": "Allow"
-              }, {
-                  "Action": ["codebuild:BatchGetBuilds", "codebuild:StartBuild", "codebuild:BatchGetBuildBatches", "codebuild:StartBuildBatch"],
-                  "Resource": "*",
-                  "Effect": "Allow"
-              }, {
+              },
+              {
                   "Effect": "Allow",
-                  "Action": ["devicefarm:ListProjects", "devicefarm:ListDevicePools", "devicefarm:GetRun", "devicefarm:GetUpload", "devicefarm:CreateUpload", "devicefarm:ScheduleRun"],
+                  "Action": [
+                      "devicefarm:ListProjects",
+                      "devicefarm:ListDevicePools",
+                      "devicefarm:GetRun",
+                      "devicefarm:GetUpload",
+                      "devicefarm:CreateUpload",
+                      "devicefarm:ScheduleRun"
+                  ],
                   "Resource": "*"
-              }, {
+              },
+              {
                   "Effect": "Allow",
-                  "Action": ["servicecatalog:ListProvisioningArtifacts", "servicecatalog:CreateProvisioningArtifact", "servicecatalog:DescribeProvisioningArtifact", "servicecatalog:DeleteProvisioningArtifact", "servicecatalog:UpdateProduct"],
+                  "Action": [
+                      "servicecatalog:ListProvisioningArtifacts",
+                      "servicecatalog:CreateProvisioningArtifact",
+                      "servicecatalog:DescribeProvisioningArtifact",
+                      "servicecatalog:DeleteProvisioningArtifact",
+                      "servicecatalog:UpdateProduct"
+                  ],
                   "Resource": "*"
-              }, {
+              },
+              {
                   "Effect": "Allow",
-                  "Action": ["cloudformation:ValidateTemplate"],
+                  "Action": [
+                      "cloudformation:ValidateTemplate"
+                  ],
                   "Resource": "*"
-              }, {
+              },
+              {
                   "Effect": "Allow",
-                  "Action": ["ecr:DescribeImages"],
+                  "Action": [
+                      "ecr:DescribeImages"
+                  ],
                   "Resource": "*"
-              }, {
+              },
+              {
                   "Effect": "Allow",
-                  "Action": ["states:DescribeExecution", "states:DescribeStateMachine", "states:StartExecution"],
+                  "Action": [
+                      "states:DescribeExecution",
+                      "states:DescribeStateMachine",
+                      "states:StartExecution"
+                  ],
                   "Resource": "*"
-              }, {
+              },
+              {
                   "Effect": "Allow",
-                  "Action": ["appconfig:StartDeployment", "appconfig:StopDeployment", "appconfig:GetDeployment"],
+                  "Action": [
+                      "appconfig:StartDeployment",
+                      "appconfig:StopDeployment",
+                      "appconfig:GetDeployment"
+                  ],
                   "Resource": "*"
               }
           ]
@@ -254,17 +367,16 @@ Resources:
       Roles: 
         - !Ref PetsAPICodePipelineServiceRole
 
-  PetsAPIPipeline:    
+  PetsAPIPipeline:
     Type: AWS::CodePipeline::Pipeline
+    DependsOn:
+      - PetsAPICodePipelineServiceRole
+      - PetsAPICodeBuild
     Properties: 
       ArtifactStore: 
         Type: S3
         # default location
         Location: codepipeline-us-east-1-91946427360
-      ArtifactStores: 
-        - ArtifactStoreMap
-      DisableInboundStageTransitions: 
-        - StageTransition
       Name: pets-api-pipeline
       RestartExecutionOnUpdate: false
       RoleArn: !GetAtt PetsAPICodePipelineServiceRole.Arn
@@ -279,7 +391,7 @@ Resources:
                 Version: 1
               RunOrder: 1
               Configuration: {
-                  "ConnectionArn": "arn:aws:codestar-connections:us-east-1:186521841143:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc",
+                  "ConnectionArn": "",
                   "BranchName": "master",
                   "OutputArtifactFormat": "CODE_ZIP",
                   "FullRepositoryId": "jquirossoto/ecs-node-typescript-express-api"

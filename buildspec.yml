@@ -15,5 +15,5 @@ phases:
     commands: 
       - docker push 186521841143.dkr.ecr.us-east-1.amazonaws.com/pets-api:latest
       - printf '[{"name":"%s","imageUri":"%s"}]' pets-api 186521841143.dkr.ecr.us-east-1.amazonaws.com/pets-api:latest > imagedefinitions.json
-  artifacts:
-    files: imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json
