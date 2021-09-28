@@ -7,10 +7,10 @@ module.exports = {
         '^.+\\.(ts|tsx)$': 'ts-jest'
     },
     testMatch: [
-        "**/?(*.)+(spec|test).+(ts|tsx|js)"
+        '**/?(*.)+(spec|test).+(ts|tsx|js)'
     ],
     collectCoverageFrom: [
-        "src/**/*.ts*"
+        'src/**/*.ts*'
     ],
     coverageThreshold: {
         global: {

@@ -5,7 +5,6 @@ import { post, list, get, patch, remove } from './pet.controller';
 import { Pet } from './../models/pet.model';
 import * as petService from './../services/pet.service';
 import { buildSuccessResponse, buildErrorResponse } from './../utils/api.utils';
-import { Category } from '.prisma/client';
 
 jest.mock('./../services/pet.service');
 

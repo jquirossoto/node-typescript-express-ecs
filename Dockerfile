@@ -18,7 +18,7 @@ COPY prisma/schema.prisma .
 RUN npm ci --only=production
 # copies production modules to a separate folder
 RUN cp -R node_modules prod_node_modules
-# install non-production modules (includes dev dependencies)
+# install modules (includes dev dependencies)
 RUN npm ci
 
 # ---------------------------- TEST ----------------------------
@@ -41,7 +41,7 @@ FROM base AS release
 USER node
 # sets tini as entry point
 ENTRYPOINT ["/sbin/tini", "--"]
-# sets node_env
+# sets NODE_ENV to production
 ENV NODE_ENV production
 # copies the production modules from the dependencies image
 COPY --chown=node:node --from=dependencies /usr/src/app/prod_node_modules ./node_modules
