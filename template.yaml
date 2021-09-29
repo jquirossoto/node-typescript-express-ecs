@@ -92,6 +92,22 @@ Resources:
                     # pets-api-codebuild is the name of the codebuild project
                     "arn:aws:codebuild:us-east-1:186521841143:report-group/pets-api-codebuild-*"
                   ]
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                    "ssm:GetParameter",
+                    "ssm:GetParameters"
+                ],
+                # username and password stored in aws params store
+                "Resource": "arn:aws:ssm:us-east-1:186521841143:parameter/pets-api/dockerhub/*"
+              },
+              {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ecr:GetAuthorizationToken"
+                  ],
+                  "Resource": "*"
               }
           ]
       }
@@ -144,9 +160,12 @@ Resources:
       Environment: 
         ComputeType: BUILD_GENERAL1_SMALL
         EnvironmentVariables: 
-          - Name: DEFAULT_REGION
-            Type: PLAINTEXT
-            Value: us-east-1
+          - Name: DOCKERHUB_USERNAME
+            Type: PARAMETER_STORE
+            Value: /pets-api/dockerhub/username
+          - Name: DOCKERHUB_PASSWORD
+            Type: PARAMETER_STORE
+            Value: /pets-api/dockerhub/password
         Image: aws/codebuild/standard:5.0
         ImagePullCredentialsType: CODEBUILD
         PrivilegedMode: true
@@ -237,7 +256,7 @@ Resources:
                   ],
                   # for some weird reason you need to explicitly defined the resource. * does not work
                   "Resource": [
-                    ""
+                    "arn:aws:codestar-connections:us-east-1:186521841143:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc"
                   ],
                   "Effect": "Allow"
               },
@@ -391,7 +410,7 @@ Resources:
                 Version: 1
               RunOrder: 1
               Configuration: {
-                  "ConnectionArn": "",
+                  "ConnectionArn": "arn:aws:codestar-connections:us-east-1:186521841143:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc",
                   "BranchName": "master",
                   "OutputArtifactFormat": "CODE_ZIP",
                   "FullRepositoryId": "jquirossoto/ecs-node-typescript-express-api"
