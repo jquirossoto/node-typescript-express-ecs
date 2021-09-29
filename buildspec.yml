@@ -8,6 +8,7 @@ phases:
       - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
   build:
     commands:
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 186521841143.dkr.ecr.us-east-1.amazonaws.com
       - docker build -t pets-api .
       - docker tag pets-api:latest 186521841143.dkr.ecr.us-east-1.amazonaws.com/pets-api:latest
   post_build:
