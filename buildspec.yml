@@ -5,6 +5,7 @@ phases:
       nodejs: 12
   pre_build:
     commands:
+      - aws ecr get-login-password --region us-east-1
       - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
   build:
     commands:
