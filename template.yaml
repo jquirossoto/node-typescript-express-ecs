@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 
-################################### APPLICATION PARAMETERS ####################################
+################################### APPLICATION PARAMETERS ###################################
 ################################### APPLICATION CONDITIONS ###################################
 ################################### APPLICATION RESOURCES ################################### 
 
@@ -14,106 +14,92 @@ Resources:
         ScanOnPush: true
       ImageTagMutability: MUTABLE
       RepositoryName: pets-api
-      RepositoryPolicyText: {
-        "Version": "2012-10-17",
-        "Statement": [{
-          "Sid": "CodeBuildAccess",
-          "Effect": "Allow",
-          "Principal": {
-            "Service": "codebuild.amazonaws.com"
-          },
-          "Action": [
-            "ecr:BatchGetImage",
-            "ecr:GetDownloadUrlForLayer"
-          ]
-        }]
-      }
+      RepositoryPolicyText:
+        Version: 2012-10-17
+        Statement:
+          - Sid: CodeBuildAccess
+            Effect: Allow
+            Principal: 
+              Service: codebuild.amazonaws.com
+            Action: 
+              - ecr:BatchGetImage
+              - ecr:GetDownloadUrlForLayer
 
   PetsAPICodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
-      AssumeRolePolicyDocument: {
-          "Version": "2012-10-17",
-          "Statement": [{
-              "Effect": "Allow",
-              "Principal": {
-                  "Service": "codebuild.amazonaws.com"
-              },
-              "Action": "sts:AssumeRole"
-          }]
-      }
       Description: PetsAPICodeBuildRole
       RoleName: PetsAPICodeBuildRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+            Action: sts:AssumeRole
 
   PetsAPICodeBuildBasePolicy:
     Type: AWS::IAM::Policy
     DependsOn:
       - PetsAPICodeBuildRole
     Properties: 
-      PolicyDocument: {
-          "Version": "2012-10-17",
-          "Statement": [
-              {
-                  "Effect": "Allow",
-                  "Resource": [
-                      # pets-api-codebuild is the name of the codebuild project
-                      "arn:aws:logs:us-east-1:186521841143:log-group:/aws/codebuild/pets-api-codebuild",
-                      "arn:aws:logs:us-east-1:186521841143:log-group:/aws/codebuild/pets-api-codebuild:*"
-                  ],
-                  "Action": [
-                      "logs:CreateLogGroup",
-                      "logs:CreateLogStream",
-                      "logs:PutLogEvents"
-                  ]
-              },
-              {
-                  "Effect": "Allow",
-                  "Resource": [
-                      "arn:aws:s3:::codepipeline-us-east-1-*"
-                  ],
-                  "Action": [
-                      "s3:PutObject",
-                      "s3:GetObject",
-                      "s3:GetObjectVersion",
-                      "s3:GetBucketAcl",
-                      "s3:GetBucketLocation"
-                  ]
-              },
-              {
-                  "Effect": "Allow",
-                  "Action": [
-                      "codebuild:CreateReportGroup",
-                      "codebuild:CreateReport",
-                      "codebuild:UpdateReport",
-                      "codebuild:BatchPutTestCases",
-                      "codebuild:BatchPutCodeCoverages"
-                  ],
-                  "Resource": [
-                    # pets-api-codebuild is the name of the codebuild project
-                    "arn:aws:codebuild:us-east-1:186521841143:report-group/pets-api-codebuild-*"
-                  ]
-              },
-              {
-                "Effect": "Allow",
-                "Action": [
-                    "ssm:GetParameter",
-                    "ssm:GetParameters"
-                ],
-                # username and password stored in aws params store
-                "Resource": ""
-              },
-              {
-                  "Effect": "Allow",
-                  "Action": [
-                    "ecr:GetAuthorizationToken"
-                  ],
-                  "Resource": "*"
-              }
-          ]
-      }
       PolicyName: PetsAPICodeBuildBasePolicy
-      Roles: 
+      Roles:
         - !Ref PetsAPICodeBuildRole
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement: 
+          - Effect: Allow
+            Resource:
+                # pets-api-codebuild is the name of the codebuild project
+              - arn:aws:logs:us-east-1:186521841143:log-group:/aws/codebuild/pets-api-codebuild
+              - arn:aws:logs:us-east-1:186521841143:log-group:/aws/codebuild/pets-api-codebuild:*
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+          - Effect: Allow
+            Resource:
+              - arn:aws:s3:::codepipeline-us-east-1-*
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+              - s3:GetObjectVersion
+              - s3:GetBucketAcl
+              - s3:GetBucketLocation
+          - Effect: Allow
+            Resource:
+                # pets-api-codebuild is the name of the codebuild project
+              - arn:aws:codebuild:us-east-1:186521841143:report-group/pets-api-codebuild-*
+            Action:
+              - codebuild:CreateReportGroup
+              - codebuild:CreateReport
+              - codebuild:UpdateReport
+              - codebuild:BatchPutTestCases
+              - codebuild:BatchPutCodeCoverages
+          - Effect: Allow
+            Resource: 
+                # /pets-api/dockerhub/* refers to the params in param store (username and password defined in codebuild project)
+              - arn:aws:ssm:us-east-1:186521841143:parameter/pets-api/dockerhub/*
+            Action: 
+              - ssm:GetParameter
+              - ssm:GetParameters
+          - Effect: Allow
+            Resource:
+                # key used to encryt/decrypt DOCKERHUB_USERNAME & DOCKERHUB_PASSWORD params in codebuild project
+              - arn:aws:kms:us-east-1:186521841143:key/d0b8969b-d55b-4f94-9091-5fc2d19c76d7
+            Action: 
+              - kms:Decrypt
+              - kms:GenerateDataKey*
+          - Effect: Allow
+            Resource: '*'
+            Action:
+              - ecr:BatchCheckLayerAvailability
+              - ecr:InitiateLayerUpload
+              - ecr:UploadLayerPart
+              - ecr:CompleteLayerUpload
+              - ecr:PutImage
+              - ecr:GetAuthorizationToken
 
   PetsAPICodeBuildCloudwatchPolicy:
     Type: AWS::IAM::Policy
@@ -139,7 +125,7 @@ Resources:
           ]
       }
       PolicyName: PetsAPICodeBuildRoleCloudwatchPolicy
-      Roles: 
+      Roles:
         - !Ref PetsAPICodeBuildRole
         
   PetsAPICodeBuild:
@@ -147,7 +133,7 @@ Resources:
     DependsOn:
       - PetsAPICodeBuildRole
     Properties: 
-      Artifacts: 
+      Artifacts:
         Type: CODEPIPELINE
         EncryptionDisabled: false
         Name: pets-api
@@ -157,7 +143,7 @@ Resources:
       BadgeEnabled: false
       ConcurrentBuildLimit: 1
       Description: pets api codebuild
-      Environment: 
+      Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         EnvironmentVariables: 
           - Name: DOCKERHUB_USERNAME
@@ -170,7 +156,7 @@ Resources:
         ImagePullCredentialsType: CODEBUILD
         PrivilegedMode: true
         Type: LINUX_CONTAINER
-      LogsConfig: 
+      LogsConfig:
         CloudWatchLogs: 
           GroupName: pets-api
           Status: ENABLED
@@ -256,7 +242,7 @@ Resources:
                   ],
                   # for some weird reason you need to explicitly defined the resource. * does not work
                   "Resource": [
-                    ""
+                    "arn:aws:codestar-connections:us-east-1:186521841143:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc"
                   ],
                   "Effect": "Allow"
               },
@@ -383,7 +369,7 @@ Resources:
           ]
       }
       PolicyName: PetsAPICodePipelinePolicy
-      Roles: 
+      Roles:
         - !Ref PetsAPICodePipelineServiceRole
 
   PetsAPIPipeline:
@@ -399,7 +385,7 @@ Resources:
       Name: pets-api-pipeline
       RestartExecutionOnUpdate: false
       RoleArn: !GetAtt PetsAPICodePipelineServiceRole.Arn
-      Stages: 
+      Stages:
         - Name: Source
           Actions:
             - Name: Source
@@ -410,7 +396,7 @@ Resources:
                 Version: 1
               RunOrder: 1
               Configuration: {
-                  "ConnectionArn": "",
+                  "ConnectionArn": "arn:aws:codestar-connections:us-east-1:186521841143:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc",
                   "BranchName": "master",
                   "OutputArtifactFormat": "CODE_ZIP",
                   "FullRepositoryId": "jquirossoto/ecs-node-typescript-express-api"
@@ -437,3 +423,41 @@ Resources:
               OutputArtifacts:
                 - Name: BuildArtifact
               Region: us-east-1
+
+  PetsAPITaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: PetsAPITaskExecutionRole
+      RoleName: PetsAPITaskExecutionRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+
+  PetsAPITaskExecutionPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - ecr:GetAuthorizationToken
+              - ecr:BatchCheckLayerAvailability
+              - ecr:GetDownloadUrlForLayer
+              - ecr:BatchGetImage
+            Resource: "*"
+      PolicyName: PetsAPITaskExecutionPolicy
+      Roles:
+        - !Ref PetsAPITaskExecutionRole
