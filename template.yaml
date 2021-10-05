@@ -106,27 +106,21 @@ Resources:
     DependsOn:
       - PetsAPICodeBuildRole
     Properties:
-      PolicyDocument: {
-          "Version": "2012-10-17",
-          "Statement": [
-              {
-                  "Effect": "Allow",
-                  "Resource": [
-                      #pets-api comes from PetsAPICodeBuild:LogsConfig:CloudWatchLogs:GroupName
-                      "arn:aws:logs:us-east-1:186521841143:log-group:pets-api",
-                      "arn:aws:logs:us-east-1:186521841143:log-group:pets-api:*"
-                  ],
-                  "Action": [
-                      "logs:CreateLogGroup",
-                      "logs:CreateLogStream",
-                      "logs:PutLogEvents"
-                  ]
-              }
-          ]
-      }
       PolicyName: PetsAPICodeBuildRoleCloudwatchPolicy
       Roles:
         - !Ref PetsAPICodeBuildRole
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement: 
+          - Effect: Allow
+            Resource:
+                # pets-api comes from PetsAPICodeBuild -> LogsConfig -> CloudWatchLogs -> GroupName
+              - arn:aws:logs:us-east-1:186521841143:log-group:pets-api
+              - arn:aws:logs:us-east-1:186521841143:log-group:pets-api:*
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents      
         
   PetsAPICodeBuild:
     Type: AWS::CodeBuild::Project
@@ -174,24 +168,24 @@ Resources:
   PetsAPICodePipelineServiceRole:
     Type: AWS::IAM::Role
     Properties:
-      AssumeRolePolicyDocument: {
-          "Version": "2012-10-17",
-          "Statement": [{
-              "Effect": "Allow",
-              "Principal": {
-                  "Service": "codepipeline.amazonaws.com"
-              },
-              "Action": "sts:AssumeRole"
-          }]
-      }
-      Description: PetsAPICodePipelineServiceRole
       RoleName: PetsAPICodePipelineServiceRole
+      Description: PetsAPICodePipelineServiceRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement: 
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole      
 
   PetsAPICodePipelinePolicy:
     Type: AWS::IAM::Policy
     DependsOn:
       - PetsAPICodePipelineServiceRole
-    Properties: 
+    Properties:
+      PolicyName: PetsAPICodePipelinePolicy
+      Roles:
+        - !Ref PetsAPICodePipelineServiceRole
       PolicyDocument: {
           "Version": "2012-10-17",
           "Statement": [
@@ -368,9 +362,6 @@ Resources:
               }
           ]
       }
-      PolicyName: PetsAPICodePipelinePolicy
-      Roles:
-        - !Ref PetsAPICodePipelineServiceRole
 
   PetsAPIPipeline:
     Type: AWS::CodePipeline::Pipeline
