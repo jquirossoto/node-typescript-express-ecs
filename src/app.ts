@@ -13,6 +13,9 @@ app.use(express.json());
 app.use('/api', authorize);
 app.use('/api', categoryRouter);
 app.use('/api', petRouter);
+app.use('/health', (req, res) => {
+	res.send();
+});
 
 export const server = app.listen(port, () => {
 	console.log(`Running on port ${port}`);
