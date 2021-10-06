@@ -2,6 +2,8 @@
 FROM node:lts-alpine@sha256:8c94a0291133e16b92be5c667e0bc35930940dfa7be544fb142e25f8e4510a45 as base
 # installs tini (https://github.com/krallin/tini)
 RUN apk add --no-cache tini
+# installs curl
+RUN apk add --no-cache curl
 # creates the workdir
 RUN mkdir -p /usr/src/app
 # sets workdir
@@ -29,6 +31,7 @@ ENV NODE_ENV production
 COPY --chown=node:node --from=dependencies /usr/src/app/node_modules node_modules/
 # copies the built app from the build image
 COPY --chown=node:node dist/ .
+HEALTHCHECK CMD curl --fail http://localhost:3000/health || exit 1 
 # exposes port
 EXPOSE 3000
 # executes app
