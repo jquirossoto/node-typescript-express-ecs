@@ -7,6 +7,8 @@ Transform: 'AWS::Serverless-2016-10-31'
 
 Resources:
 
+  ################################### ECR ###################################
+
   PetsAPIECRRepository:
     Type: AWS::ECR::Repository
     Properties:
@@ -24,6 +26,8 @@ Resources:
             Action: 
               - ecr:BatchGetImage
               - ecr:GetDownloadUrlForLayer
+
+  ################################### CODEBUILD ###################################
 
   PetsAPICodeBuildRole:
     Type: AWS::IAM::Role
@@ -164,6 +168,8 @@ Resources:
         Type: CODEPIPELINE
       SourceVersion: master
       TimeoutInMinutes: 60
+
+  ################################### CODEPIPELINE ###################################
 
   PetsAPICodePipelineServiceRole:
     Type: AWS::IAM::Role
@@ -363,6 +369,8 @@ Resources:
                 - Name: BuildArtifact
               Region: us-east-1
 
+  ################################### ECS ###################################
+
   PetsAPITaskExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -381,6 +389,9 @@ Resources:
   PetsAPITaskExecutionPolicy:
     Type: AWS::IAM::Policy
     Properties:
+      PolicyName: PetsAPITaskExecutionPolicy
+      Roles:
+        - !Ref PetsAPITaskExecutionRole
       PolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -396,7 +407,4 @@ Resources:
               - ecr:BatchCheckLayerAvailability
               - ecr:GetDownloadUrlForLayer
               - ecr:BatchGetImage
-            Resource: "*"
-      PolicyName: PetsAPITaskExecutionPolicy
-      Roles:
-        - !Ref PetsAPITaskExecutionRole
+            Resource: "*"      
