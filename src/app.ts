@@ -1,5 +1,4 @@
 import express from 'express';
-import { Request, Response } from 'express';
 
 import { router as categoryRouter } from './routers/category.router';
 import { router as petRouter } from './routers/pet.router';
@@ -12,7 +11,7 @@ export const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/api', authorize);
+// app.use('/api', authorize);
 app.use('/api', categoryRouter);
 app.use('/api', petRouter);
 app.use('/', healthRouter);
