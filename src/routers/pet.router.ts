@@ -9,4 +9,4 @@ router.route('/pet')
 router.route('/pet/:id')
     .get(get)
     .patch(patch)
-    .delete(remove);
+    // .delete(remove);
