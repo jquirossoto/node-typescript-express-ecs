@@ -31,7 +31,6 @@ ENV NODE_ENV production
 COPY --chown=node:node --from=dependencies /usr/src/app/node_modules node_modules/
 # copies the built app from the build image
 COPY --chown=node:node dist/ .
-HEALTHCHECK CMD curl --fail http://localhost:3000/health || exit 1 
 # exposes port
 EXPOSE 3000
 # executes app

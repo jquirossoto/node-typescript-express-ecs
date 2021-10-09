@@ -1,8 +1,11 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
-    verbose: true,
+    verbose: false,
     roots: ['<rootDir>/src'],
+    coveragePathIgnorePatterns: [
+        "routers"
+    ],
     transform: {
         '^.+\\.(ts|tsx)$': 'ts-jest'
     },

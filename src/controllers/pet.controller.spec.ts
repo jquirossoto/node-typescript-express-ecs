@@ -276,6 +276,24 @@ describe('Pet Controller', () => {
             expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(null));
         });
 
+        it('Should responde 500 with error response', async () => {
+            const req: Request = getMockReq({
+                params: {
+                    id: 1
+                }
+            });
+            const res: Response = getMockRes().res;
+            const error: Error = new Error('Unable to process request');
+            //@ts-ignore
+            petService.remove.mockRejectedValue(error)
+
+            await remove(req, res);
+
+            expect(petService.remove).toHaveBeenCalledWith(1);
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
+        });
+
     });
     
 });
