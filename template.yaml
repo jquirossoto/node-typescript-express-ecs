@@ -7,6 +7,301 @@ Transform: 'AWS::Serverless-2016-10-31'
 
 Resources:
 
+
+  ################################### VPC ###################################
+
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.2.0.0/16
+      InstanceTenancy: default
+      EnableDnsHostnames: false
+      EnableDnsSupport: true
+      Tags:
+      - Key: Name
+        Value: !Sub PetsAPIVPC
+
+  ################################### INTERNET GATEWAY ###################################
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub 'PetsAPIVPC-IG'
+    
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    DependsOn:
+      - VPC
+      - InternetGateway
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+
+  ################################## ROUTE TABLES ###################################
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    DependsOn:
+      - VPC
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub 'PetsAPIVPC-PubRT'
+
+  DefaultPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: 
+      - InternetGatewayAttachment
+      - PublicRouteTable
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  ################################### PUBLIC SUBNETS ###################################
+
+  ################################### SUBNET1 ###################################
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    DependsOn:
+      - VPC 
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: 10.2.0.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub PetsAPIVPC-PubSN1
+      VpcId: !Ref VPC
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet1
+
+  PublicSubnet1ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: !Sub 'PetsAPIVPC-PubSN1-NG-EIP'
+      
+  PublicSubnet1NatGateway:
+    Type: AWS::EC2::NatGateway
+    DependsOn:
+      - PublicSubnet1
+      - PublicSubnet1ElasticIP
+    Properties:
+      AllocationId: !GetAtt PublicSubnet1ElasticIP.AllocationId
+      SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: !Sub 'PetsAPIVPC-PubSN1-NG'
+
+  ################################### SUBNET2 ###################################
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      CidrBlock: 10.2.1.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub PetsAPIVPC-PubSN2
+      VpcId: !Ref VPC
+
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet2
+
+  PublicSubnet2ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: !Sub 'PetsAPIVPC-PubSN2-NG-EIP'
+      
+  PublicSubnet2NatGateway:
+    Type: AWS::EC2::NatGateway
+    DependsOn:
+      - PublicSubnet2
+      - PublicSubnet2ElasticIP
+    Properties:
+      AllocationId: !GetAtt PublicSubnet2ElasticIP.AllocationId
+      SubnetId: !Ref PublicSubnet2
+      Tags:
+        - Key: Name
+          Value: !Sub 'PetsAPIVPC-PubSN2-NG'
+
+  ################################### PRIVATE SUBNETS ###################################
+
+  ################################### SUBNET1 ###################################
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: 10.2.2.0/24
+      Tags:
+        - Key: Name
+          Value: !Sub PetsAPIVPC-PrivSN1
+      VpcId:
+        Ref: VPC
+
+  PrivateSubnet1RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub 'PetsAPIVPC-PrivSN1-RT'
+
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DependsOn:
+      - PrivateSubnet1RouteTable
+      - PrivateSubnet1
+    Properties:
+      RouteTableId: !Ref PrivateSubnet1RouteTable
+      SubnetId: !Ref PrivateSubnet1
+
+  RouteToPublicSubnet1NatGateway:
+    Type: AWS::EC2::Route
+    DependsOn:
+      - PrivateSubnet1RouteTable
+      - PublicSubnet1NatGateway
+    Properties:
+      RouteTableId: !Ref PrivateSubnet1RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref PublicSubnet1NatGateway
+
+  ################################### SUBNET2 ###################################
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      CidrBlock: 10.2.3.0/24
+      Tags:
+        - Key: Name
+          Value: !Sub PetsAPIVPC-PrivSN2
+      VpcId:
+        Ref: VPC
+
+  PrivateSubnet2RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub 'PetsAPIVPC-PrivSN2-RT'
+
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DependsOn:
+      - PrivateSubnet2RouteTable
+      - PrivateSubnet2
+    Properties:
+      RouteTableId: !Ref PrivateSubnet2RouteTable
+      SubnetId: !Ref PrivateSubnet2
+
+  RouteToPublicSubnet2NatGateway:
+    Type: AWS::EC2::Route
+    DependsOn:
+      - PrivateSubnet2RouteTable
+      - PublicSubnet2NatGateway
+    Properties:
+      RouteTableId: !Ref PrivateSubnet2RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref PublicSubnet2NatGateway
+
+  ################################### LOADBALANCER ###################################
+
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    DependsOn:
+      - VPC
+    Properties:
+      GroupDescription: PetsAPILoadBalancerSecurityGroup
+      SecurityGroupIngress:
+        - CidrIp: "0.0.0.0/0"
+          IpProtocol: "TCP"
+          FromPort: 80
+          ToPort: 80
+      VpcId: !Ref VPC
+  
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    DependsOn:
+      - PublicSubnet1
+      - PublicSubnet2
+      - LoadBalancerSecurityGroup
+    Properties:
+      Subnets:
+        - !Ref PublicSubnet1
+        - !Ref PublicSubnet2
+      SecurityGroups:
+        - !Ref LoadBalancerSecurityGroup
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    DependsOn:
+      - VPC
+    Properties:
+      VpcId: !Ref VPC
+      Port: 3000
+      Protocol: HTTP
+      Matcher:
+        HttpCode: 200-299
+      HealthCheckIntervalSeconds: 10
+      HealthCheckPath: /health
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      TargetType: ip
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
+
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn: 
+      - LoadBalancer
+      - TargetGroup
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+
+  ListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    DependsOn: 
+      - LoadBalancerListener
+      - TargetGroup
+    Properties:
+      ListenerArn: !Ref LoadBalancerListener
+      Priority: 1
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - /
+      Actions:
+        - TargetGroupArn: !Ref TargetGroup
+          Type: forward
+
   ################################### ECR ###################################
 
   PetsAPIECRRepository:
@@ -26,6 +321,140 @@ Resources:
             Action: 
               - ecr:BatchGetImage
               - ecr:GetDownloadUrlForLayer
+
+  ################################### ECS ###################################
+
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties: 
+      CapacityProviders: 
+        - FARGATE
+      ClusterName: PetsAPICluster
+
+  PetsAPITaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: PetsAPITaskExecutionRole
+      Description: PetsAPITaskExecutionRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: PetsAPITaskRole
+      Description: PetsAPITaskRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+
+  TaskRolePolicy:
+    Type: AWS::IAM::Policy
+    DependsOn:
+      - TaskRole
+    Properties:
+      PolicyName: PetsAPICodeBuildRoleCloudwatchPolicy
+      Roles:
+        - !Ref TaskRole
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+              - s3:PutObject
+              - s3:GetObject
+            Resource: "*"
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    DependsOn:
+      - TaskRole
+      - PetsAPITaskExecutionRole
+    Properties:
+      ContainerDefinitions:
+          - Name: pets-api
+            Image: 186521841143.dkr.ecr.us-east-1.amazonaws.com/pets-api:latest
+            HealthCheck:
+              Command: 
+                - CMD-SHELL
+                - curl -f http://localhost:3000/health || exit 1
+              Interval: 30
+              Retries: 3
+              Timeout: 5
+            Essential: true
+            PortMappings: 
+                # For task definitions that use the awsvpc network mode, you should only specify the containerPort. The hostPort can be left blank or it must be the same value as the containerPort.
+              - ContainerPort: 3000
+                Protocol: tcp
+      Cpu: 256
+      Memory: 1024
+      ExecutionRoleArn: !Ref PetsAPITaskExecutionRole
+      Family: pets-api-task-definition
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      TaskRoleArn: !Ref TaskRole
+
+  SourceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: PetsAPISecurityGroup
+      GroupName: PetsAPISecurityGroup2
+      SecurityGroupIngress:
+        - CidrIp: "0.0.0.0/0"
+          IpProtocol: "TCP"
+          FromPort: 3000
+          ToPort: 3000
+      VpcId: !Ref VPC
+
+  Service:
+    Type: AWS::ECS::Service
+    DependsOn:
+     - TaskDefinition
+     - SourceSecurityGroup
+     - PrivateSubnet1
+     - PrivateSubnet2
+     - ListenerRule
+    Properties:
+      ServiceName: pets-api-service
+      Cluster: !Ref Cluster
+      DesiredCount: 1
+      TaskDefinition: !Ref TaskDefinition
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - !Ref SourceSecurityGroup
+          Subnets:
+            - !Ref PrivateSubnet1
+            - !Ref PrivateSubnet2
+      LoadBalancers:
+        - ContainerName: pets-api
+          ContainerPort: 3000
+          TargetGroupArn: !Ref TargetGroup
 
   ################################### CODEBUILD ###################################
 
@@ -322,6 +751,8 @@ Resources:
     DependsOn:
       - PetsAPICodePipelineServiceRole
       - PetsAPICodeBuild
+      - Cluster
+      - Service
     Properties: 
       ArtifactStore: 
         Type: S3
@@ -368,43 +799,18 @@ Resources:
               OutputArtifacts:
                 - Name: BuildArtifact
               Region: us-east-1
-
-  ################################### ECS ###################################
-
-  PetsAPITaskExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      Description: PetsAPITaskExecutionRole
-      RoleName: PetsAPITaskExecutionRole
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - ecs-tasks.amazonaws.com
-            Action:
-              - sts:AssumeRole
-
-  PetsAPITaskExecutionPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: PetsAPITaskExecutionPolicy
-      Roles:
-        - !Ref PetsAPITaskExecutionRole
-      PolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Action:
-              - logs:CreateLogGroup
-              - logs:CreateLogStream
-              - logs:PutLogEvents
-            Resource: "*"
-          - Effect: Allow
-            Action:
-              - ecr:GetAuthorizationToken
-              - ecr:BatchCheckLayerAvailability
-              - ecr:GetDownloadUrlForLayer
-              - ecr:BatchGetImage
-            Resource: "*"      
+        - Name: Deploy
+          Actions:
+            - Name: Deploy
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: ECS
+              Configuration:
+                ClusterName: !Ref Cluster
+                ServiceName: !Ref Service
+                FileName: imagedefinitions.json
+              InputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 1
