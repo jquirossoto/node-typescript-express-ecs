@@ -7,7 +7,6 @@ Transform: 'AWS::Serverless-2016-10-31'
 
 Resources:
 
-
   ################################### VPC ###################################
 
   VPC:
@@ -814,3 +813,51 @@ Resources:
         #       InputArtifacts:
         #         - Name: BuildArtifact
         #       RunOrder: 1
+
+  ################################### AURORA ###################################
+
+  AuroraClusterSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: AuroraClusterSecurityGroup
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          SourceSecurityGroupId: !Ref ECSServiceSecurityGroup
+      VpcId: !Ref VPC
+
+  AuroraClusterSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: AuroraClusterSubnetGroup
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
+
+  AuroraCluster:
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
+    Type: 'AWS::RDS::DBCluster'
+    Properties:
+      AvailabilityZones:
+        - !GetAtt PrivateSubnet1.AvailabilityZone
+        - !GetAtt PrivateSubnet2.AvailabilityZone
+      BackupRetentionPeriod: 1
+      DatabaseName: PetsAPI
+      # DBClusterParameterGroupName: default.aurora-postgresql10
+      DBSubnetGroupName: !Ref AuroraClusterSubnetGroup
+      EnableHttpEndpoint: false
+      Engine: aurora-postgresql
+      EngineMode: serverless
+      EngineVersion: 10.14
+      MasterUsername: 'aurora12'
+      MasterUserPassword: 'aurora12'
+      ScalingConfiguration:
+        AutoPause: true
+        MaxCapacity: 2
+        MinCapacity: 2
+        SecondsUntilAutoPause: 300
+      StorageEncrypted: true
+      VpcSecurityGroupIds:
+        - !Ref AuroraClusterSecurityGroup
