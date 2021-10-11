@@ -395,7 +395,7 @@ Resources:
     Properties:
       ContainerDefinitions:
           - Name: pets-api
-            Image: 186521841143.dkr.ecr.us-east-1.amazonaws.com/pets-api:latest
+            Image: !Join [ ':', [ !GetAtt PetsAPIECRRepository.RepositoryUri, latest ] ]
             HealthCheck:
               Command: 
                 - CMD-SHELL
@@ -417,7 +417,7 @@ Resources:
         - FARGATE
       TaskRoleArn: !Ref TaskRole
 
-  SourceSecurityGroup:
+  ECSServiceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: PetsAPISecurityGroup
@@ -429,32 +429,32 @@ Resources:
           ToPort: 3000
       VpcId: !Ref VPC
 
-  Service:
-    Type: AWS::ECS::Service
-    DependsOn:
-     - TaskDefinition
-     - SourceSecurityGroup
-     - PrivateSubnet1
-     - PrivateSubnet2
-     - ListenerRule
-    Properties:
-      ServiceName: pets-api-service
-      Cluster: !Ref Cluster
-      DesiredCount: 1
-      TaskDefinition: !Ref TaskDefinition
-      LaunchType: FARGATE
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          AssignPublicIp: DISABLED
-          SecurityGroups:
-            - !Ref SourceSecurityGroup
-          Subnets:
-            - !Ref PrivateSubnet1
-            - !Ref PrivateSubnet2
-      LoadBalancers:
-        - ContainerName: pets-api
-          ContainerPort: 3000
-          TargetGroupArn: !Ref TargetGroup
+  # Service:
+  #   Type: AWS::ECS::Service
+  #   DependsOn:
+  #    - TaskDefinition
+  #    - ECSServiceSecurityGroup
+  #    - PrivateSubnet1
+  #    - PrivateSubnet2
+  #    - ListenerRule
+  #   Properties:
+  #     ServiceName: pets-api-service
+  #     Cluster: !Ref Cluster
+  #     DesiredCount: 1
+  #     TaskDefinition: !Ref TaskDefinition
+  #     LaunchType: FARGATE
+  #     NetworkConfiguration:
+  #       AwsvpcConfiguration:
+  #         AssignPublicIp: DISABLED
+  #         SecurityGroups:
+  #           - !Ref ECSServiceSecurityGroup
+  #         Subnets:
+  #           - !Ref PrivateSubnet1
+  #           - !Ref PrivateSubnet2
+  #     LoadBalancers:
+  #       - ContainerName: pets-api
+  #         ContainerPort: 3000
+  #         TargetGroupArn: !Ref TargetGroup
 
   ################################### CODEBUILD ###################################
 
@@ -751,8 +751,8 @@ Resources:
     DependsOn:
       - PetsAPICodePipelineServiceRole
       - PetsAPICodeBuild
-      - Cluster
-      - Service
+      # - Cluster
+      # - Service
     Properties: 
       ArtifactStore: 
         Type: S3
@@ -799,18 +799,18 @@ Resources:
               OutputArtifacts:
                 - Name: BuildArtifact
               Region: us-east-1
-        - Name: Deploy
-          Actions:
-            - Name: Deploy
-              ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Version: 1
-                Provider: ECS
-              Configuration:
-                ClusterName: !Ref Cluster
-                ServiceName: !Ref Service
-                FileName: imagedefinitions.json
-              InputArtifacts:
-                - Name: BuildArtifact
-              RunOrder: 1
+        # - Name: Deploy
+        #   Actions:
+        #     - Name: Deploy
+        #       ActionTypeId:
+        #         Category: Deploy
+        #         Owner: AWS
+        #         Version: 1
+        #         Provider: ECS
+        #       Configuration:
+        #         ClusterName: !Ref Cluster
+        #         ServiceName: !Ref Service
+        #         FileName: imagedefinitions.json
+        #       InputArtifacts:
+        #         - Name: BuildArtifact
+        #       RunOrder: 1
