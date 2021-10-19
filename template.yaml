@@ -517,6 +517,12 @@ Resources:
               - ssm:GetParameter
               - ssm:GetParameters
           - Effect: Allow
+            Resource: 
+                # rds-db-credentials/petsdb-sBTtq0 refers to the secret in secrets manager (database credentials defined in codebuild project)
+              - arn:aws:secretsmanager:us-east-1:186521841143:secret:rds-db-credentials/petsdb-sBTtq0
+            Action: 
+              - secretsmanager:GetSecretValue
+          - Effect: Allow
             Resource:
                 # key used to encryt/decrypt DOCKERHUB_USERNAME & DOCKERHUB_PASSWORD params in codebuild project
               - arn:aws:kms:us-east-1:186521841143:key/d0b8969b-d55b-4f94-9091-5fc2d19c76d7

@@ -7,10 +7,10 @@ phases:
     commands:
       - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 186521841143.dkr.ecr.us-east-1.amazonaws.com
+      - ./scripts/prisma.sh
       - npm ci
   build:
     commands:
-      - echo $DATABASE_HOST
       - npm run build
       - npm run test
       - docker build -t pets-api .
