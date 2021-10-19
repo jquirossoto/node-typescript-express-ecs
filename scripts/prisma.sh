@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 if [[ -z "${DATABASE_HOST}" ]]; then
     >&2 echo "DATABASE_HOST does not exists"
@@ -6,5 +6,5 @@ if [[ -z "${DATABASE_HOST}" ]]; then
 else
     >&2 echo "DATABASE_HOST does exists"
     MY_SCRIPT_VARIABLE="${DATABASE_HOST}"
-    >&2 echo $MY_SCRIPT_VARIABLE
 fi
+>&2 echo $MY_SCRIPT_VARIABLE
