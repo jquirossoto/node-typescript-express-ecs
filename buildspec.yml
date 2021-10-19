@@ -10,6 +10,7 @@ phases:
       - npm ci
   build:
     commands:
+      - echo $DATABASE_HOST
       - npm run build
       - npm run test
       - docker build -t pets-api .

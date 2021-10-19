@@ -578,6 +578,21 @@ Resources:
           - Name: DOCKERHUB_PASSWORD
             Type: PARAMETER_STORE
             Value: /pets-api/dockerhub/password
+          - Name: DATABASE_HOST
+            Type: SECRETS_MANAGER
+            Value: rds-db-credentials/petsdb:host
+          - Name: DATABASE_PORT
+            Type: SECRETS_MANAGER
+            Value: rds-db-credentials/petsdb:port
+          - Name: DATABASE_NAME
+            Type: SECRETS_MANAGER
+            Value: rds-db-credentials/petsdb:dbname
+          - Name: DATABASE_USERNAME
+            Type: SECRETS_MANAGER
+            Value: rds-db-credentials/petsdb:username
+          - Name: DATABASE_PASSWORD
+            Type: SECRETS_MANAGER
+            Value: rds-db-credentials/petsdb:password
         Image: aws/codebuild/standard:5.0
         ImagePullCredentialsType: CODEBUILD
         PrivilegedMode: true
@@ -816,7 +831,7 @@ Resources:
 
   ################################### AURORA ###################################
 
-  AuroraClusterSecurityGroup:
+  DatabaseSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: AuroraClusterSecurityGroup
@@ -827,7 +842,7 @@ Resources:
           SourceSecurityGroupId: !Ref ECSServiceSecurityGroup
       VpcId: !Ref VPC
 
-  AuroraClusterSubnetGroup:
+  DatabaseSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
       DBSubnetGroupDescription: AuroraClusterSubnetGroup
@@ -835,29 +850,27 @@ Resources:
         - !Ref PrivateSubnet1
         - !Ref PrivateSubnet2
 
-  AuroraCluster:
-    DeletionPolicy: Snapshot
+  DatabaseInstance:
+    DeletionPolicy: Snapshot # default
     UpdateReplacePolicy: Snapshot
-    Type: 'AWS::RDS::DBCluster'
+    Type: AWS::RDS::DBInstance
     Properties:
-      AvailabilityZones:
-        - !GetAtt PrivateSubnet1.AvailabilityZone
-        - !GetAtt PrivateSubnet2.AvailabilityZone
-      BackupRetentionPeriod: 1
-      DatabaseName: PetsAPI
-      # DBClusterParameterGroupName: default.aurora-postgresql10
-      DBSubnetGroupName: !Ref AuroraClusterSubnetGroup
-      EnableHttpEndpoint: false
-      Engine: aurora-postgresql
-      EngineMode: serverless
-      EngineVersion: 10.14
-      MasterUsername: 'aurora12'
-      MasterUserPassword: 'aurora12'
-      ScalingConfiguration:
-        AutoPause: true
-        MaxCapacity: 2
-        MinCapacity: 2
-        SecondsUntilAutoPause: 300
-      StorageEncrypted: true
-      VpcSecurityGroupIds:
-        - !Ref AuroraClusterSecurityGroup
+      AllocatedStorage: 20
+      AllowMajorVersionUpgrade: false
+      AutoMinorVersionUpgrade: true
+      BackupRetentionPeriod: 0
+      CopyTagsToSnapshot: true
+      DBInstanceClass: db.t3.micro
+      DBName: petsdb
+      DBParameterGroupName: default.postgres13
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      EnableIAMDatabaseAuthentication: false
+      Engine: postgres
+      EngineVersion: 13.3
+      MasterUsername: pets
+      MasterUserPassword: pets1234
+      MultiAZ: false
+      StorageType: gp2
+      StorageEncrypted: false
+      VPCSecurityGroups:
+        - !Ref DatabaseSecurityGroup
