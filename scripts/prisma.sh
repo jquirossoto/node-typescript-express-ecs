@@ -1,10 +1,38 @@
 #!/bin/bash
 
 if [[ -z "${DATABASE_HOST}" ]]; then
-    >&2 echo "DATABASE_HOST does not exists"
+    >&2 echo "DATABASE_HOST env variable does not exists"
     exit 1
 else
-    >&2 echo "DATABASE_HOST does exists"
-    MY_SCRIPT_VARIABLE="${DATABASE_HOST}"
+    HOST="${DATABASE_HOST}"
 fi
->&2 echo $MY_SCRIPT_VARIABLE
+
+if [[ -z "${DATABASE_PORT}" ]]; then
+    >&2 echo "DATABASE_PORT env variable does not exists"
+    exit 1
+else
+    PORT="${DATABASE_PORT}"
+fi
+
+if [[ -z "${DATABASE_NAME}" ]]; then
+    >&2 echo "DATABASE_NAME env variable does not exists"
+    exit 1
+else
+    NAME="${DATABASE_NAME}"
+fi
+
+if [[ -z "${DATABASE_USERNAME}" ]]; then
+    >&2 echo "DATABASE_USERNAME env variable does not exists"
+    exit 1
+else
+    USERNAME="${DATABASE_USERNAME}"
+fi
+
+if [[ -z "${DATABASE_PASSWORD}" ]]; then
+    >&2 echo "DATABASE_PASSWORD env variable does not exists"
+    exit 1
+else
+    PASSWORD="${DATABASE_PASSWORD}"
+fi
+
+>&1 echo "DATABASE_URL=postgresql://$USERNAME:$PASSWORD@$HOST:$PORT/$NAME?schema=pets"
