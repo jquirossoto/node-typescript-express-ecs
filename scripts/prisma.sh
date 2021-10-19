@@ -5,5 +5,5 @@ if [[ -z "${DATABASE_HOST}" ]]; then
     exit 1
 else
     MY_SCRIPT_VARIABLE="${DATABASE_HOST}"
-    >&2 echo MY_SCRIPT_VARIABLE
+    >&2 echo $MY_SCRIPT_VARIABLE
 fi
