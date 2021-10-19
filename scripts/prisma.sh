@@ -35,4 +35,4 @@ else
     PASSWORD="${DATABASE_PASSWORD}"
 fi
 
->&1 echo "DATABASE_URL=postgresql://$USERNAME:$PASSWORD@$HOST:$PORT/$NAME?schema=pets"
+echo "DATABASE_URL=postgresql://$USERNAME:$PASSWORD@$HOST:$PORT/$NAME?schema=pets" > ./prisma/.env

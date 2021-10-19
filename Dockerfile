@@ -16,6 +16,7 @@ COPY package-lock.json .
 FROM base AS dependencies
 # copies schema.prisma to generate client after installing modules (https://www.prisma.io/)
 COPY prisma/schema.prisma .
+COPY prisma/.env .
 # installs production modules
 RUN npm ci --only=production
 
