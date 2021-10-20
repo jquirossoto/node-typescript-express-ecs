@@ -6,6 +6,7 @@ import * as apiUtils from './../utils/api.utils';
 
 export async function post(req: Request, res: Response) {
     try {
+        console.log("post category");
         const category: Category = await categoryService.create(req.body);
         res.status(200).json(apiUtils.buildSuccessResponse(category));
     } catch (error) {
@@ -15,6 +16,7 @@ export async function post(req: Request, res: Response) {
 
 export async function list(req: Request, res: Response) {
     try {
+        console.log("list category");
         const categories: Category[] = await categoryService.list();
         res.status(200).json(apiUtils.buildSuccessResponse(categories));
     } catch (error) {
