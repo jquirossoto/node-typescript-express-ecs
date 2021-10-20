@@ -1,5 +1,5 @@
 # ---------------------------- BASE ----------------------------
-FROM node:lts-alpine@sha256:8c94a0291133e16b92be5c667e0bc35930940dfa7be544fb142e25f8e4510a45 as base
+FROM node:12-alpine@sha256:dfbebf17bfb014e1e7068e76325a117bccf8679c68aec6a28514184a209c8bae as base
 # installs tini (https://github.com/krallin/tini)
 RUN apk add --no-cache tini
 # installs curl
@@ -17,8 +17,8 @@ FROM base AS dependencies
 # copies schema.prisma to generate client after installing modules (https://www.prisma.io/)
 COPY prisma/schema.prisma .
 COPY prisma/.env .
-# installs production modules
-RUN npm ci --only=production
+# installs modules (--only=production)
+RUN npm ci
 
 # ---------------------------- RELEASE ----------------------------
 FROM base AS release
@@ -32,6 +32,8 @@ ENV NODE_ENV production
 COPY --chown=node:node --from=dependencies /usr/src/app/node_modules node_modules/
 # copies the built app from the build image
 COPY --chown=node:node dist/ .
+# copies prisma .env to resolve database credentials
+COPY --chown=node:node prisma/.env .
 # exposes port
 EXPOSE 3000
 # executes app
