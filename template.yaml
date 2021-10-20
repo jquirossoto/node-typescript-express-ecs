@@ -2,6 +2,15 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 
 ################################### APPLICATION PARAMETERS ###################################
+
+Parameters:
+
+  DatabaseSecretName:
+    Description: Specify the environment name.
+    Type: String
+    Default: rds-db-credentials/petsdb3
+
+
 ################################### APPLICATION CONDITIONS ###################################
 ################################### APPLICATION RESOURCES ################################### 
 
@@ -457,7 +466,6 @@ Resources:
 
   ################################### CODEBUILD ###################################
 
-
   CodeBuildSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     DependsOn:
@@ -490,6 +498,7 @@ Resources:
       - PetsAPICodeBuildRole
       - PrivateSubnet1
       - PrivateSubnet2
+      - DatabaseSecret
     Properties: 
       PolicyName: PetsAPICodeBuildBasePolicy
       Roles:
@@ -534,8 +543,8 @@ Resources:
               - ssm:GetParameters
           - Effect: Allow
             Resource: 
-                # rds-db-credentials/petsdb1-sBTtq0 refers to the secret in secrets manager (database credentials defined in codebuild project)
-              - arn:aws:secretsmanager:us-east-1:186521841143:secret:rds-db-credentials/petsdb1-hjXpSp
+                # Refers to the secret in secrets manager (database credentials defined in codebuild project)
+              - !Ref DatabaseSecret
             Action: 
               - secretsmanager:GetSecretValue
           - Effect: Allow
@@ -624,19 +633,19 @@ Resources:
             Value: /pets-api/dockerhub/password
           - Name: DATABASE_HOST
             Type: SECRETS_MANAGER
-            Value: rds-db-credentials/petsdb1:host
+            Value: !Join [ ':' , [ !Ref DatabaseSecretName, host ]]
           - Name: DATABASE_PORT
             Type: SECRETS_MANAGER
-            Value: rds-db-credentials/petsdb1:port
+            Value: !Join [ ':' , [ !Ref DatabaseSecretName, port ]]
           - Name: DATABASE_NAME
             Type: SECRETS_MANAGER
-            Value: rds-db-credentials/petsdb1:dbname
+            Value: !Join [ ':' , [ !Ref DatabaseSecretName, dbname ]]
           - Name: DATABASE_USERNAME
             Type: SECRETS_MANAGER
-            Value: rds-db-credentials/petsdb1:username
+            Value: !Join [ ':' , [ !Ref DatabaseSecretName, username ]]
           - Name: DATABASE_PASSWORD
             Type: SECRETS_MANAGER
-            Value: rds-db-credentials/petsdb1:password
+            Value: !Join [ ':' , [ !Ref DatabaseSecretName, password ]]
         Image: aws/codebuild/standard:5.0
         ImagePullCredentialsType: CODEBUILD
         PrivilegedMode: true
@@ -883,8 +892,22 @@ Resources:
 
   ################################### AURORA ###################################
 
+  DatabaseSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: "This is a Secrets Manager secret for an RDS DB instance"
+      Name: !Ref DatabaseSecretName
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "pets"}'
+        GenerateStringKey: "password"
+        PasswordLength: 16
+        ExcludeCharacters: '"@/\'
+
   DatabaseSecurityGroup:
     Type: AWS::EC2::SecurityGroup
+    DependsOn:
+      - ECSServiceSecurityGroup
+      - CodeBuildSecurityGroup
     Properties:
       GroupDescription: AuroraClusterSecurityGroup
       SecurityGroupIngress:
@@ -900,6 +923,9 @@ Resources:
 
   DatabaseSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
+    DependsOn:
+      - PrivateSubnet1
+      - PrivateSubnet2
     Properties:
       DBSubnetGroupDescription: AuroraClusterSubnetGroup
       SubnetIds:
@@ -923,10 +949,20 @@ Resources:
       EnableIAMDatabaseAuthentication: false
       Engine: postgres
       EngineVersion: 13.3
-      MasterUsername: pets
-      MasterUserPassword: pets1234
+      MasterUsername: !Join ['', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:username}}' ]]
+      MasterUserPassword: !Join ['', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:password}}' ]]
       MultiAZ: false
       StorageType: gp2
       StorageEncrypted: false
       VPCSecurityGroups:
         - !Ref DatabaseSecurityGroup
+
+  SecretDatabaseInstanceAttachment:
+    Type: AWS::SecretsManager::SecretTargetAttachment
+    DependsOn:
+      - DatabaseSecret
+      - DatabaseInstance
+    Properties:
+      SecretId: !Ref DatabaseSecret
+      TargetId: !Ref DatabaseInstance
+      TargetType: AWS::RDS::DBInstance
