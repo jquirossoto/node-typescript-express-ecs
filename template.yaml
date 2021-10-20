@@ -395,11 +395,18 @@ Resources:
               - s3:GetObject
             Resource: "*"
 
+  ECSLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: containers
+      RetentionInDays: 1
+
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     DependsOn:
       - TaskRole
       - PetsAPITaskExecutionRole
+      - ECSLogGroup
     Properties:
       ContainerDefinitions:
           - Name: pets-api
@@ -411,6 +418,12 @@ Resources:
               Interval: 30
               Retries: 3
               Timeout: 5
+            LogConfiguration:
+              LogDriver: awslogs
+              Options:
+                awslogs-group: !Ref ECSLogGroup
+                awslogs-region: us-east-1
+                awslogs-stream-prefix: pets-api
             Essential: true
             PortMappings: 
                 # For task definitions that use the awsvpc network mode, you should only specify the containerPort. The hostPort can be left blank or it must be the same value as the containerPort.
@@ -437,32 +450,32 @@ Resources:
           ToPort: 3000
       VpcId: !Ref VPC
 
-  # Service:
-  #   Type: AWS::ECS::Service
-  #   DependsOn:
-  #    - TaskDefinition
-  #    - ECSServiceSecurityGroup
-  #    - PrivateSubnet1
-  #    - PrivateSubnet2
-  #    - ListenerRule
-  #   Properties:
-  #     ServiceName: pets-api-service
-  #     Cluster: !Ref Cluster
-  #     DesiredCount: 1
-  #     TaskDefinition: !Ref TaskDefinition
-  #     LaunchType: FARGATE
-  #     NetworkConfiguration:
-  #       AwsvpcConfiguration:
-  #         AssignPublicIp: DISABLED
-  #         SecurityGroups:
-  #           - !Ref ECSServiceSecurityGroup
-  #         Subnets:
-  #           - !Ref PrivateSubnet1
-  #           - !Ref PrivateSubnet2
-  #     LoadBalancers:
-  #       - ContainerName: pets-api
-  #         ContainerPort: 3000
-  #         TargetGroupArn: !Ref TargetGroup
+  Service:
+    Type: AWS::ECS::Service
+    DependsOn:
+     - TaskDefinition
+     - ECSServiceSecurityGroup
+     - PrivateSubnet1
+     - PrivateSubnet2
+     - ListenerRule
+    Properties:
+      ServiceName: pets-api-service
+      Cluster: !Ref Cluster
+      DesiredCount: 0
+      TaskDefinition: !Ref TaskDefinition
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - !Ref ECSServiceSecurityGroup
+          Subnets:
+            - !Ref PrivateSubnet1
+            - !Ref PrivateSubnet2
+      LoadBalancers:
+        - ContainerName: pets-api
+          ContainerPort: 3000
+          TargetGroupArn: !Ref TargetGroup
 
   ################################### CODEBUILD ###################################
 
@@ -826,8 +839,8 @@ Resources:
     DependsOn:
       - PetsAPICodePipelineServiceRole
       - PetsAPICodeBuild
-      # - Cluster
-      # - Service
+      - Cluster
+      - Service
     Properties: 
       ArtifactStore: 
         Type: S3
@@ -874,21 +887,21 @@ Resources:
               OutputArtifacts:
                 - Name: BuildArtifact
               Region: us-east-1
-        # - Name: Deploy
-        #   Actions:
-        #     - Name: Deploy
-        #       ActionTypeId:
-        #         Category: Deploy
-        #         Owner: AWS
-        #         Version: 1
-        #         Provider: ECS
-        #       Configuration:
-        #         ClusterName: !Ref Cluster
-        #         ServiceName: !Ref Service
-        #         FileName: imagedefinitions.json
-        #       InputArtifacts:
-        #         - Name: BuildArtifact
-        #       RunOrder: 1
+        - Name: Deploy
+          Actions:
+            - Name: Deploy
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: ECS
+              Configuration:
+                ClusterName: !Ref Cluster
+                ServiceName: !Ref Service
+                FileName: imagedefinitions.json
+              InputArtifacts:
+                - Name: BuildArtifact
+              RunOrder: 1
 
   ################################### AURORA ###################################
 
