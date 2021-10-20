@@ -488,6 +488,8 @@ Resources:
     Type: AWS::IAM::Policy
     DependsOn:
       - PetsAPICodeBuildRole
+      - PrivateSubnet1
+      - PrivateSubnet2
     Properties: 
       PolicyName: PetsAPICodeBuildBasePolicy
       Roles:
@@ -532,8 +534,8 @@ Resources:
               - ssm:GetParameters
           - Effect: Allow
             Resource: 
-                # rds-db-credentials/petsdb-sBTtq0 refers to the secret in secrets manager (database credentials defined in codebuild project)
-              - arn:aws:secretsmanager:us-east-1:186521841143:secret:rds-db-credentials/petsdb-sBTtq0
+                # rds-db-credentials/petsdb1-sBTtq0 refers to the secret in secrets manager (database credentials defined in codebuild project)
+              - arn:aws:secretsmanager:us-east-1:186521841143:secret:rds-db-credentials/petsdb1-hjXpSp
             Action: 
               - secretsmanager:GetSecretValue
           - Effect: Allow
@@ -599,6 +601,7 @@ Resources:
     Type: AWS::CodeBuild::Project
     DependsOn:
       - PetsAPICodeBuildRole
+      - PetsAPICodeBuildBasePolicy
     Properties: 
       Artifacts:
         Type: CODEPIPELINE
@@ -621,19 +624,19 @@ Resources:
             Value: /pets-api/dockerhub/password
           - Name: DATABASE_HOST
             Type: SECRETS_MANAGER
-            Value: rds-db-credentials/petsdb:host
+            Value: rds-db-credentials/petsdb1:host
           - Name: DATABASE_PORT
             Type: SECRETS_MANAGER
-            Value: rds-db-credentials/petsdb:port
+            Value: rds-db-credentials/petsdb1:port
           - Name: DATABASE_NAME
             Type: SECRETS_MANAGER
-            Value: rds-db-credentials/petsdb:dbname
+            Value: rds-db-credentials/petsdb1:dbname
           - Name: DATABASE_USERNAME
             Type: SECRETS_MANAGER
-            Value: rds-db-credentials/petsdb:username
+            Value: rds-db-credentials/petsdb1:username
           - Name: DATABASE_PASSWORD
             Type: SECRETS_MANAGER
-            Value: rds-db-credentials/petsdb:password
+            Value: rds-db-credentials/petsdb1:password
         Image: aws/codebuild/standard:5.0
         ImagePullCredentialsType: CODEBUILD
         PrivilegedMode: true
