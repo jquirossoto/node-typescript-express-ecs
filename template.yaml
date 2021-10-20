@@ -457,6 +457,20 @@ Resources:
 
   ################################### CODEBUILD ###################################
 
+
+  CodeBuildSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    DependsOn:
+      - VPC
+    Properties:
+      GroupDescription: CodeBuildSecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: "0.0.0.0/0"
+          IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+      VpcId: !Ref VPC
+
   PetsAPICodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
@@ -538,6 +552,27 @@ Resources:
               - ecr:CompleteLayerUpload
               - ecr:PutImage
               - ecr:GetAuthorizationToken
+          - Effect: Allow
+            Resource: '*'
+            Action:
+              - ec2:CreateNetworkInterface
+              - ec2:DescribeDhcpOptions
+              - ec2:DescribeNetworkInterfaces
+              - ec2:DeleteNetworkInterface
+              - ec2:DescribeSubnets
+              - ec2:DescribeSecurityGroups
+              - ec2:DescribeVpcs
+          - Effect: Allow
+            Resource: arn:aws:ec2:us-east-1:186521841143:network-interface/*
+            Action:
+              - ec2:CreateNetworkInterfacePermission
+            Condition:
+              StringEquals:
+                ec2:AuthorizedService: codebuild.amazonaws.com
+              ArnEquals:
+                ec2:Subnet:
+                  - !Join [ '', [ arn:aws:ec2:us-east-1:186521841143:subnet/, !Ref PrivateSubnet1 ] ]
+                  - !Join [ '', [ arn:aws:ec2:us-east-1:186521841143:subnet/, !Ref PrivateSubnet2 ] ]
 
   PetsAPICodeBuildCloudwatchPolicy:
     Type: AWS::IAM::Policy
@@ -617,6 +652,14 @@ Resources:
         Type: CODEPIPELINE
       SourceVersion: master
       TimeoutInMinutes: 60
+      VpcConfig:
+        SecurityGroupIds: 
+          - !Ref CodeBuildSecurityGroup
+        Subnets: 
+          - !Ref PrivateSubnet1
+          - !Ref PrivateSubnet2
+        VpcId: !Ref VPC
+
 
   ################################### CODEPIPELINE ###################################
 
@@ -846,6 +889,10 @@ Resources:
           FromPort: 5432
           ToPort: 5432
           SourceSecurityGroupId: !Ref ECSServiceSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          SourceSecurityGroupId: !Ref CodeBuildSecurityGroup
       VpcId: !Ref VPC
 
   DatabaseSubnetGroup:
