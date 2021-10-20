@@ -936,6 +936,10 @@ Resources:
     DeletionPolicy: Snapshot # default
     UpdateReplacePolicy: Snapshot
     Type: AWS::RDS::DBInstance
+    DependsOn:
+      - DatabaseSubnetGroup
+      - DatabaseSecret
+      - DatabaseSecurityGroup
     Properties:
       AllocatedStorage: 20
       AllowMajorVersionUpgrade: false
