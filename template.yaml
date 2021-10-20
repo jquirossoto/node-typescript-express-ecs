@@ -10,7 +10,6 @@ Parameters:
     Type: String
     Default: rds-db-credentials/petsdb3
 
-
 ################################### APPLICATION CONDITIONS ###################################
 ################################### APPLICATION RESOURCES ################################### 
 
