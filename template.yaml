@@ -858,12 +858,11 @@ Resources:
                 Provider: CodeStarSourceConnection
                 Version: 1
               RunOrder: 1
-              Configuration: {
-                  "ConnectionArn": "arn:aws:codestar-connections:us-east-1:186521841143:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc",
-                  "BranchName": "master",
-                  "OutputArtifactFormat": "CODE_ZIP",
-                  "FullRepositoryId": "jquirossoto/ecs-node-typescript-express-api"
-              }
+              Configuration:
+                ConnectionArn: arn:aws:codestar-connections:us-east-1:186521841143:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc
+                BranchName: master
+                OutputArtifactFormat: CODE_ZIP
+                FullRepositoryId: jquirossoto/ecs-node-typescript-express-api
               Namespace: SourceVariables
               OutputArtifacts: 
                 - Name: SourceArtifact
@@ -877,9 +876,8 @@ Resources:
                 Provider: CodeBuild
                 Version: 1
               RunOrder: 1
-              Configuration: {
-                  "ProjectName": "pets-api-codebuild"
-              }
+              Configuration:
+                ProjectName: pets-api-codebuild
               InputArtifacts:
                 - Name: SourceArtifact
               Namespace: BuildVariables
