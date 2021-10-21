@@ -966,7 +966,6 @@ Resources:
     Properties:
       Description: Secret for database instance
       Name: !Ref DatabaseSecretName
-      # SecretSting: '{"username": "pets", "password": "pets12345"}'
       GenerateSecretString:
         SecretStringTemplate: '{"username": "pets"}'
         GenerateStringKey: "password"

@@ -24,35 +24,35 @@ urlencode() {
 }
 
 if [[ -z "${DB_HOST}" ]]; then
-    >&2 echo "DB_HOST env variable does not exists"
+    >&2 echo "DB_HOST env variable does not exist"
     exit 1
 else
     HOST="${DB_HOST}"
 fi
 
 if [[ -z "${DB_PORT}" ]]; then
-    >&2 echo "DB_PORT env variable does not exists"
+    >&2 echo "DB_PORT env variable does not exist"
     exit 1
 else
     PORT="${DB_PORT}"
 fi
 
 if [[ -z "${DB_NAME}" ]]; then
-    >&2 echo "DB_NAME env variable does not exists"
+    >&2 echo "DB_NAME env variable does not exist"
     exit 1
 else
     NAME="${DB_NAME}"
 fi
 
 if [[ -z "${DB_USERNAME}" ]]; then
-    >&2 echo "DB_USERNAME env variable does not exists"
+    >&2 echo "DB_USERNAME env variable does not exist"
     exit 1
 else
     USERNAME="${DB_USERNAME}"
 fi
 
 if [[ -z "${DB_PASSWORD}" ]]; then
-    >&2 echo "DB_PASSWORD env variable does not exists"
+    >&2 echo "DB_PASSWORD env variable does not exist"
     exit 1
 else
     PASSWORD=$(urlencode ${DB_PASSWORD})
