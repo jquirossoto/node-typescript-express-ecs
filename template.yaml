@@ -115,6 +115,8 @@ Resources:
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
+    DependsOn:
+      - VPC
     Properties:
       AvailabilityZone: !Select [ 1, !GetAZs '' ]
       CidrBlock: 10.2.1.0/24
@@ -156,6 +158,8 @@ Resources:
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
+    DependsOn:
+      - VPC
     Properties:
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
       CidrBlock: 10.2.2.0/24
@@ -196,6 +200,8 @@ Resources:
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
+    DependsOn:
+      - VPC
     Properties:
       AvailabilityZone: !Select [ 1, !GetAZs '' ]
       CidrBlock: 10.2.3.0/24
@@ -439,6 +445,8 @@ Resources:
 
   ECSServiceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
+    DependsOn:
+      - VPC
     Properties:
       GroupDescription: PetsAPISecurityGroup
       GroupName: PetsAPISecurityGroup2
@@ -918,6 +926,7 @@ Resources:
     DependsOn:
       - ECSServiceSecurityGroup
       - CodeBuildSecurityGroup
+      - VPC
     Properties:
       GroupDescription: AuroraClusterSecurityGroup
       SecurityGroupIngress:
