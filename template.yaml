@@ -6,9 +6,9 @@ Transform: 'AWS::Serverless-2016-10-31'
 Parameters:
 
   DatabaseSecretName:
-    Description: Specify the environment name.
+    Description: Specify the database secret name.
     Type: String
-    Default: rds-db-credentials/petsdb3
+    Default: rds-db-credentials/petsdb5
 
 ################################### APPLICATION CONDITIONS ###################################
 ################################### APPLICATION RESOURCES ################################### 
@@ -26,7 +26,7 @@ Resources:
       EnableDnsSupport: true
       Tags:
       - Key: Name
-        Value: !Sub PetsAPIVPC
+        Value: PetsAPI-VPC
 
   ################################### INTERNET GATEWAY ###################################
 
@@ -35,7 +35,7 @@ Resources:
     Properties:
       Tags:
         - Key: Name
-          Value: !Sub 'PetsAPIVPC-IG'
+          Value: PetsAPI-VPC-IG
     
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -56,7 +56,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub 'PetsAPIVPC-PubRT'
+          Value: PetsAPI-VPC-PubRT
 
   DefaultPublicRoute:
     Type: AWS::EC2::Route
@@ -82,7 +82,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub PetsAPIVPC-PubSN1
+          Value: PetsAPI-VPC-PubSN1
       VpcId: !Ref VPC
 
   PublicSubnet1RouteTableAssociation:
@@ -97,7 +97,7 @@ Resources:
       Domain: vpc
       Tags:
         - Key: Name
-          Value: !Sub 'PetsAPIVPC-PubSN1-NG-EIP'
+          Value: PetsAPI-VPC-PubSN1-NG-EIP
       
   PublicSubnet1NatGateway:
     Type: AWS::EC2::NatGateway
@@ -109,7 +109,7 @@ Resources:
       SubnetId: !Ref PublicSubnet1
       Tags:
         - Key: Name
-          Value: !Sub 'PetsAPIVPC-PubSN1-NG'
+          Value: PetsAPI-VPC-PubSN1-NG
 
   ################################### SUBNET2 ###################################
 
@@ -123,7 +123,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub PetsAPIVPC-PubSN2
+          Value: PetsAPI-VPC-PubSN2
       VpcId: !Ref VPC
 
   PublicSubnet2RouteTableAssociation:
@@ -138,7 +138,7 @@ Resources:
       Domain: vpc
       Tags:
         - Key: Name
-          Value: !Sub 'PetsAPIVPC-PubSN2-NG-EIP'
+          Value: PetsAPI-VPC-PubSN2-NG-EIP
       
   PublicSubnet2NatGateway:
     Type: AWS::EC2::NatGateway
@@ -150,7 +150,7 @@ Resources:
       SubnetId: !Ref PublicSubnet2
       Tags:
         - Key: Name
-          Value: !Sub 'PetsAPIVPC-PubSN2-NG'
+          Value: PetsAPI-VPC-PubSN2-NG
 
   ################################### PRIVATE SUBNETS ###################################
 
@@ -165,7 +165,7 @@ Resources:
       CidrBlock: 10.2.2.0/24
       Tags:
         - Key: Name
-          Value: !Sub PetsAPIVPC-PrivSN1
+          Value: PetsAPI-VPC-PrivSN1
       VpcId:
         Ref: VPC
 
@@ -175,7 +175,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub 'PetsAPIVPC-PrivSN1-RT'
+          Value: PetsAPI-VPC-PrivSN1-RT
 
   PrivateSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -207,7 +207,7 @@ Resources:
       CidrBlock: 10.2.3.0/24
       Tags:
         - Key: Name
-          Value: !Sub PetsAPIVPC-PrivSN2
+          Value: PetsAPI-VPC-PrivSN2
       VpcId:
         Ref: VPC
 
@@ -217,7 +217,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub 'PetsAPIVPC-PrivSN2-RT'
+          Value: PetsAPI-VPC-PrivSN2-RT
 
   PrivateSubnet2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -238,19 +238,23 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref PublicSubnet2NatGateway
 
-  ################################### LOADBALANCER ###################################
+  ################################### LOAD BALANCER ###################################
 
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     DependsOn:
       - VPC
     Properties:
-      GroupDescription: PetsAPILoadBalancerSecurityGroup
+      GroupName: PetsAPI-LB-SG
+      GroupDescription: PetsAPI LoadBalancer SecurityGroup
       SecurityGroupIngress:
         - CidrIp: "0.0.0.0/0"
           IpProtocol: "TCP"
           FromPort: 80
           ToPort: 80
+      Tags:
+        - Key: Name
+          Value: PetsAPI-LB-SG
       VpcId: !Ref VPC
   
   LoadBalancer:
@@ -260,17 +264,20 @@ Resources:
       - PublicSubnet2
       - LoadBalancerSecurityGroup
     Properties:
+      Name: PetsAPI-LB
+      Type: application
       Subnets:
         - !Ref PublicSubnet1
         - !Ref PublicSubnet2
       SecurityGroups:
         - !Ref LoadBalancerSecurityGroup
 
-  TargetGroup:
+  LoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     DependsOn:
       - VPC
     Properties:
+      Name: PetsAPI-LB-TG
       VpcId: !Ref VPC
       Port: 3000
       Protocol: HTTP
@@ -290,20 +297,20 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::Listener
     DependsOn: 
       - LoadBalancer
-      - TargetGroup
+      - LoadBalancerTargetGroup
     Properties:
       LoadBalancerArn: !Ref LoadBalancer
       Port: 80
       Protocol: HTTP
       DefaultActions:
         - Type: forward
-          TargetGroupArn: !Ref TargetGroup
+          TargetGroupArn: !Ref LoadBalancerTargetGroup
 
-  ListenerRule:
+  LoadBalancerListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
     DependsOn: 
       - LoadBalancerListener
-      - TargetGroup
+      - LoadBalancerTargetGroup
     Properties:
       ListenerArn: !Ref LoadBalancerListener
       Priority: 1
@@ -312,12 +319,12 @@ Resources:
           Values:
             - /
       Actions:
-        - TargetGroupArn: !Ref TargetGroup
+        - TargetGroupArn: !Ref LoadBalancerTargetGroup
           Type: forward
 
   ################################### ECR ###################################
 
-  PetsAPIECRRepository:
+  ECRRepository:
     Type: AWS::ECR::Repository
     Properties:
       ImageScanningConfiguration: 
@@ -337,18 +344,18 @@ Resources:
 
   ################################### ECS ###################################
 
-  Cluster:
+  ECSCluster:
     Type: AWS::ECS::Cluster
     Properties: 
-      CapacityProviders: 
+      CapacityProviders:
         - FARGATE
-      ClusterName: PetsAPICluster
+      ClusterName: PetsAPI-ECSCluster
 
-  PetsAPITaskExecutionRole:
+  ECSTaskExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: PetsAPITaskExecutionRole
-      Description: PetsAPITaskExecutionRole
+      RoleName: PetsAPI-ECSTaskExecutionRole
+      Description: PetsAPI-ECSTaskExecutionRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
       AssumeRolePolicyDocument:
@@ -361,11 +368,11 @@ Resources:
             Action:
               - sts:AssumeRole
 
-  TaskRole:
+  ECSTaskRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: PetsAPITaskRole
-      Description: PetsAPITaskRole
+      RoleName: PetsAPI-ECSTaskRole
+      Description: PetsAPI-ECSTaskRole
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -376,14 +383,14 @@ Resources:
             Action:
               - sts:AssumeRole
 
-  TaskRolePolicy:
+  ECSTaskRolePolicy:
     Type: AWS::IAM::Policy
     DependsOn:
-      - TaskRole
+      - ECSTaskRole
     Properties:
-      PolicyName: PetsAPICodeBuildRoleCloudwatchPolicy
+      PolicyName: PetsAPI-ECSTaskRolePolicy
       Roles:
-        - !Ref TaskRole
+        - !Ref ECSTaskRole
       PolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -406,16 +413,16 @@ Resources:
       LogGroupName: containers
       RetentionInDays: 1
 
-  TaskDefinition:
+  ECSTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     DependsOn:
-      - TaskRole
-      - PetsAPITaskExecutionRole
+      - ECSTaskRole
+      - ECSTaskExecutionRole
       - ECSLogGroup
     Properties:
       ContainerDefinitions:
           - Name: pets-api
-            Image: !Join [ ':', [ !GetAtt PetsAPIECRRepository.RepositoryUri, latest ] ]
+            Image: !Join [ ':', [ !GetAtt ECRRepository.RepositoryUri, latest ] ]
             HealthCheck:
               Command: 
                 - CMD-SHELL
@@ -436,40 +443,43 @@ Resources:
                 Protocol: tcp
       Cpu: 256
       Memory: 1024
-      ExecutionRoleArn: !Ref PetsAPITaskExecutionRole
-      Family: pets-api-task-definition
+      ExecutionRoleArn: !Ref ECSTaskExecutionRole
+      Family: PetsAPI-ECSTaskDefinition
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
-      TaskRoleArn: !Ref TaskRole
+      TaskRoleArn: !Ref ECSTaskRole
 
   ECSServiceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     DependsOn:
       - VPC
     Properties:
-      GroupDescription: PetsAPISecurityGroup
-      GroupName: PetsAPISecurityGroup2
+      GroupName: PetsAPI-ECS-SG
+      GroupDescription: PetsAPI-ECS-SG
       SecurityGroupIngress:
         - CidrIp: "0.0.0.0/0"
           IpProtocol: "TCP"
           FromPort: 3000
           ToPort: 3000
+      Tags:
+        - Key: Name
+          Value: PetsAPI-ECS-SG
       VpcId: !Ref VPC
 
-  Service:
+  ECSService:
     Type: AWS::ECS::Service
     DependsOn:
-     - TaskDefinition
+     - ECSTaskDefinition
      - ECSServiceSecurityGroup
      - PrivateSubnet1
      - PrivateSubnet2
-     - ListenerRule
+     - LoadBalancerListenerRule
     Properties:
-      ServiceName: pets-api-service
-      Cluster: !Ref Cluster
-      DesiredCount: 0
-      TaskDefinition: !Ref TaskDefinition
+      ServiceName: PetsAPI-ECSService
+      Cluster: !Ref ECSCluster
+      DesiredCount: 1
+      TaskDefinition: !Ref ECSTaskDefinition
       LaunchType: FARGATE
       NetworkConfiguration:
         AwsvpcConfiguration:
@@ -480,30 +490,35 @@ Resources:
             - !Ref PrivateSubnet1
             - !Ref PrivateSubnet2
       LoadBalancers:
+          # The name of the container (as it appears in a container definition)
         - ContainerName: pets-api
           ContainerPort: 3000
-          TargetGroupArn: !Ref TargetGroup
+          TargetGroupArn: !Ref LoadBalancerTargetGroup
 
-  ################################### CODEBUILD ###################################
+  ################################### CODE BUILD ###################################
 
   CodeBuildSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     DependsOn:
       - VPC
     Properties:
-      GroupDescription: CodeBuildSecurityGroup
+      GroupName: PetsAPI-CodeBuild-SG
+      GroupDescription: PetsAPI-CodeBuild-SG
       SecurityGroupEgress:
         - CidrIp: "0.0.0.0/0"
           IpProtocol: -1
           FromPort: -1
           ToPort: -1
+      Tags:
+        - Key: Name
+          Value: PetsAPI-CodeBuild-SG
       VpcId: !Ref VPC
 
-  PetsAPICodeBuildRole:
+  CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
-      Description: PetsAPICodeBuildRole
-      RoleName: PetsAPICodeBuildRole
+      RoleName: PetsAPI-CodeBuildRole
+      Description: PetsAPI-CodeBuildRole
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -512,17 +527,17 @@ Resources:
               Service: codebuild.amazonaws.com
             Action: sts:AssumeRole
 
-  PetsAPICodeBuildBasePolicy:
+  CodeBuildBasePolicy:
     Type: AWS::IAM::Policy
     DependsOn:
-      - PetsAPICodeBuildRole
+      - CodeBuildRole
       - PrivateSubnet1
       - PrivateSubnet2
       - DatabaseSecret
     Properties: 
-      PolicyName: PetsAPICodeBuildBasePolicy
+      PolicyName: PetsAPI-CodeBuildBasePolicy
       Roles:
-        - !Ref PetsAPICodeBuildRole
+        - !Ref CodeBuildRole
       PolicyDocument:
         Version: 2012-10-17
         Statement: 
@@ -605,20 +620,20 @@ Resources:
                   - !Join [ '', [ arn:aws:ec2:us-east-1:186521841143:subnet/, !Ref PrivateSubnet1 ] ]
                   - !Join [ '', [ arn:aws:ec2:us-east-1:186521841143:subnet/, !Ref PrivateSubnet2 ] ]
 
-  PetsAPICodeBuildCloudwatchPolicy:
+  CodeBuildCloudwatchPolicy:
     Type: AWS::IAM::Policy
     DependsOn:
-      - PetsAPICodeBuildRole
+      - CodeBuildRole
     Properties:
-      PolicyName: PetsAPICodeBuildRoleCloudwatchPolicy
+      PolicyName: PetsAPI-CodeBuildCloudwatchPolicy
       Roles:
-        - !Ref PetsAPICodeBuildRole
+        - !Ref CodeBuildRole
       PolicyDocument:
         Version: 2012-10-17
         Statement: 
           - Effect: Allow
             Resource:
-                # pets-api comes from PetsAPICodeBuild -> LogsConfig -> CloudWatchLogs -> GroupName
+                # pets-api comes from CodeBuildProject -> LogsConfig -> CloudWatchLogs -> GroupName
               - arn:aws:logs:us-east-1:186521841143:log-group:pets-api
               - arn:aws:logs:us-east-1:186521841143:log-group:pets-api:*
             Action:
@@ -626,11 +641,11 @@ Resources:
               - logs:CreateLogStream
               - logs:PutLogEvents      
         
-  PetsAPICodeBuild:
+  CodeBuildProject:
     Type: AWS::CodeBuild::Project
     DependsOn:
-      - PetsAPICodeBuildRole
-      - PetsAPICodeBuildBasePolicy
+      - CodeBuildRole
+      - CodeBuildBasePolicy
     Properties: 
       Artifacts:
         Type: CODEPIPELINE
@@ -651,19 +666,19 @@ Resources:
           - Name: DOCKERHUB_PASSWORD
             Type: PARAMETER_STORE
             Value: /pets-api/dockerhub/password
-          - Name: DATABASE_HOST
+          - Name: DB_HOST
             Type: SECRETS_MANAGER
             Value: !Join [ ':' , [ !Ref DatabaseSecretName, host ]]
-          - Name: DATABASE_PORT
+          - Name: DB_PORT
             Type: SECRETS_MANAGER
             Value: !Join [ ':' , [ !Ref DatabaseSecretName, port ]]
-          - Name: DATABASE_NAME
+          - Name: DB_NAME
             Type: SECRETS_MANAGER
             Value: !Join [ ':' , [ !Ref DatabaseSecretName, dbname ]]
-          - Name: DATABASE_USERNAME
+          - Name: DB_USERNAME
             Type: SECRETS_MANAGER
             Value: !Join [ ':' , [ !Ref DatabaseSecretName, username ]]
-          - Name: DATABASE_PASSWORD
+          - Name: DB_PASSWORD
             Type: SECRETS_MANAGER
             Value: !Join [ ':' , [ !Ref DatabaseSecretName, password ]]
         Image: aws/codebuild/standard:5.0
@@ -679,7 +694,7 @@ Resources:
           Status: DISABLED
       Name: pets-api-codebuild
       QueuedTimeoutInMinutes: 480
-      ServiceRole : !GetAtt PetsAPICodeBuildRole.Arn
+      ServiceRole : !GetAtt CodeBuildRole.Arn
       Source:
         Type: CODEPIPELINE
       SourceVersion: master
@@ -692,30 +707,29 @@ Resources:
           - !Ref PrivateSubnet2
         VpcId: !Ref VPC
 
+  ################################### CODE PIPELINE ###################################
 
-  ################################### CODEPIPELINE ###################################
-
-  PetsAPICodePipelineServiceRole:
+  CodePipelineServiceRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: PetsAPICodePipelineServiceRole
-      Description: PetsAPICodePipelineServiceRole
+      RoleName: PetsAPI-CodePipelineServiceRole
+      Description: PetsAPI-CodePipelineServiceRole
       AssumeRolePolicyDocument:
         Version: 2012-10-17
-        Statement: 
+        Statement:
           - Effect: Allow
             Principal:
               Service: codepipeline.amazonaws.com
             Action: sts:AssumeRole      
 
-  PetsAPICodePipelinePolicy:
+  CodePipelinePolicy:
     Type: AWS::IAM::Policy
     DependsOn:
-      - PetsAPICodePipelineServiceRole
+      - CodePipelineServiceRole
     Properties:
-      PolicyName: PetsAPICodePipelinePolicy
+      PolicyName: PetsAPI-CodePipelinePolicy
       Roles:
-        - !Ref PetsAPICodePipelineServiceRole
+        - !Ref CodePipelineServiceRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -841,13 +855,13 @@ Resources:
               - appconfig:StopDeployment
               - appconfig:GetDeployment
 
-  PetsAPIPipeline:
+  CodePipeline:
     Type: AWS::CodePipeline::Pipeline
     DependsOn:
-      - PetsAPICodePipelineServiceRole
-      - PetsAPICodeBuild
-      - Cluster
-      - Service
+      - CodePipelineServiceRole
+      - CodeBuildProject
+      - ECSCluster
+      - ECSService
     Properties: 
       ArtifactStore: 
         Type: S3
@@ -855,7 +869,7 @@ Resources:
         Location: codepipeline-us-east-1-91946427360
       Name: pets-api-pipeline
       RestartExecutionOnUpdate: false
-      RoleArn: !GetAtt PetsAPICodePipelineServiceRole.Arn
+      RoleArn: !GetAtt CodePipelineServiceRole.Arn
       Stages:
         - Name: Source
           Actions:
@@ -901,25 +915,14 @@ Resources:
                 Version: 1
                 Provider: ECS
               Configuration:
-                ClusterName: !Ref Cluster
-                ServiceName: !Ref Service
+                ClusterName: !Ref ECSCluster
+                ServiceName: !Ref ECSService
                 FileName: imagedefinitions.json
               InputArtifacts:
                 - Name: BuildArtifact
               RunOrder: 1
 
-  ################################### AURORA ###################################
-
-  DatabaseSecret:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      Description: "This is a Secrets Manager secret for an RDS DB instance"
-      Name: !Ref DatabaseSecretName
-      GenerateSecretString:
-        SecretStringTemplate: '{"username": "pets"}'
-        GenerateStringKey: "password"
-        PasswordLength: 16
-        ExcludeCharacters: '"@/\'
+  ################################### DATABASE ###################################
 
   DatabaseSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -928,16 +931,22 @@ Resources:
       - CodeBuildSecurityGroup
       - VPC
     Properties:
-      GroupDescription: AuroraClusterSecurityGroup
+      GroupName: PetsAPI-Database-SG
+      GroupDescription: PetsAPI-Database-SG
       SecurityGroupIngress:
-        - IpProtocol: tcp
+        - Description : Traffic from ECSServiceSecurityGroup
+          IpProtocol: tcp
           FromPort: 5432
           ToPort: 5432
           SourceSecurityGroupId: !Ref ECSServiceSecurityGroup
-        - IpProtocol: tcp
+        - Description : Traffic from CodeBuildSecurityGroup
+          IpProtocol: tcp
           FromPort: 5432
           ToPort: 5432
           SourceSecurityGroupId: !Ref CodeBuildSecurityGroup
+      Tags:
+        - Key: Name
+          Value: PetsAPI-Database-SG
       VpcId: !Ref VPC
 
   DatabaseSubnetGroup:
@@ -946,14 +955,26 @@ Resources:
       - PrivateSubnet1
       - PrivateSubnet2
     Properties:
-      DBSubnetGroupDescription: AuroraClusterSubnetGroup
+      DBSubnetGroupName: PetsAPI-Database-SN-G
+      DBSubnetGroupDescription: PetsAPI-Database-SN-G
       SubnetIds:
         - !Ref PrivateSubnet1
         - !Ref PrivateSubnet2
 
+  DatabaseSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: Secret for database instance
+      Name: !Ref DatabaseSecretName
+      # SecretSting: '{"username": "pets", "password": "pets12345"}'
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "pets"}'
+        GenerateStringKey: "password"
+        PasswordLength: 15
+        ExcludeCharacters: '"@/\'
+
   DatabaseInstance:
-    DeletionPolicy: Snapshot # default
-    UpdateReplacePolicy: Snapshot
+    DeletionPolicy: Delete
     Type: AWS::RDS::DBInstance
     DependsOn:
       - DatabaseSubnetGroup
@@ -966,6 +987,7 @@ Resources:
       BackupRetentionPeriod: 0
       CopyTagsToSnapshot: true
       DBInstanceClass: db.t3.micro
+      DBInstanceIdentifier: PetsAPI-DatabaseInstance
       DBName: petsdb
       DBParameterGroupName: default.postgres13
       DBSubnetGroupName: !Ref DatabaseSubnetGroup
@@ -980,7 +1002,7 @@ Resources:
       VPCSecurityGroups:
         - !Ref DatabaseSecurityGroup
 
-  SecretDatabaseInstanceAttachment:
+  DatabaseSecretAttachment:
     Type: AWS::SecretsManager::SecretTargetAttachment
     DependsOn:
       - DatabaseSecret
