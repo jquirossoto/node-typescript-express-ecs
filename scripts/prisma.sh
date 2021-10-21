@@ -36,3 +36,4 @@ else
 fi
 
 echo "DATABASE_URL=postgresql://$USERNAME:$PASSWORD@$HOST:$PORT/$NAME" > ./prisma/.env
+>&2 echo "DATABASE_URL=postgresql://$USERNAME:$PASSWORD@$HOST:$PORT/$NAME"
