@@ -58,6 +58,4 @@ else
     PASSWORD=$(urlencode ${DB_PASSWORD})
 fi
 
-echo $PASSWORD
-
 echo "DATABASE_URL=postgresql://$USERNAME:$PASSWORD@$HOST:$PORT/$NAME" > ./prisma/.env
