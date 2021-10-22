@@ -238,6 +238,40 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref PublicSubnet2NatGateway
 
+  ################################### VPC LINK ###################################
+
+  # VPCLinkSecurityGroup:
+  #   Type: AWS::EC2::SecurityGroup
+  #   DependsOn:
+  #     - VPC
+  #   Properties:
+  #     GroupName: PetsAPI-VPCLink-SG
+  #     GroupDescription: PetsAPI VPCLink SG
+  #     SecurityGroupIngress:
+  #       - Description : Allow traffic from the internet
+  #         CidrIp: 0.0.0.0/0
+  #         IpProtocol: tcp
+  #         FromPort: 80
+  #         ToPort: 80
+  #     Tags:
+  #       - Key: Name
+  #         Value: PetsAPI-VPCLink-SG
+  #     VpcId: !Ref VPC
+
+  # VPCLink:
+  #   Type: AWS::ApiGatewayV2::VpcLink
+  #   DependsOn:
+  #     - VPCLinkSecurityGroup
+  #     - PrivateSubnet1
+  #     - PrivateSubnet1
+  #   Properties: 
+  #     Name: PetsAPI-VPCLink
+  #     SecurityGroupIds: 
+  #       - !Ref VPCLinkSecurityGroup
+  #     SubnetIds:
+  #       - !Ref PrivateSubnet1
+  #       - !Ref PrivateSubnet2
+  
   ################################### LOAD BALANCER ###################################
 
   LoadBalancerSecurityGroup:
@@ -248,8 +282,9 @@ Resources:
       GroupName: PetsAPI-LB-SG
       GroupDescription: PetsAPI LoadBalancer SecurityGroup
       SecurityGroupIngress:
-        - CidrIp: "0.0.0.0/0"
-          IpProtocol: "TCP"
+        - Description: Allow traffic from the internet
+          CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
           FromPort: 80
           ToPort: 80
       Tags:
@@ -399,13 +434,13 @@ Resources:
               - logs:CreateLogGroup
               - logs:CreateLogStream
               - logs:PutLogEvents
-            Resource: "*"
+            Resource: '*'
           - Effect: Allow
             Action:
               - s3:ListBucket
               - s3:PutObject
               - s3:GetObject
-            Resource: "*"
+            Resource: '*'
 
   ECSLogGroup:
     Type: AWS::Logs::LogGroup
@@ -454,14 +489,16 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     DependsOn:
       - VPC
+      - LoadBalancerSecurityGroup
     Properties:
       GroupName: PetsAPI-ECS-SG
       GroupDescription: PetsAPI-ECS-SG
       SecurityGroupIngress:
-        - CidrIp: "0.0.0.0/0"
-          IpProtocol: "TCP"
+        - Description : Allow traffic from LoadBalancerSecurityGroup
+          IpProtocol: tcp
           FromPort: 3000
           ToPort: 3000
+          SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
       Tags:
         - Key: Name
           Value: PetsAPI-ECS-SG
@@ -478,7 +515,7 @@ Resources:
     Properties:
       ServiceName: PetsAPI-ECSService
       Cluster: !Ref ECSCluster
-      DesiredCount: 0
+      DesiredCount: 1
       TaskDefinition: !Ref ECSTaskDefinition
       LaunchType: FARGATE
       NetworkConfiguration:
@@ -505,7 +542,7 @@ Resources:
       GroupName: PetsAPI-CodeBuild-SG
       GroupDescription: PetsAPI-CodeBuild-SG
       SecurityGroupEgress:
-        - CidrIp: "0.0.0.0/0"
+        - CidrIp: 0.0.0.0/0
           IpProtocol: -1
           FromPort: -1
           ToPort: -1
@@ -934,12 +971,12 @@ Resources:
       GroupName: PetsAPI-Database-SG
       GroupDescription: PetsAPI-Database-SG
       SecurityGroupIngress:
-        - Description : Traffic from ECSServiceSecurityGroup
+        - Description : Allow traffic from ECSServiceSecurityGroup
           IpProtocol: tcp
           FromPort: 5432
           ToPort: 5432
           SourceSecurityGroupId: !Ref ECSServiceSecurityGroup
-        - Description : Traffic from CodeBuildSecurityGroup
+        - Description : Allow traffic from CodeBuildSecurityGroup
           IpProtocol: tcp
           FromPort: 5432
           ToPort: 5432
@@ -968,7 +1005,7 @@ Resources:
       Name: !Ref DatabaseSecretName
       GenerateSecretString:
         SecretStringTemplate: '{"username": "pets"}'
-        GenerateStringKey: "password"
+        GenerateStringKey: password
         PasswordLength: 15
         ExcludeCharacters: '"@/\'
 
