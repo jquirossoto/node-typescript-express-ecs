@@ -1,4 +1,5 @@
 import express from 'express';
+import {Request, Response} from 'express';
 
 import { router as categoryRouter } from './routers/category.router';
 import { router as petRouter } from './routers/pet.router';
@@ -15,6 +16,10 @@ app.use(express.json());
 app.use('/api', categoryRouter);
 app.use('/api', petRouter);
 app.use('/', healthRouter);
+
+app.get('/', (req: Request, res: Response) => {
+	res.send('Hello World!');
+});
 
 export const server = app.listen(port, () => {
 	console.log(`Running on port ${port}`);
