@@ -11,7 +11,22 @@ Parameters:
     Default: rds-db-credentials/petsdb5
 
 ################################### APPLICATION CONDITIONS ###################################
-################################### APPLICATION RESOURCES ################################### 
+################################### APPLICATION MAPPINGS ###################################
+
+Mappings:
+  SubnetConfig:
+    VPC:
+      CIDR: 10.2.0.0/16
+    PublicSubnet1:
+      CIDR: 10.2.0.0/24
+    PublicSubnet2:
+      CIDR: 10.2.1.0/24
+    PrivateSubnet1:
+      CIDR: 10.2.2.0/24
+    PrivateSubnet2:
+      CIDR: 10.2.3.0/24
+
+################################### APPLICATION RESOURCES ###################################
 
 Resources:
 
@@ -20,7 +35,7 @@ Resources:
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: 10.2.0.0/16
+      CidrBlock: !FindInMap [ SubnetConfig, VPC, CIDR ]
       InstanceTenancy: default
       EnableDnsHostnames: false
       EnableDnsSupport: true
@@ -78,7 +93,7 @@ Resources:
       - VPC 
     Properties:
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: 10.2.0.0/24
+      CidrBlock: !FindInMap [ SubnetConfig, PublicSubnet1, CIDR ]
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -119,7 +134,7 @@ Resources:
       - VPC
     Properties:
       AvailabilityZone: !Select [ 1, !GetAZs '' ]
-      CidrBlock: 10.2.1.0/24
+      CidrBlock: !FindInMap [ SubnetConfig, PublicSubnet2, CIDR ]
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -162,7 +177,7 @@ Resources:
       - VPC
     Properties:
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: 10.2.2.0/24
+      CidrBlock: !FindInMap [ SubnetConfig, PrivateSubnet1, CIDR ]
       Tags:
         - Key: Name
           Value: PetsAPI-VPC-PrivSN1
@@ -204,7 +219,7 @@ Resources:
       - VPC
     Properties:
       AvailabilityZone: !Select [ 1, !GetAZs '' ]
-      CidrBlock: 10.2.3.0/24
+      CidrBlock: !FindInMap [ SubnetConfig, PrivateSubnet2, CIDR ]
       Tags:
         - Key: Name
           Value: PetsAPI-VPC-PrivSN2
@@ -583,7 +598,7 @@ Resources:
     Properties:
       ServiceName: PetsAPI-ECSService
       Cluster: !Ref ECSCluster
-      DesiredCount: 1
+      DesiredCount: 0
       TaskDefinition: !Ref ECSTaskDefinition
       LaunchType: FARGATE
       NetworkConfiguration:
