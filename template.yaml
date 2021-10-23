@@ -375,7 +375,7 @@ Resources:
     Properties:
       ApiId: !Ref APIGateway
       RouteKey: $default
-      Target: !Join ['/', [ integrations, !Ref APIGatewayIntegration ]]
+      Target: !Join [ '/', [ integrations, !Ref APIGatewayIntegration ]]
 
   APIGatewayLogGroup:
     Type: AWS::Logs::LogGroup
@@ -392,7 +392,7 @@ Resources:
       StageName: $default
       AutoDeploy: true
       AccessLogSettings:
-        DestinationArn:  !Join [':', [ arn:aws:logs:us-east-1:186521841143:log-group, !Ref APIGatewayLogGroup ]]
+        DestinationArn:  !Join [ ':', [ !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group', !Ref APIGatewayLogGroup ]]
         Format: 
           '{
             "accountId": "$context.accountId",
@@ -537,7 +537,7 @@ Resources:
               LogDriver: awslogs
               Options:
                 awslogs-group: !Ref ECSLogGroup
-                awslogs-region: us-east-1
+                awslogs-region: !Ref AWS::Region
                 awslogs-stream-prefix: pets-api
             Essential: true
             PortMappings: 
@@ -583,7 +583,7 @@ Resources:
     Properties:
       ServiceName: PetsAPI-ECSService
       Cluster: !Ref ECSCluster
-      DesiredCount: 0
+      DesiredCount: 1
       TaskDefinition: !Ref ECSTaskDefinition
       LaunchType: FARGATE
       NetworkConfiguration:
@@ -649,15 +649,15 @@ Resources:
           - Effect: Allow
             Resource:
                 # pets-api-codebuild is the name of the codebuild project
-              - arn:aws:logs:us-east-1:186521841143:log-group:/aws/codebuild/pets-api-codebuild
-              - arn:aws:logs:us-east-1:186521841143:log-group:/aws/codebuild/pets-api-codebuild:*
+              - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/pets-api-codebuild
+              - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/pets-api-codebuild:*
             Action:
               - logs:CreateLogGroup
               - logs:CreateLogStream
               - logs:PutLogEvents
           - Effect: Allow
             Resource:
-              - arn:aws:s3:::codepipeline-us-east-1-*
+              - !Sub arn:aws:s3:::codepipeline-${AWS::Region}-*
             Action:
               - s3:PutObject
               - s3:GetObject
@@ -667,7 +667,7 @@ Resources:
           - Effect: Allow
             Resource:
                 # pets-api-codebuild is the name of the codebuild project
-              - arn:aws:codebuild:us-east-1:186521841143:report-group/pets-api-codebuild-*
+              - !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/pets-api-codebuild-*
             Action:
               - codebuild:CreateReportGroup
               - codebuild:CreateReport
@@ -677,7 +677,7 @@ Resources:
           - Effect: Allow
             Resource: 
                 # /pets-api/dockerhub/* refers to the params in param store (username and password defined in codebuild project)
-              - arn:aws:ssm:us-east-1:186521841143:parameter/pets-api/dockerhub/*
+              - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/pets-api/dockerhub/*
             Action: 
               - ssm:GetParameter
               - ssm:GetParameters
@@ -690,7 +690,7 @@ Resources:
           - Effect: Allow
             Resource:
                 # key used to encryt/decrypt DOCKERHUB_USERNAME & DOCKERHUB_PASSWORD params in codebuild project
-              - arn:aws:kms:us-east-1:186521841143:key/d0b8969b-d55b-4f94-9091-5fc2d19c76d7
+              - !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/d0b8969b-d55b-4f94-9091-5fc2d19c76d7
             Action: 
               - kms:Decrypt
               - kms:GenerateDataKey*
@@ -714,7 +714,7 @@ Resources:
               - ec2:DescribeSecurityGroups
               - ec2:DescribeVpcs
           - Effect: Allow
-            Resource: arn:aws:ec2:us-east-1:186521841143:network-interface/*
+            Resource: !Sub arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:network-interface/*
             Action:
               - ec2:CreateNetworkInterfacePermission
             Condition:
@@ -722,8 +722,8 @@ Resources:
                 ec2:AuthorizedService: codebuild.amazonaws.com
               ArnEquals:
                 ec2:Subnet:
-                  - !Join [ '', [ arn:aws:ec2:us-east-1:186521841143:subnet/, !Ref PrivateSubnet1 ] ]
-                  - !Join [ '', [ arn:aws:ec2:us-east-1:186521841143:subnet/, !Ref PrivateSubnet2 ] ]
+                  - !Join [ '', [ !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet/', !Ref PrivateSubnet1 ] ]
+                  - !Join [ '', [ !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet/', !Ref PrivateSubnet2 ] ]
 
   CodeBuildCloudwatchPolicy:
     Type: AWS::IAM::Policy
@@ -739,8 +739,8 @@ Resources:
           - Effect: Allow
             Resource:
                 # pets-api comes from CodeBuildProject -> LogsConfig -> CloudWatchLogs -> GroupName
-              - arn:aws:logs:us-east-1:186521841143:log-group:pets-api
-              - arn:aws:logs:us-east-1:186521841143:log-group:pets-api:*
+              - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:pets-api
+              - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:pets-api:*
             Action:
               - logs:CreateLogGroup
               - logs:CreateLogStream
@@ -870,7 +870,7 @@ Resources:
               - codedeploy:RegisterApplicationRevision
           - Effect: Allow
             Resource:
-              - arn:aws:codestar-connections:us-east-1:186521841143:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc
+              - !Sub arn:aws:codestar-connections:${AWS::Region}:${AWS::AccountId}:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc
             Action:
               - codestar-connections:UseConnection
           - Effect: Allow
@@ -972,7 +972,7 @@ Resources:
       ArtifactStore: 
         Type: S3
         # default location
-        Location: codepipeline-us-east-1-91946427360
+        Location: !Sub codepipeline-${AWS::Region}-91946427360
       Name: pets-api-pipeline
       RestartExecutionOnUpdate: false
       RoleArn: !GetAtt CodePipelineServiceRole.Arn
@@ -987,14 +987,14 @@ Resources:
                 Version: 1
               RunOrder: 1
               Configuration:
-                ConnectionArn: arn:aws:codestar-connections:us-east-1:186521841143:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc
+                ConnectionArn: !Sub arn:aws:codestar-connections:${AWS::Region}:${AWS::AccountId}:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc
                 BranchName: master
                 OutputArtifactFormat: CODE_ZIP
                 FullRepositoryId: jquirossoto/ecs-node-typescript-express-api
               Namespace: SourceVariables
               OutputArtifacts: 
                 - Name: SourceArtifact
-              Region: us-east-1
+              Region: !Ref AWS::Region
         - Name: Build
           Actions:
             - Name: Build
@@ -1011,7 +1011,7 @@ Resources:
               Namespace: BuildVariables
               OutputArtifacts:
                 - Name: BuildArtifact
-              Region: us-east-1
+              Region: !Ref AWS::Region
         - Name: Deploy
           Actions:
             - Name: Deploy
@@ -1099,8 +1099,8 @@ Resources:
       EnableIAMDatabaseAuthentication: false
       Engine: postgres
       EngineVersion: 13.3
-      MasterUsername: !Join ['', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:username}}' ]]
-      MasterUserPassword: !Join ['', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:password}}' ]]
+      MasterUsername: !Join [ '', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:username}}' ]]
+      MasterUserPassword: !Join [ '', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:password}}' ]]
       MultiAZ: false
       StorageType: gp2
       StorageEncrypted: false
