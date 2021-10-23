@@ -283,7 +283,9 @@ Resources:
       GroupDescription: PetsAPI LoadBalancer SecurityGroup
       SecurityGroupIngress:
         - Description: Allow traffic from VPCLinkSecurityGroup
-          IpProtocol: -1
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
           SourceSecurityGroupId: !Ref VPCLinkSecurityGroup
       Tags:
         - Key: Name
@@ -340,22 +342,6 @@ Resources:
         - Type: forward
           TargetGroupArn: !Ref LoadBalancerTargetGroup
 
-  # LoadBalancerListenerRule:
-  #   Type: AWS::ElasticLoadBalancingV2::ListenerRule
-  #   DependsOn:
-  #     - LoadBalancerListener
-  #     - LoadBalancerTargetGroup
-  #   Properties:
-  #     ListenerArn: !Ref LoadBalancerListener
-  #     Priority: 1
-  #     Conditions:
-  #       - Field: path-pattern
-  #         Values:
-  #           - /
-  #     Actions:
-  #       - TargetGroupArn: !Ref LoadBalancerTargetGroup
-  #         Type: forward
-
   ################################### API GATEWAY ###################################
 
   APIGateway:
@@ -364,13 +350,6 @@ Resources:
       Name: PetsAPI-APIGateway
       Description: PetsAPI APIGateway
       ProtocolType: HTTP
-      CorsConfiguration:
-        AllowHeaders: 
-          - '*'
-        AllowMethods: 
-          - '*'
-        AllowOrigins: 
-          - '*'
 
   APIGatewayIntegration:
     Type: AWS::ApiGatewayV2::Integration
@@ -584,7 +563,9 @@ Resources:
       GroupDescription: PetsAPI-ECS-SG
       SecurityGroupIngress:
         - Description : Allow traffic from LoadBalancerSecurityGroup
-          IpProtocol: -1
+          IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
           SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
       Tags:
         - Key: Name
