@@ -17,6 +17,7 @@
     "test:coverage:clean": "rm -rf coverage",
     "docker:up": "docker-compose -f ./docker-compose.yml up -d",
     "docker:down": "docker-compose kill",
+    "docker:build:local": "docker build -t pets-api .",
     "prisma:db:seed": "prisma db seed",
     "prisma:db:pull": "prisma db pull",
     "prisma:db:push": "prisma db push",

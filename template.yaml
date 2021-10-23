@@ -240,37 +240,37 @@ Resources:
 
   ################################### VPC LINK ###################################
 
-  # VPCLinkSecurityGroup:
-  #   Type: AWS::EC2::SecurityGroup
-  #   DependsOn:
-  #     - VPC
-  #   Properties:
-  #     GroupName: PetsAPI-VPCLink-SG
-  #     GroupDescription: PetsAPI VPCLink SG
-  #     SecurityGroupIngress:
-  #       - Description : Allow traffic from the internet
-  #         CidrIp: 0.0.0.0/0
-  #         IpProtocol: tcp
-  #         FromPort: 80
-  #         ToPort: 80
-  #     Tags:
-  #       - Key: Name
-  #         Value: PetsAPI-VPCLink-SG
-  #     VpcId: !Ref VPC
+  VPCLinkSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    DependsOn:
+      - VPC
+    Properties:
+      GroupName: PetsAPI-VPCLink-SG
+      GroupDescription: PetsAPI VPCLink SG
+      SecurityGroupIngress:
+        - Description : Allow traffic from the internet
+          CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+      Tags:
+        - Key: Name
+          Value: PetsAPI-VPCLink-SG
+      VpcId: !Ref VPC
 
-  # VPCLink:
-  #   Type: AWS::ApiGatewayV2::VpcLink
-  #   DependsOn:
-  #     - VPCLinkSecurityGroup
-  #     - PrivateSubnet1
-  #     - PrivateSubnet1
-  #   Properties: 
-  #     Name: PetsAPI-VPCLink
-  #     SecurityGroupIds: 
-  #       - !Ref VPCLinkSecurityGroup
-  #     SubnetIds:
-  #       - !Ref PrivateSubnet1
-  #       - !Ref PrivateSubnet2
+  VPCLink:
+    Type: AWS::ApiGatewayV2::VpcLink
+    DependsOn:
+      - VPCLinkSecurityGroup
+      - PrivateSubnet1
+      - PrivateSubnet1
+    Properties: 
+      Name: PetsAPI-VPCLink
+      SecurityGroupIds: 
+        - !Ref VPCLinkSecurityGroup
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
   
   ################################### LOAD BALANCER ###################################
 
@@ -282,11 +282,9 @@ Resources:
       GroupName: PetsAPI-LB-SG
       GroupDescription: PetsAPI LoadBalancer SecurityGroup
       SecurityGroupIngress:
-        - Description: Allow traffic from the internet
-          CidrIp: 0.0.0.0/0
-          IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
+        - Description: Allow traffic from VPCLinkSecurityGroup
+          IpProtocol: -1
+          SourceSecurityGroupId: !Ref VPCLinkSecurityGroup
       Tags:
         - Key: Name
           Value: PetsAPI-LB-SG
@@ -295,15 +293,16 @@ Resources:
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     DependsOn:
-      - PublicSubnet1
-      - PublicSubnet2
+      - PrivateSubnet1
+      - PrivateSubnet2
       - LoadBalancerSecurityGroup
     Properties:
       Name: PetsAPI-LB
       Type: application
+      Scheme: internal
       Subnets:
-        - !Ref PublicSubnet1
-        - !Ref PublicSubnet2
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
       SecurityGroups:
         - !Ref LoadBalancerSecurityGroup
 
@@ -341,21 +340,111 @@ Resources:
         - Type: forward
           TargetGroupArn: !Ref LoadBalancerTargetGroup
 
-  LoadBalancerListenerRule:
-    Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    DependsOn: 
-      - LoadBalancerListener
-      - LoadBalancerTargetGroup
+  # LoadBalancerListenerRule:
+  #   Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  #   DependsOn:
+  #     - LoadBalancerListener
+  #     - LoadBalancerTargetGroup
+  #   Properties:
+  #     ListenerArn: !Ref LoadBalancerListener
+  #     Priority: 1
+  #     Conditions:
+  #       - Field: path-pattern
+  #         Values:
+  #           - /
+  #     Actions:
+  #       - TargetGroupArn: !Ref LoadBalancerTargetGroup
+  #         Type: forward
+
+  ################################### API GATEWAY ###################################
+
+  APIGateway:
+    Type: AWS::ApiGatewayV2::Api
     Properties:
-      ListenerArn: !Ref LoadBalancerListener
-      Priority: 1
-      Conditions:
-        - Field: path-pattern
-          Values:
-            - /
-      Actions:
-        - TargetGroupArn: !Ref LoadBalancerTargetGroup
-          Type: forward
+      Name: PetsAPI-APIGateway
+      Description: PetsAPI APIGateway
+      ProtocolType: HTTP
+      CorsConfiguration:
+        AllowHeaders: 
+          - '*'
+        AllowMethods: 
+          - '*'
+        AllowOrigins: 
+          - '*'
+
+  APIGatewayIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    DependsOn:
+      - APIGateway
+      - VPCLink
+      - LoadBalancerListener
+    Properties:
+      ApiId: !Ref APIGateway
+      Description: Private ALB Integration
+      IntegrationType: HTTP_PROXY
+      IntegrationMethod: ANY
+      ConnectionType: VPC_LINK
+      ConnectionId: !Ref VPCLink
+      IntegrationUri: !Ref LoadBalancerListener 
+      PayloadFormatVersion: 1.0
+
+  APIGatewayRoute:
+    Type: AWS::ApiGatewayV2::Route
+    DependsOn:
+      - APIGateway
+      - APIGatewayIntegration
+    Properties:
+      ApiId: !Ref APIGateway
+      RouteKey: $default
+      Target: !Join ['/', [ integrations, !Ref APIGatewayIntegration ]]
+
+  APIGatewayLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: apigateway
+      RetentionInDays: 1
+
+  APIGatewayStage:
+    Type: AWS::ApiGatewayV2::Stage
+    DependsOn:
+      - APIGateway
+      - APIGatewayLogGroup
+    Properties:
+      StageName: $default
+      AutoDeploy: true
+      AccessLogSettings:
+        DestinationArn:  !Join [':', [ arn:aws:logs:us-east-1:186521841143:log-group, !Ref APIGatewayLogGroup ]]
+        Format: 
+          '{
+            "accountId": "$context.accountId",
+            "apiId": "$context.apiId",
+            "endpointRequestId": "$context.awsEndpointRequestId",
+            "endpointRequestId2": "$context.awsEndpointRequestId2",
+            "customDomain.basePathMatched": "$context.customDomain.basePathMatched",
+            "dataProcessed": "$context.dataProcessed",
+            "domainName": "$context.domainName",
+            "domainPrefix": "$context.domainPrefix",
+            "error.message": "$context.error.message",
+            "error.messageString": "$context.error.messageString",
+            "error.responseType": "$context.error.responseType",
+            "extendedRequestId": "$context.extendedRequestId",
+            "httpMethod": "$context.httpMethod",
+            "identity.accountId": "$context.identity.accountId",
+            "identity.caller": "$context.identity.caller",
+            "identity.sourceIp": "$context.identity.sourceIp",
+            "identity.userAgent": "$context.identity.userAgent",
+            "integration.error": "$context.integration.error",
+            "integration.integrationStatus": "$context.integration.integrationStatus",
+            "integration.latency": "$context.integration.latency",
+            "integration.requestId": "$context.integration.requestId",
+            "integration.status": "$context.integration.status",
+            "integration.error.message": "$context.integrationErrorMessage"
+            "integration.latency": "$context.integrationLatency"
+            "integration.status": "$context.integrationStatus",
+            "path": "$context.path",
+            "requestId": "$context.requestId", 
+          }'
+      ApiId: !Ref APIGateway
 
   ################################### ECR ###################################
 
@@ -495,9 +584,7 @@ Resources:
       GroupDescription: PetsAPI-ECS-SG
       SecurityGroupIngress:
         - Description : Allow traffic from LoadBalancerSecurityGroup
-          IpProtocol: tcp
-          FromPort: 3000
-          ToPort: 3000
+          IpProtocol: -1
           SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
       Tags:
         - Key: Name
@@ -511,11 +598,11 @@ Resources:
      - ECSServiceSecurityGroup
      - PrivateSubnet1
      - PrivateSubnet2
-     - LoadBalancerListenerRule
+     - LoadBalancerListener
     Properties:
       ServiceName: PetsAPI-ECSService
       Cluster: !Ref ECSCluster
-      DesiredCount: 1
+      DesiredCount: 0
       TaskDefinition: !Ref ECSTaskDefinition
       LaunchType: FARGATE
       NetworkConfiguration:
@@ -683,6 +770,7 @@ Resources:
     DependsOn:
       - CodeBuildRole
       - CodeBuildBasePolicy
+      - DatabaseSecretAttachment
     Properties: 
       Artifacts:
         Type: CODEPIPELINE
@@ -705,19 +793,19 @@ Resources:
             Value: /pets-api/dockerhub/password
           - Name: DB_HOST
             Type: SECRETS_MANAGER
-            Value: !Join [ ':' , [ !Ref DatabaseSecretName, host ]]
+            Value: !Join [ ':', [ !Ref DatabaseSecretName, host ] ]
           - Name: DB_PORT
             Type: SECRETS_MANAGER
-            Value: !Join [ ':' , [ !Ref DatabaseSecretName, port ]]
+            Value: !Join [ ':', [ !Ref DatabaseSecretName, port ] ]
           - Name: DB_NAME
             Type: SECRETS_MANAGER
-            Value: !Join [ ':' , [ !Ref DatabaseSecretName, dbname ]]
+            Value: !Join [ ':', [ !Ref DatabaseSecretName, dbname ] ]
           - Name: DB_USERNAME
             Type: SECRETS_MANAGER
-            Value: !Join [ ':' , [ !Ref DatabaseSecretName, username ]]
+            Value: !Join [ ':', [ !Ref DatabaseSecretName, username ] ]
           - Name: DB_PASSWORD
             Type: SECRETS_MANAGER
-            Value: !Join [ ':' , [ !Ref DatabaseSecretName, password ]]
+            Value: !Join [ ':', [ !Ref DatabaseSecretName, password ] ]
         Image: aws/codebuild/standard:5.0
         ImagePullCredentialsType: CODEBUILD
         PrivilegedMode: true
@@ -1047,3 +1135,10 @@ Resources:
       SecretId: !Ref DatabaseSecret
       TargetId: !Ref DatabaseInstance
       TargetType: AWS::RDS::DBInstance
+
+################################### APPLICATION OUTPUTS ###################################
+
+Outputs:
+  APIURL:
+    Description: Invoke URL
+    Value: !Sub https://${APIGateway}.execute-api.${AWS::Region}.amazonaws.com/
