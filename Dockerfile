@@ -37,4 +37,4 @@ COPY --chown=node:node prisma/.env .
 # exposes port
 EXPOSE 3000
 # executes app
-CMD [ "node", "app.js" ]
+CMD [ "node", "server.js" ]

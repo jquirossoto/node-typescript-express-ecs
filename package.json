@@ -2,7 +2,7 @@
   "name": "nodejs-api",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/app.js",
+  "main": "dist/server.js",
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
@@ -17,7 +17,8 @@
     "test:coverage:clean": "rm -rf coverage",
     "docker:up": "docker-compose -f ./docker-compose.yml up -d",
     "docker:down": "docker-compose kill",
-    "docker:build:local": "docker build -t pets-api . --no-cache",
+    "docker:build": "npm run build && docker build -t pets-api .",
+    "docker:run": "docker run -it --rm -p 80:3000 --name='pets-api' pets-api",
     "prisma:db:seed": "prisma db seed",
     "prisma:db:pull": "prisma db pull",
     "prisma:db:push": "prisma db push",

@@ -6,9 +6,7 @@ import { router as petRouter } from './routers/pet.router';
 import { router as healthRouter } from './routers/health.router';
 import { authorize } from './middlewares/app.middlewares';
 
-const port = process.env.PORT || 3000;
-
-export const app = express();
+const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -21,6 +19,4 @@ app.get('/', (req: Request, res: Response) => {
 	res.send('Hello World!');
 });
 
-export const server = app.listen(port, () => {
-	console.log(`Running on port ${port}`);
-});
+export default app;
