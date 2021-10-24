@@ -27,6 +27,15 @@ Parameters:
     Description: Specify the number of instantiations of the task definition to place in the service and keep running on your cluster.
     Default: 0
 
+  DuckerHubUsername:
+    Type: String
+    Description: Specify the DockerHub username to be used when building the docker image.
+
+  DuckerHubPassword:
+    Type: String
+    Description: Specify the DockerHub password to be used when building the docker image.
+    NoEcho: true
+
 ################################### APPLICATION MAPPINGS ###################################
 
 Mappings:
@@ -54,6 +63,8 @@ Mappings:
       Name: pets-api
     DatabaseSecret:
       Name: rds-db-credentials/petsdb5
+    DockerHubSecret:
+      Name: docker-hub-credentials/pets-api
 
 ################################### APPLICATION RESOURCES ###################################
 
@@ -570,7 +581,89 @@ Resources:
           ContainerPort: 3000
           TargetGroupArn: !Ref LoadBalancerTargetGroup
 
+  ################################### DATABASE ###################################
+
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: PetsAPI-Database-SG
+      GroupDescription: PetsAPI-Database-SG
+      SecurityGroupIngress:
+        - Description : Allow traffic from ECSServiceSecurityGroup
+          IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          SourceSecurityGroupId: !Ref ECSServiceSecurityGroup
+        - Description : Allow traffic from CodeBuildSecurityGroup
+          IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          SourceSecurityGroupId: !Ref CodeBuildSecurityGroup
+      Tags:
+        - Key: Name
+          Value: PetsAPI-Database-SG
+      VpcId: !Ref VPC
+
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: PetsAPI-Database-SN-G
+      DBSubnetGroupDescription: PetsAPI-Database-SN-G
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
+
+  DatabaseSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: Secret for database instance
+      Name: !FindInMap [ NameConfig, DatabaseSecret, Name ]
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "pets"}'
+        GenerateStringKey: password
+        PasswordLength: 15
+        ExcludeCharacters: '"@/\'
+
+  DatabaseInstance:
+    DeletionPolicy: Delete
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: 20
+      AllowMajorVersionUpgrade: false
+      AutoMinorVersionUpgrade: true
+      BackupRetentionPeriod: 0
+      CopyTagsToSnapshot: true
+      DBInstanceClass: db.t3.micro
+      DBInstanceIdentifier: PetsAPI-DatabaseInstance
+      DBName: petsdb
+      DBParameterGroupName: default.postgres13
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      EnableIAMDatabaseAuthentication: false
+      Engine: postgres
+      EngineVersion: 13.3
+      MasterUsername: !Join [ '', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:username}}' ]]
+      MasterUserPassword: !Join [ '', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:password}}' ]]
+      MultiAZ: false
+      StorageType: gp2
+      StorageEncrypted: false
+      VPCSecurityGroups:
+        - !Ref DatabaseSecurityGroup
+
+  DatabaseSecretAttachment:
+    Type: AWS::SecretsManager::SecretTargetAttachment
+    Properties:
+      SecretId: !Ref DatabaseSecret
+      TargetId: !Ref DatabaseInstance
+      TargetType: AWS::RDS::DBInstance
+
   ################################### CODE BUILD ###################################
+
+  DockerHubSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: Secret for DockerHub credentials
+      Name: !FindInMap [ NameConfig, DockerHubSecret, Name ]
+      SecretString: !Sub '{"username": "${DuckerHubUsername}", "password": "${DuckerHubPassword}"}'
 
   CodeBuildSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -637,21 +730,8 @@ Resources:
               - codebuild:BatchPutCodeCoverages
           - Effect: Allow
             Resource: 
-                # /pets-api/dockerhub/* refers to the params in param store (username and password defined in codebuild project)
-              - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/pets-api/dockerhub/*
-            Action: 
-              - ssm:GetParameter
-              - ssm:GetParameters
-          - Effect: Allow
-            Resource:
-                # key used to encryt/decrypt DOCKERHUB_USERNAME & DOCKERHUB_PASSWORD params in codebuild project
-              - !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/d0b8969b-d55b-4f94-9091-5fc2d19c76d7
-            Action: 
-              - kms:Decrypt
-              - kms:GenerateDataKey*
-          - Effect: Allow
-            Resource: 
               - !Ref DatabaseSecret
+              - !Ref DockerHubSecret
             Action: 
               - secretsmanager:GetSecretValue
           - Effect: Allow
@@ -734,11 +814,11 @@ Resources:
             Type: PLAINTEXT
             Value: !FindInMap [ NameConfig, Container, Name ]
           - Name: DOCKERHUB_USERNAME
-            Type: PARAMETER_STORE
-            Value: /pets-api/dockerhub/username
+            Type: SECRETS_MANAGER
+            Value: !Join [ ':', [ !FindInMap [ NameConfig, DockerHubSecret, Name ], username ] ]
           - Name: DOCKERHUB_PASSWORD
-            Type: PARAMETER_STORE
-            Value: /pets-api/dockerhub/password
+            Type: SECRETS_MANAGER
+            Value: !Join [ ':', [ !FindInMap [ NameConfig, DockerHubSecret, Name ], password ] ]
           - Name: DB_HOST
             Type: SECRETS_MANAGER
             Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], host ] ]
@@ -987,81 +1067,6 @@ Resources:
               InputArtifacts:
                 - Name: BuildArtifact
               RunOrder: 1
-
-  ################################### DATABASE ###################################
-
-  DatabaseSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: PetsAPI-Database-SG
-      GroupDescription: PetsAPI-Database-SG
-      SecurityGroupIngress:
-        - Description : Allow traffic from ECSServiceSecurityGroup
-          IpProtocol: tcp
-          FromPort: 5432
-          ToPort: 5432
-          SourceSecurityGroupId: !Ref ECSServiceSecurityGroup
-        - Description : Allow traffic from CodeBuildSecurityGroup
-          IpProtocol: tcp
-          FromPort: 5432
-          ToPort: 5432
-          SourceSecurityGroupId: !Ref CodeBuildSecurityGroup
-      Tags:
-        - Key: Name
-          Value: PetsAPI-Database-SG
-      VpcId: !Ref VPC
-
-  DatabaseSubnetGroup:
-    Type: AWS::RDS::DBSubnetGroup
-    Properties:
-      DBSubnetGroupName: PetsAPI-Database-SN-G
-      DBSubnetGroupDescription: PetsAPI-Database-SN-G
-      SubnetIds:
-        - !Ref PrivateSubnet1
-        - !Ref PrivateSubnet2
-
-  DatabaseSecret:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      Description: Secret for database instance
-      Name: !FindInMap [ NameConfig, DatabaseSecret, Name ]
-      GenerateSecretString:
-        SecretStringTemplate: '{"username": "pets"}'
-        GenerateStringKey: password
-        PasswordLength: 15
-        ExcludeCharacters: '"@/\'
-
-  DatabaseInstance:
-    DeletionPolicy: Delete
-    Type: AWS::RDS::DBInstance
-    Properties:
-      AllocatedStorage: 20
-      AllowMajorVersionUpgrade: false
-      AutoMinorVersionUpgrade: true
-      BackupRetentionPeriod: 0
-      CopyTagsToSnapshot: true
-      DBInstanceClass: db.t3.micro
-      DBInstanceIdentifier: PetsAPI-DatabaseInstance
-      DBName: petsdb
-      DBParameterGroupName: default.postgres13
-      DBSubnetGroupName: !Ref DatabaseSubnetGroup
-      EnableIAMDatabaseAuthentication: false
-      Engine: postgres
-      EngineVersion: 13.3
-      MasterUsername: !Join [ '', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:username}}' ]]
-      MasterUserPassword: !Join [ '', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:password}}' ]]
-      MultiAZ: false
-      StorageType: gp2
-      StorageEncrypted: false
-      VPCSecurityGroups:
-        - !Ref DatabaseSecurityGroup
-
-  DatabaseSecretAttachment:
-    Type: AWS::SecretsManager::SecretTargetAttachment
-    Properties:
-      SecretId: !Ref DatabaseSecret
-      TargetId: !Ref DatabaseInstance
-      TargetType: AWS::RDS::DBInstance
 
 ################################### APPLICATION OUTPUTS ###################################
 
