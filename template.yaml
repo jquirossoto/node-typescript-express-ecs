@@ -1,5 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
+Description: ''
 
 ################################### APPLICATION PARAMETERS ###################################
 
@@ -15,13 +16,17 @@ Parameters:
 
   BranchName:
     Type: String
-    Description: The name of the branch where source changes are to be detected.
+    Description: Specify the name of the branch where source changes are to be detected.
 
   ArtifactStoreS3Location:
     Type: String
-    Description: Name of the S3 bucket to store CodePipeline artificat.
+    Description: Specify the name of the S3 bucket to store the CodePipeline artificats.
 
-################################### APPLICATION CONDITIONS ###################################
+  ECSServiceDesiredCount:
+    Type: Number
+    Description: Specify the number of instantiations of the task definition to place in the service and keep running on your cluster.
+    Default: 0
+
 ################################### APPLICATION MAPPINGS ###################################
 
 Mappings:
@@ -78,19 +83,14 @@ Resources:
     
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
-    DependsOn:
-      - VPC
-      - InternetGateway
     Properties:
       InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref VPC
 
-  ################################## ROUTE TABLES ###################################
+  ################################## PUBLIC ROUTE TABLE ###################################
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
-    DependsOn:
-      - VPC
     Properties:
       VpcId: !Ref VPC
       Tags:
@@ -99,9 +99,6 @@ Resources:
 
   DefaultPublicRoute:
     Type: AWS::EC2::Route
-    DependsOn: 
-      - InternetGatewayAttachment
-      - PublicRouteTable
     Properties:
       RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0
@@ -113,8 +110,6 @@ Resources:
 
   PublicSubnet1:
     Type: AWS::EC2::Subnet
-    DependsOn:
-      - VPC 
     Properties:
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
       CidrBlock: !FindInMap [ SubnetConfig, PublicSubnet1, CIDR ]
@@ -126,9 +121,6 @@ Resources:
 
   PublicSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
-    DependsOn:
-      - PublicRouteTable
-      - PublicSubnet1
     Properties:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet1
@@ -143,9 +135,6 @@ Resources:
       
   PublicSubnet1NatGateway:
     Type: AWS::EC2::NatGateway
-    DependsOn:
-      - PublicSubnet1
-      - PublicSubnet1ElasticIP
     Properties:
       AllocationId: !GetAtt PublicSubnet1ElasticIP.AllocationId
       SubnetId: !Ref PublicSubnet1
@@ -157,8 +146,6 @@ Resources:
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
-    DependsOn:
-      - VPC
     Properties:
       AvailabilityZone: !Select [ 1, !GetAZs '' ]
       CidrBlock: !FindInMap [ SubnetConfig, PublicSubnet2, CIDR ]
@@ -170,9 +157,6 @@ Resources:
 
   PublicSubnet2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
-    DependsOn:
-      - PublicRouteTable
-      - PublicSubnet2
     Properties:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet2
@@ -187,9 +171,6 @@ Resources:
       
   PublicSubnet2NatGateway:
     Type: AWS::EC2::NatGateway
-    DependsOn:
-      - PublicSubnet2
-      - PublicSubnet2ElasticIP
     Properties:
       AllocationId: !GetAtt PublicSubnet2ElasticIP.AllocationId
       SubnetId: !Ref PublicSubnet2
@@ -203,8 +184,6 @@ Resources:
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
-    DependsOn:
-      - VPC
     Properties:
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
       CidrBlock: !FindInMap [ SubnetConfig, PrivateSubnet1, CIDR ]
@@ -216,8 +195,6 @@ Resources:
 
   PrivateSubnet1RouteTable:
     Type: AWS::EC2::RouteTable
-    DependsOn:
-      - VPC
     Properties:
       VpcId: !Ref VPC
       Tags:
@@ -226,18 +203,12 @@ Resources:
 
   PrivateSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
-    DependsOn:
-      - PrivateSubnet1RouteTable
-      - PrivateSubnet1
     Properties:
       RouteTableId: !Ref PrivateSubnet1RouteTable
       SubnetId: !Ref PrivateSubnet1
 
   RouteToPublicSubnet1NatGateway:
     Type: AWS::EC2::Route
-    DependsOn:
-      - PrivateSubnet1RouteTable
-      - PublicSubnet1NatGateway
     Properties:
       RouteTableId: !Ref PrivateSubnet1RouteTable
       DestinationCidrBlock: 0.0.0.0/0
@@ -247,8 +218,6 @@ Resources:
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
-    DependsOn:
-      - VPC
     Properties:
       AvailabilityZone: !Select [ 1, !GetAZs '' ]
       CidrBlock: !FindInMap [ SubnetConfig, PrivateSubnet2, CIDR ]
@@ -268,18 +237,12 @@ Resources:
 
   PrivateSubnet2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
-    DependsOn:
-      - PrivateSubnet2RouteTable
-      - PrivateSubnet2
     Properties:
       RouteTableId: !Ref PrivateSubnet2RouteTable
       SubnetId: !Ref PrivateSubnet2
 
   RouteToPublicSubnet2NatGateway:
     Type: AWS::EC2::Route
-    DependsOn:
-      - PrivateSubnet2RouteTable
-      - PublicSubnet2NatGateway
     Properties:
       RouteTableId: !Ref PrivateSubnet2RouteTable
       DestinationCidrBlock: 0.0.0.0/0
@@ -289,8 +252,6 @@ Resources:
 
   VPCLinkSecurityGroup:
     Type: AWS::EC2::SecurityGroup
-    DependsOn:
-      - VPC
     Properties:
       GroupName: PetsAPI-VPCLink-SG
       GroupDescription: PetsAPI VPCLink SG
@@ -307,10 +268,6 @@ Resources:
 
   VPCLink:
     Type: AWS::ApiGatewayV2::VpcLink
-    DependsOn:
-      - VPCLinkSecurityGroup
-      - PrivateSubnet1
-      - PrivateSubnet1
     Properties: 
       Name: PetsAPI-VPCLink
       SecurityGroupIds: 
@@ -323,8 +280,6 @@ Resources:
 
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
-    DependsOn:
-      - VPC
     Properties:
       GroupName: PetsAPI-LB-SG
       GroupDescription: PetsAPI LoadBalancer SecurityGroup
@@ -341,10 +296,6 @@ Resources:
   
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-    DependsOn:
-      - PrivateSubnet1
-      - PrivateSubnet2
-      - LoadBalancerSecurityGroup
     Properties:
       Name: PetsAPI-LB
       Type: application
@@ -357,8 +308,6 @@ Resources:
 
   LoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    DependsOn:
-      - VPC
     Properties:
       Name: PetsAPI-LB-TG
       VpcId: !Ref VPC
@@ -378,9 +327,6 @@ Resources:
 
   LoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
-    DependsOn: 
-      - LoadBalancer
-      - LoadBalancerTargetGroup
     Properties:
       LoadBalancerArn: !Ref LoadBalancer
       Port: 80
@@ -400,10 +346,6 @@ Resources:
 
   APIGatewayIntegration:
     Type: AWS::ApiGatewayV2::Integration
-    DependsOn:
-      - APIGateway
-      - VPCLink
-      - LoadBalancerListener
     Properties:
       ApiId: !Ref APIGateway
       Description: Private ALB Integration
@@ -416,9 +358,6 @@ Resources:
 
   APIGatewayRoute:
     Type: AWS::ApiGatewayV2::Route
-    DependsOn:
-      - APIGateway
-      - APIGatewayIntegration
     Properties:
       ApiId: !Ref APIGateway
       RouteKey: $default
@@ -432,9 +371,6 @@ Resources:
 
   APIGatewayStage:
     Type: AWS::ApiGatewayV2::Stage
-    DependsOn:
-      - APIGateway
-      - APIGatewayLogGroup
     Properties:
       StageName: $default
       AutoDeploy: true
@@ -535,8 +471,6 @@ Resources:
 
   ECSTaskRolePolicy:
     Type: AWS::IAM::Policy
-    DependsOn:
-      - ECSTaskRole
     Properties:
       PolicyName: PetsAPI-ECSTaskRolePolicy
       Roles:
@@ -565,10 +499,6 @@ Resources:
 
   ECSTaskDefinition:
     Type: AWS::ECS::TaskDefinition
-    DependsOn:
-      - ECSTaskRole
-      - ECSTaskExecutionRole
-      - ECSLogGroup
     Properties:
       ContainerDefinitions:
           - Name: !FindInMap [ NameConfig, Container, Name ]
@@ -602,9 +532,6 @@ Resources:
 
   ECSServiceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
-    DependsOn:
-      - VPC
-      - LoadBalancerSecurityGroup
     Properties:
       GroupName: PetsAPI-ECS-SG
       GroupDescription: PetsAPI-ECS-SG
@@ -622,15 +549,11 @@ Resources:
   ECSService:
     Type: AWS::ECS::Service
     DependsOn:
-     - ECSTaskDefinition
-     - ECSServiceSecurityGroup
-     - PrivateSubnet1
-     - PrivateSubnet2
      - LoadBalancerListener
     Properties:
       ServiceName: PetsAPI-ECSService
       Cluster: !Ref ECSCluster
-      DesiredCount: 0
+      DesiredCount: !Ref ECSServiceDesiredCount
       TaskDefinition: !Ref ECSTaskDefinition
       LaunchType: FARGATE
       NetworkConfiguration:
@@ -651,8 +574,6 @@ Resources:
 
   CodeBuildSecurityGroup:
     Type: AWS::EC2::SecurityGroup
-    DependsOn:
-      - VPC
     Properties:
       GroupName: PetsAPI-CodeBuild-SG
       GroupDescription: PetsAPI-CodeBuild-SG
@@ -681,11 +602,6 @@ Resources:
 
   CodeBuildBasePolicy:
     Type: AWS::IAM::Policy
-    DependsOn:
-      - CodeBuildRole
-      - PrivateSubnet1
-      - PrivateSubnet2
-      - DatabaseSecret
     Properties: 
       PolicyName: PetsAPI-CodeBuildBasePolicy
       Roles:
@@ -771,8 +687,6 @@ Resources:
 
   CodeBuildCloudwatchPolicy:
     Type: AWS::IAM::Policy
-    DependsOn:
-      - CodeBuildRole
     Properties:
       PolicyName: PetsAPI-CodeBuildCloudwatchPolicy
       Roles:
@@ -792,8 +706,6 @@ Resources:
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     DependsOn:
-      - CodeBuildRole
-      - CodeBuildBasePolicy
       - DatabaseSecretAttachment
     Properties: 
       Artifacts:
@@ -885,8 +797,6 @@ Resources:
 
   CodePipelinePolicy:
     Type: AWS::IAM::Policy
-    DependsOn:
-      - CodePipelineServiceRole
     Properties:
       PolicyName: PetsAPI-CodePipelinePolicy
       Roles:
@@ -1018,11 +928,6 @@ Resources:
 
   CodePipeline:
     Type: AWS::CodePipeline::Pipeline
-    DependsOn:
-      - CodePipelineServiceRole
-      - CodeBuildProject
-      - ECSCluster
-      - ECSService
     Properties: 
       ArtifactStore: 
         Type: S3
@@ -1060,7 +965,7 @@ Resources:
                 Version: 1
               RunOrder: 1
               Configuration:
-                ProjectName: !FindInMap [ NameConfig, CodeBuildProject, Name ]
+                ProjectName: !Ref CodeBuildProject
               InputArtifacts:
                 - Name: SourceArtifact
               Namespace: BuildVariables
@@ -1087,10 +992,6 @@ Resources:
 
   DatabaseSecurityGroup:
     Type: AWS::EC2::SecurityGroup
-    DependsOn:
-      - ECSServiceSecurityGroup
-      - CodeBuildSecurityGroup
-      - VPC
     Properties:
       GroupName: PetsAPI-Database-SG
       GroupDescription: PetsAPI-Database-SG
@@ -1112,9 +1013,6 @@ Resources:
 
   DatabaseSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
-    DependsOn:
-      - PrivateSubnet1
-      - PrivateSubnet2
     Properties:
       DBSubnetGroupName: PetsAPI-Database-SN-G
       DBSubnetGroupDescription: PetsAPI-Database-SN-G
@@ -1136,10 +1034,6 @@ Resources:
   DatabaseInstance:
     DeletionPolicy: Delete
     Type: AWS::RDS::DBInstance
-    DependsOn:
-      - DatabaseSubnetGroup
-      - DatabaseSecret
-      - DatabaseSecurityGroup
     Properties:
       AllocatedStorage: 20
       AllowMajorVersionUpgrade: false
@@ -1164,9 +1058,6 @@ Resources:
 
   DatabaseSecretAttachment:
     Type: AWS::SecretsManager::SecretTargetAttachment
-    DependsOn:
-      - DatabaseSecret
-      - DatabaseInstance
     Properties:
       SecretId: !Ref DatabaseSecret
       TargetId: !Ref DatabaseInstance
