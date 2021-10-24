@@ -8,18 +8,18 @@ Parameters:
   CodestarConnectionId:
     Description: Specify Codestar connection identifier that is configured and authenticated for the source provider. 
     Type: String
-    Default: 614f4e2f-5920-4072-9f66-b220f2ed97dc
 
   FullRepositoryId:
     Description: 'Specify the owner and name of the repository where source changes are to be detected. Example: some-user/my-repo.'
     Type: String
-    Default: jquirossoto/ecs-node-typescript-express-api
 
   BranchName:
     Description: The name of the branch where source changes are to be detected.
     Type: String
-    Default: master
 
+  ArtifactStoreS3Location:
+    Type: String
+    Description: Name of the S3 bucket to store CodePipeline artificat.
 
 ################################### APPLICATION CONDITIONS ###################################
 ################################### APPLICATION MAPPINGS ###################################
@@ -64,8 +64,8 @@ Resources:
       EnableDnsHostnames: false
       EnableDnsSupport: true
       Tags:
-      - Key: Name
-        Value: PetsAPI-VPC
+        - Key: Name
+          Value: PetsAPI-VPC
 
   ################################### INTERNET GATEWAY ###################################
 
@@ -126,6 +126,9 @@ Resources:
 
   PublicSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
+    DependsOn:
+      - PublicRouteTable
+      - PublicSubnet1
     Properties:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet1
@@ -167,6 +170,9 @@ Resources:
 
   PublicSubnet2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
+    DependsOn:
+      - PublicRouteTable
+      - PublicSubnet2
     Properties:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet2
@@ -210,6 +216,8 @@ Resources:
 
   PrivateSubnet1RouteTable:
     Type: AWS::EC2::RouteTable
+    DependsOn:
+      - VPC
     Properties:
       VpcId: !Ref VPC
       Tags:
@@ -1019,7 +1027,7 @@ Resources:
       ArtifactStore: 
         Type: S3
         # default location
-        Location: !Sub codepipeline-${AWS::Region}-91946427360
+        Location: !Ref ArtifactStoreS3Location
       Name: pets-api-pipeline
       RestartExecutionOnUpdate: false
       RoleArn: !GetAtt CodePipelineServiceRole.Arn

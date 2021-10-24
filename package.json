@@ -28,7 +28,7 @@
     "prisma:migrate:deploy": "prisma migrate deploy",
     "speccy": "speccy resolve -j openapi.json -o openapi.yml",
     "speccy:lint": "speccy lint -j openapi.json",
-    "sam:stack:deploy": "sam deploy --role-arn arn:aws:iam::186521841143:role/ColectaLocalCFNServiceRole",
+    "sam:stack:deploy": "sam deploy --role-arn arn:aws:iam::186521841143:role/ColectaLocalCFNServiceRole --parameter-overrides $(cat .env)",
     "sam:stack:remove": "sam delete"
   },
   "author": "jquirossoto",
