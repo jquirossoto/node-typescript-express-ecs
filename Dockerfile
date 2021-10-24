@@ -13,12 +13,12 @@ COPY package.json .
 COPY package-lock.json .
 
 # ---------------------------- DEPENDENCIES ----------------------------
-FROM base AS dependencies
-# copies schema.prisma to generate client after installing modules (https://www.prisma.io/)
-COPY prisma/schema.prisma .
-COPY prisma/.env .
-# installs modules (--only=production)
-RUN npm ci
+# FROM base AS dependencies
+# # copies schema.prisma to generate client after installing modules (https://www.prisma.io/)
+# COPY prisma/schema.prisma .
+# COPY prisma/.env .
+# # installs modules (--only=production)
+# RUN npm ci
 
 # ---------------------------- RELEASE ----------------------------
 FROM base AS release
@@ -28,8 +28,8 @@ USER node
 ENTRYPOINT ["/sbin/tini", "--"]
 # sets NODE_ENV to production
 ENV NODE_ENV production
-# copies the production modules from the dependencies image
-COPY --chown=node:node --from=dependencies /usr/src/app/node_modules node_modules/
+# copies the production modules from the dependencies image (COPY --chown=node:node --from=dependencies /usr/src/app/node_modules node_modules/)
+COPY --chown=node:node node_modules node_modules/
 # copies the built app from the build image
 COPY --chown=node:node dist/ .
 # copies prisma .env to resolve database credentials
