@@ -6,19 +6,19 @@ phases:
   pre_build:
     commands:
       - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 186521841143.dkr.ecr.us-east-1.amazonaws.com
+      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
       - ./scripts/prisma.sh
       - npm ci
   build:
     commands:
       - npm run build
       - npm run test
-      - docker build -t pets-api .
-      - docker tag pets-api:latest 186521841143.dkr.ecr.us-east-1.amazonaws.com/pets-api:latest
+      - docker build -t $REPOSITORY_NAME:latest .
+      - docker tag $REPOSITORY_NAME:latest $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest
   post_build:
     commands:
-      - docker push 186521841143.dkr.ecr.us-east-1.amazonaws.com/pets-api:latest
-      - printf '[{"name":"%s","imageUri":"%s"}]' pets-api 186521841143.dkr.ecr.us-east-1.amazonaws.com/pets-api:latest > imagedefinitions.json
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest
+      - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest > imagedefinitions.json
       - npm run prisma:migrate:deploy
 artifacts:
   files: imagedefinitions.json
