@@ -6,16 +6,16 @@ Transform: 'AWS::Serverless-2016-10-31'
 Parameters:
 
   CodestarConnectionId:
-    Description: Specify Codestar connection identifier that is configured and authenticated for the source provider. 
     Type: String
+    Description: Specify Codestar connection identifier that is configured and authenticated for the source provider. 
 
   FullRepositoryId:
-    Description: 'Specify the owner and name of the repository where source changes are to be detected. Example: some-user/my-repo.'
     Type: String
+    Description: 'Specify the owner and name of the repository where source changes are to be detected. Example: some-user/my-repo.'
 
   BranchName:
-    Description: The name of the branch where source changes are to be detected.
     Type: String
+    Description: The name of the branch where source changes are to be detected.
 
   ArtifactStoreS3Location:
     Type: String
