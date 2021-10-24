@@ -23,5 +23,16 @@ module.exports = {
             statements: 80
         }
     },
-    coverageReporters: ['json', 'lcov', 'text', 'clover']
+    coverageReporters: ['json', 'lcov', 'text', 'clover'],
+    coverageDirectory: 'jest/coverage',
+    reporters: [
+        'default',
+        [
+            'jest-junit', 
+            {
+                outputDirectory: 'jest/junit',
+                outputName: 'junit.xml',
+            }
+        ]
+    ]
 };

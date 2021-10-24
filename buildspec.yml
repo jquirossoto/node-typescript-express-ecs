@@ -22,3 +22,16 @@ phases:
       - npm run prisma:migrate:deploy
 artifacts:
   files: imagedefinitions.json
+reports:
+  clover:
+    files:
+      - clover.xml
+    base-directory: 'jest/coverage'
+    discard-paths: false
+    file-format: CLOVERXML
+  junit:
+    files:
+      - junit.xml
+    base-directory: 'jest/junit/'
+    discard-paths: false
+    file-format: JUNITXML
