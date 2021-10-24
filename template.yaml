@@ -5,15 +5,27 @@ Transform: 'AWS::Serverless-2016-10-31'
 
 Parameters:
 
-  DatabaseSecretName:
-    Description: Specify the database secret name.
+  CodestarConnectionId:
+    Description: Specify Codestar connection identifier that is configured and authenticated for the source provider. 
     Type: String
-    Default: rds-db-credentials/petsdb5
+    Default: 614f4e2f-5920-4072-9f66-b220f2ed97dc
+
+  FullRepositoryId:
+    Description: 'Specify the owner and name of the repository where source changes are to be detected. Example: some-user/my-repo.'
+    Type: String
+    Default: jquirossoto/ecs-node-typescript-express-api
+
+  BranchName:
+    Description: The name of the branch where source changes are to be detected.
+    Type: String
+    Default: master
+
 
 ################################### APPLICATION CONDITIONS ###################################
 ################################### APPLICATION MAPPINGS ###################################
 
 Mappings:
+
   SubnetConfig:
     VPC:
       CIDR: 10.2.0.0/16
@@ -25,6 +37,18 @@ Mappings:
       CIDR: 10.2.2.0/24
     PrivateSubnet2:
       CIDR: 10.2.3.0/24
+
+  NameConfig:
+    ECRRepository:
+      Name: pets-api
+    Container:
+      Name: pets-api
+    CodeBuildProject:
+      Name: pets-api-codebuild
+    CodeBuildLogGroup:
+      Name: pets-api
+    DatabaseSecret:
+      Name: rds-db-credentials/petsdb5
 
 ################################### APPLICATION RESOURCES ###################################
 
@@ -448,7 +472,7 @@ Resources:
       ImageScanningConfiguration: 
         ScanOnPush: true
       ImageTagMutability: MUTABLE
-      RepositoryName: pets-api
+      RepositoryName: !FindInMap [ NameConfig, ECRRepository, Name ]
       RepositoryPolicyText:
         Version: 2012-10-17
         Statement:
@@ -539,7 +563,7 @@ Resources:
       - ECSLogGroup
     Properties:
       ContainerDefinitions:
-          - Name: pets-api
+          - Name: !FindInMap [ NameConfig, Container, Name ]
             Image: !Join [ ':', [ !GetAtt ECRRepository.RepositoryUri, latest ] ]
             HealthCheck:
               Command: 
@@ -611,7 +635,7 @@ Resources:
             - !Ref PrivateSubnet2
       LoadBalancers:
           # The name of the container (as it appears in a container definition)
-        - ContainerName: pets-api
+        - ContainerName: !FindInMap [ NameConfig, Container, Name ]
           ContainerPort: 3000
           TargetGroupArn: !Ref LoadBalancerTargetGroup
 
@@ -663,9 +687,8 @@ Resources:
         Statement: 
           - Effect: Allow
             Resource:
-                # pets-api-codebuild is the name of the codebuild project
-              - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/pets-api-codebuild
-              - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/pets-api-codebuild:*
+              - !Join [ '', [ !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/', !FindInMap [ NameConfig, CodeBuildProject, Name ] ] ]
+              - !Join [ '', [ !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/', !FindInMap [ NameConfig, CodeBuildProject, Name ], ':*' ] ]
             Action:
               - logs:CreateLogGroup
               - logs:CreateLogStream
@@ -681,8 +704,7 @@ Resources:
               - s3:GetBucketLocation
           - Effect: Allow
             Resource:
-                # pets-api-codebuild is the name of the codebuild project
-              - !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/pets-api-codebuild-*
+              - !Join [ '', [ !Sub 'arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/', !FindInMap [ NameConfig, CodeBuildProject, Name ], '-*' ] ]
             Action:
               - codebuild:CreateReportGroup
               - codebuild:CreateReport
@@ -697,18 +719,17 @@ Resources:
               - ssm:GetParameter
               - ssm:GetParameters
           - Effect: Allow
-            Resource: 
-                # Refers to the secret in secrets manager (database credentials defined in codebuild project)
-              - !Ref DatabaseSecret
-            Action: 
-              - secretsmanager:GetSecretValue
-          - Effect: Allow
             Resource:
                 # key used to encryt/decrypt DOCKERHUB_USERNAME & DOCKERHUB_PASSWORD params in codebuild project
               - !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/d0b8969b-d55b-4f94-9091-5fc2d19c76d7
             Action: 
               - kms:Decrypt
               - kms:GenerateDataKey*
+          - Effect: Allow
+            Resource: 
+              - !Ref DatabaseSecret
+            Action: 
+              - secretsmanager:GetSecretValue
           - Effect: Allow
             Resource: '*'
             Action:
@@ -737,8 +758,8 @@ Resources:
                 ec2:AuthorizedService: codebuild.amazonaws.com
               ArnEquals:
                 ec2:Subnet:
-                  - !Join [ '', [ !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet/', !Ref PrivateSubnet1 ] ]
-                  - !Join [ '', [ !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet/', !Ref PrivateSubnet2 ] ]
+                  - !Join [ '/', [ !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet', !Ref PrivateSubnet1 ] ]
+                  - !Join [ '/', [ !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet', !Ref PrivateSubnet2 ] ]
 
   CodeBuildCloudwatchPolicy:
     Type: AWS::IAM::Policy
@@ -753,9 +774,8 @@ Resources:
         Statement: 
           - Effect: Allow
             Resource:
-                # pets-api comes from CodeBuildProject -> LogsConfig -> CloudWatchLogs -> GroupName
-              - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:pets-api
-              - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:pets-api:*
+              - !Join [ '', [ !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:', !FindInMap [ NameConfig, CodeBuildLogGroup, Name ] ] ]
+              - !Join [ '', [ !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:', !FindInMap [ NameConfig, CodeBuildLogGroup, Name ], ':*' ] ]
             Action:
               - logs:CreateLogGroup
               - logs:CreateLogStream
@@ -780,7 +800,19 @@ Resources:
       Description: pets api codebuild
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
-        EnvironmentVariables: 
+        EnvironmentVariables:
+          - Name: ACCOUNT_ID
+            Type: PLAINTEXT
+            Value: !Ref AWS::AccountId
+          - Name: REGION
+            Type: PLAINTEXT
+            Value: !Ref AWS::Region
+          - Name: REPOSITORY_NAME
+            Type: PLAINTEXT
+            Value: !FindInMap [ NameConfig, ECRRepository, Name ]
+          - Name: CONTAINER_NAME
+            Type: PLAINTEXT
+            Value: !FindInMap [ NameConfig, Container, Name ]
           - Name: DOCKERHUB_USERNAME
             Type: PARAMETER_STORE
             Value: /pets-api/dockerhub/username
@@ -789,36 +821,36 @@ Resources:
             Value: /pets-api/dockerhub/password
           - Name: DB_HOST
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !Ref DatabaseSecretName, host ] ]
+            Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], host ] ]
           - Name: DB_PORT
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !Ref DatabaseSecretName, port ] ]
+            Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], port ] ]
           - Name: DB_NAME
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !Ref DatabaseSecretName, dbname ] ]
+            Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], dbname ] ]
           - Name: DB_USERNAME
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !Ref DatabaseSecretName, username ] ]
+            Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], username ] ]
           - Name: DB_PASSWORD
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !Ref DatabaseSecretName, password ] ]
+            Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], password ] ]
         Image: aws/codebuild/standard:5.0
         ImagePullCredentialsType: CODEBUILD
         PrivilegedMode: true
         Type: LINUX_CONTAINER
       LogsConfig:
         CloudWatchLogs: 
-          GroupName: pets-api
+          GroupName: !FindInMap [ NameConfig, CodeBuildLogGroup, Name ]
           Status: ENABLED
           StreamName: pets-api
         S3Logs:
           Status: DISABLED
-      Name: pets-api-codebuild
+      Name: !FindInMap [ NameConfig, CodeBuildProject, Name ]
       QueuedTimeoutInMinutes: 480
       ServiceRole : !GetAtt CodeBuildRole.Arn
       Source:
         Type: CODEPIPELINE
-      SourceVersion: master
+      SourceVersion: !Ref BranchName
       TimeoutInMinutes: 60
       VpcConfig:
         SecurityGroupIds: 
@@ -885,7 +917,7 @@ Resources:
               - codedeploy:RegisterApplicationRevision
           - Effect: Allow
             Resource:
-              - !Sub arn:aws:codestar-connections:${AWS::Region}:${AWS::AccountId}:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc
+              - !Sub arn:aws:codestar-connections:${AWS::Region}:${AWS::AccountId}:connection/${CodestarConnectionId}
             Action:
               - codestar-connections:UseConnection
           - Effect: Allow
@@ -1002,10 +1034,10 @@ Resources:
                 Version: 1
               RunOrder: 1
               Configuration:
-                ConnectionArn: !Sub arn:aws:codestar-connections:${AWS::Region}:${AWS::AccountId}:connection/614f4e2f-5920-4072-9f66-b220f2ed97dc
-                BranchName: master
+                ConnectionArn: !Sub arn:aws:codestar-connections:${AWS::Region}:${AWS::AccountId}:connection/${CodestarConnectionId}
+                BranchName: !Ref BranchName
                 OutputArtifactFormat: CODE_ZIP
-                FullRepositoryId: jquirossoto/ecs-node-typescript-express-api
+                FullRepositoryId: !Ref FullRepositoryId
               Namespace: SourceVariables
               OutputArtifacts: 
                 - Name: SourceArtifact
@@ -1020,7 +1052,7 @@ Resources:
                 Version: 1
               RunOrder: 1
               Configuration:
-                ProjectName: pets-api-codebuild
+                ProjectName: !FindInMap [ NameConfig, CodeBuildProject, Name ]
               InputArtifacts:
                 - Name: SourceArtifact
               Namespace: BuildVariables
@@ -1086,7 +1118,7 @@ Resources:
     Type: AWS::SecretsManager::Secret
     Properties:
       Description: Secret for database instance
-      Name: !Ref DatabaseSecretName
+      Name: !FindInMap [ NameConfig, DatabaseSecret, Name ]
       GenerateSecretString:
         SecretStringTemplate: '{"username": "pets"}'
         GenerateStringKey: password
