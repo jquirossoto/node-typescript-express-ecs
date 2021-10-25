@@ -22,9 +22,14 @@ Parameters:
     Type: String
     Description: Specify the name of the S3 bucket to store the CodePipeline artificats.
 
-  ECSServiceDesiredCount:
+  AutoScalingMinCapacity:
     Type: Number
-    Description: Specify the number of instantiations of the task definition to place in the service and keep running on your cluster.
+    Description: Specify the maximum value that you plan to scale out to.
+    Default: 0
+
+  AutoScalingMaxCapacity:
+    Type: Number
+    Description: Specify the minimum value that you plan to scale in to
     Default: 0
 
   DuckerHubUsername:
@@ -554,7 +559,8 @@ Resources:
     Properties:
       ServiceName: PetsAPI-ECSService
       Cluster: !Ref ECSCluster
-      DesiredCount: !Ref ECSServiceDesiredCount
+      # Capacity will be handle exclusively by the ECSServiceAutoScalingTarget
+      DesiredCount: 0
       TaskDefinition: !Ref ECSTaskDefinition
       LaunchType: FARGATE
       NetworkConfiguration:
@@ -601,8 +607,8 @@ Resources:
   ECSServiceAutoScalingTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
-      MinCapacity: 2
-      MaxCapacity: 3
+      MinCapacity: !Ref AutoScalingMinCapacity
+      MaxCapacity: !Ref AutoScalingMaxCapacity
       ResourceId: !Join [ '/', [ service, !Ref ECSCluster, !GetAtt ECSService.Name ] ]
       ScalableDimension: ecs:service:DesiredCount
       ServiceNamespace: ecs
