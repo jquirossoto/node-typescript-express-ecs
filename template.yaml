@@ -428,16 +428,6 @@ Resources:
         ScanOnPush: true
       ImageTagMutability: MUTABLE
       RepositoryName: !FindInMap [ NameConfig, ECRRepository, Name ]
-      RepositoryPolicyText:
-        Version: 2012-10-17
-        Statement:
-          - Sid: CodeBuildAccess
-            Effect: Allow
-            Principal: 
-              Service: codebuild.amazonaws.com
-            Action: 
-              - ecr:BatchGetImage
-              - ecr:GetDownloadUrlForLayer
 
   ################################### ECS ###################################
 
@@ -850,7 +840,7 @@ Resources:
       ServiceRole : !GetAtt CodeBuildRole.Arn
       Source:
         Type: CODEPIPELINE
-      SourceVersion: !Ref BranchName
+      # SourceVersion: !Ref BranchName
       TimeoutInMinutes: 60
       VpcConfig:
         SecurityGroupIds: 
