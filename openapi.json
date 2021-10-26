@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "ColectaInternalAPI",
-    "description": "Colecta Internal API. Consumable only from Colecta proprietary applications",
+    "title": "Pets.io API",
+    "description": "Pets.io public API",
     "version": "1.0",
-    "termsOfService": "https://colecta.io/terms/",
+    "termsOfService": "https://pets.io/terms/",
     "contact": {
       "name": "Support",
-      "url": "https://support.colecta.io",
-      "email": "support@colecta.io"
+      "url": "https://pets.colecta.io",
+      "email": "support@pets.io"
     },
     "license": {
       "name": "Apache 2.0",
@@ -17,26 +17,20 @@
   },
   "servers": [
     {
-      "url": "https://local.internal.api.colecta.io"
+      "url": "https://api.pets.io"
     },
     {
-      "url": "https://dev.internal.api.colecta.io"
-    },
-    {
-      "url": "https://stag.internal.api.colecta.io"
-    },
-    {
-      "url": "https://internal.api.colecta.io"
+      "url": "http://localhost:3000"
     }
   ],
   "paths": {
-    "/accounts": {
+    "/categories": {
       "post": {
         "operationId": "ef2d7510-1929-4883-a37e-f1ef9525c005",
-        "summary": "Create accounts",
-        "description": "Endpoint to create accounts",
+        "summary": "Create categories",
+        "description": "Service to create categories",
         "tags": [
-          "Account"
+          "Categories"
         ],
         "requestBody": {
           "content": {
@@ -48,19 +42,9 @@
           },
           "required": true
         },
-        "parameters": [{
-          "name": "X-Account",
-          "in": "header",
-          "description": "Account",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "allowEmptyValue": false
-        }],
         "responses": {
           "200": {
-            "description": "Create accounts response",
+            "description": "Create categories success response",
             "content": {
               "application/json": {
                 "schema": {
@@ -93,31 +77,179 @@
       },
       "get": {
         "operationId": "bef61e11-dd7a-4f7c-9d63-075f86120838",
-        "summary": "List accounts",
-        "description": "Endpoint to list accounts",
+        "summary": "List categories",
+        "description": "Service to list categories",
         "tags": [
-          "Account"
+          "Categories"
         ],
-        "parameters": [{
-          "name": "X-Account",
-          "in": "header",
-          "description": "Account",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "allowEmptyValue": false
-        }],
         "responses": {
           "200": {
-            "description": "Create accounts response",
+            "description": "List categories success response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateCategoriesResponse"
+                  "$ref": "#/components/schemas/ListCategoriesResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/${categoryId}": {
+      "get":{
+        "operationId": "36bdce6b-1fcd-41c6-8614-046e991d0d3d",
+        "summary": "Get categories",
+        "description": "Service to get categories",
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "Category Identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get categories success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCategoriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch":{
+        "operationId": "44a6dab0-2ca7-4276-b38e-dd18c8d14ce8",
+        "summary": "Update categories",
+        "description": "Service to update categories",
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "Category Identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoriesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Get categories success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCategoriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete":{
+        "operationId": "053a45b2-3cf7-41ce-95fb-335f35533e64",
+        "summary": "Delete categories",
+        "description": "Service to delete categories",
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "Category Identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Get categories success response"
           },
           "400": {
             "description": "Default 4xx response",
@@ -149,18 +281,30 @@
         "$ref": "./src/schemas/error-response.schema.json"
       },
       "CreateCategoriesRequest": {
-        "$ref": "./src/schemas/create-category-request.schema.json"
+        "$ref": "./src/schemas/create-categories-request.schema.json"
       },
       "CreateCategoriesResponse": {
-        "$ref": "./src/schemas/create-category-response.schema.json"
+        "$ref": "./src/schemas/create-categories-response.schema.json"
+      },
+      "ListCategoriesResponse": {
+        "$ref": "./src/schemas/list-categories-response.schema.json"
+      },
+      "GetCategoriesResponse": {
+        "$ref": "./src/schemas/get-categories-response.schema.json"
+      },
+      "UpdateCategoriesRequest": {
+        "$ref": "./src/schemas/update-categories-request.schema.json"
+      },
+      "UpdateCategoriesResponse": {
+        "$ref": "./src/schemas/update-categories-response.schema.json"
       }
     },
     "securitySchemes": {
       "Authorization": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description": "JWT generated by AWS Cognito."
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "API key to authorize requests."
       }
     }
   },

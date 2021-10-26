@@ -10,13 +10,9 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use('/api', authorize);
-app.use('/api', categoryRouter);
-app.use('/api', petRouter);
+// app.use('/', authorize);
+app.use('/', categoryRouter);
+app.use('/', petRouter);
 app.use('/', healthRouter);
-
-app.get('/', (req: Request, res: Response) => {
-	res.send('Hello World!');
-});
 
 export default app;
