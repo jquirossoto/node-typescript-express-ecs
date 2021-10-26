@@ -10,10 +10,12 @@
             "enum": ["ERROR"],
             "type": "string"
         },
-        "error": {
-            "type": "string",
-            "title": "Error",
-            "description": "Error message."
+        "errors": {
+            "items": {
+                "type": "string",
+                "title": "Error",
+                "description": "Error message."
+            }
         }
     },
     "additionalProperties": false
