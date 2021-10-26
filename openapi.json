@@ -42,7 +42,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAccountsRequest"
+                "$ref": "#/components/schemas/CreateCategoriesRequest"
               }
             }
           },
@@ -64,7 +64,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateAccountsResponse"
+                  "$ref": "#/components/schemas/CreateCategoriesResponse"
                 }
               }
             }
@@ -114,7 +114,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateAccountsResponse"
+                  "$ref": "#/components/schemas/CreateCategoriesResponse"
                 }
               }
             }
@@ -146,13 +146,13 @@
   "components": {
     "schemas": {
       "ErrorResponse": {
-        "$ref": "./src/schemas/errorResponse.json"
+        "$ref": "./src/schemas/error-response.schema.json"
       },
-      "CreateAccountsRequest": {
-        "$ref": "./src/lambdas/resources/accounts/create-accounts/schemas/request.json"
+      "CreateCategoriesRequest": {
+        "$ref": "./src/schemas/create-category-request.schema.json"
       },
-      "CreateAccountsResponse": {
-        "$ref": "./src/lambdas/resources/accounts/create-accounts/schemas/response.json"
+      "CreateCategoriesResponse": {
+        "$ref": "./src/schemas/create-category-response.schema.json"
       }
     },
     "securitySchemes": {

@@ -5,7 +5,7 @@ export function buildSuccessResponse(data: any) {
     };
 }
 
-export function buildErrorResponse(error: any) {
+export function buildErrorResponse(error: string) {
     return {
         status: 'ERROR',
         error

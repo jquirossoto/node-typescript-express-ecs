@@ -105,3 +105,6 @@ dist
 
 #Custom jest result directory
 jest/
+
+#Output from speccy
+openapi.yml
