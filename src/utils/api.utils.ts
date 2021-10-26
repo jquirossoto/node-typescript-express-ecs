@@ -5,9 +5,9 @@ export function buildSuccessResponse(data: any) {
     };
 }
 
-export function buildErrorResponse(error: string) {
+export function buildErrorResponse(errors: string[]) {
     return {
         status: 'ERROR',
-        error
+        errors
     };
 }
