@@ -14,7 +14,7 @@ export function authorize(req: Request, res: Response, next: NextFunction) {
     return next();
 }
 
-export const validate = (schema: object) => {
+export const validateSchema = (schema: object) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const validate = ajv.compile(schema);
         if (!validate(req.body)) {
