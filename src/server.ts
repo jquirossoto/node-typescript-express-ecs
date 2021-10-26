@@ -11,13 +11,13 @@ const server = app.listen(port, () => {
     console.log(`Running on port ${port}`);
 });
 
-function shutdown(signal: string, value: number) {
+const shutdown = (signal: string, value: number) => {
     server.close(async () => {
         await prisma.$disconnect();
         console.log('Stopped by ' + signal);
         process.exit(0);
     });
-}
+};
 
 Object.keys(signals).forEach((signal) => {
     process.on(signal, () => {
