@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import Ajv from "ajv";
-import { DefinedError } from "ajv";
+import Ajv, { DefinedError } from "ajv";
 
 import { buildErrorResponse } from './../utils/api.utils';
 
