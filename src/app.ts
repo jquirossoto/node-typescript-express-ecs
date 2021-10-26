@@ -1,5 +1,4 @@
 import express from 'express';
-import {Request, Response} from 'express';
 
 import { router as categoryRouter } from './routers/category.router';
 import { router as petRouter } from './routers/pet.router';
