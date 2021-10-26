@@ -62,9 +62,9 @@ Mappings:
     Container:
       Name: pets-api
     CodeBuildProject:
-      Name: pets-api-codebuild
-    CodeBuildLogGroup:
       Name: pets-api
+    CodeBuildLogGroup:
+      Name: /aws/codebuild/pets-api
     DatabaseSecret:
       Name: rds-db-credentials/petsdb5
     DockerHubSecret:
@@ -381,7 +381,7 @@ Resources:
   APIGatewayLogGroup:
     Type: AWS::Logs::LogGroup
     Properties: 
-      LogGroupName: apigateway
+      LogGroupName: /aws/apigateway/pets-api
       RetentionInDays: 1
 
   APIGatewayStage:
@@ -499,7 +499,7 @@ Resources:
   ECSLogGroup:
     Type: AWS::Logs::LogGroup
     Properties: 
-      LogGroupName: containers
+      LogGroupName: /aws/ecs/pets-api
       RetentionInDays: 1
 
   ECSTaskDefinition:
