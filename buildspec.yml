@@ -26,10 +26,10 @@ artifacts:
   files:
     - '**/*'
   secondary-artifacts:
-    image:
+    DockerImageArtifact:
       base-directory: $CODEBUILD_SRC_DIR
       files: imagedefinitions.json
-    openapi:
+    OpenAPIFileArtifact:
       base-directory: $CODEBUILD_SRC_DIR
       files: openapi.yml
 reports:
