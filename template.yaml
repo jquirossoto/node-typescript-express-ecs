@@ -892,6 +892,13 @@ Resources:
           - !Ref PrivateSubnet2
         VpcId: !Ref VPC
 
+  ################################### S3 ###################################
+
+  OpenAPIBucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: open-api-us-east-1-123456
+
   ################################### CODE PIPELINE ###################################
 
   CodePipelineServiceRole:
@@ -1082,11 +1089,12 @@ Resources:
                 - Name: SourceArtifact
               Namespace: BuildVariables
               OutputArtifacts:
-                - Name: BuildArtifact
+                - Name: DockerImageArtifact
+                - Name: OpenAPIFileArtifact
               Region: !Ref AWS::Region
         - Name: Deploy
           Actions:
-            - Name: Deploy
+            - Name: DeployDockerImage
               ActionTypeId:
                 Category: Deploy
                 Owner: AWS
@@ -1097,7 +1105,19 @@ Resources:
                 ServiceName: !Ref ECSService
                 FileName: imagedefinitions.json
               InputArtifacts:
-                - Name: BuildArtifact
+                - Name: DockerImageArtifact
+              RunOrder: 2
+            - Name: DeployOpenAPIFile
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: S3
+              Configuration:
+                BucketName: !Ref OpenAPIBucket
+                Extract: true
+              InputArtifacts:
+                - Name: OpenAPIFileArtifact
               RunOrder: 1
 
 ################################### APPLICATION OUTPUTS ###################################
