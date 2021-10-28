@@ -11,6 +11,7 @@ phases:
       - npm ci
   build:
     commands:
+      - npm run speccy:lint
       - npm run build
       - npm run test
       - docker build -t $REPOSITORY_NAME:latest .
@@ -20,8 +21,12 @@ phases:
       - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest
       - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest > imagedefinitions.json
       - npm run prisma:migrate:deploy
+      - npm run speccy
 artifacts:
   files: imagedefinitions.json
+  secondary-artifacts:
+    openapi:
+      files: openapi.yml
 reports:
   clover:
     files:
