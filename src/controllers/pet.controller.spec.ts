@@ -56,7 +56,7 @@ describe('Pet Controller', () => {
 
             expect(petService.create).toHaveBeenCalledWith(newPet);
             expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
+            expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
         });
         
     });
@@ -115,7 +115,7 @@ describe('Pet Controller', () => {
 
             expect(petService.list).toHaveBeenCalled();
             expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
+            expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
         });
 
     });
@@ -188,7 +188,7 @@ describe('Pet Controller', () => {
 
             expect(petService.get).toHaveBeenCalledWith(998);
             expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
+            expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
         });
 
     });
@@ -245,7 +245,7 @@ describe('Pet Controller', () => {
 
             expect(petService.update).toHaveBeenCalledWith(1, dataToPatch);
             expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
+            expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
 
         });
 
@@ -291,7 +291,7 @@ describe('Pet Controller', () => {
 
             expect(petService.remove).toHaveBeenCalledWith(1);
             expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse(error.message));
+            expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
         });
 
     });
