@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: ''
+Description: 'Express API developed in Typescript and deployed to ECS Fargate that sits behind a private Application Load Balancer and exposed to the world using an Http API Gateway.'
 
 ################################### APPLICATION PARAMETERS ###################################
 
