@@ -23,8 +23,12 @@ phases:
       - npm run prisma:migrate:deploy
       - npm run speccy
 artifacts:
-  files: imagedefinitions.json
+  files:
+    - '**/*'
   secondary-artifacts:
+    image:
+      base-directory: $CODEBUILD_SRC_DIR
+      files: imagedefinitions.json
     openapi:
       base-directory: $CODEBUILD_SRC_DIR
       files: openapi.yml
