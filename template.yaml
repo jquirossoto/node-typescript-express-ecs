@@ -1106,7 +1106,7 @@ Resources:
                 FileName: imagedefinitions.json
               InputArtifacts:
                 - Name: DockerImageArtifact
-              RunOrder: 2
+              RunOrder: 1
             - Name: DeployOpenAPIFile
               ActionTypeId:
                 Category: Deploy
@@ -1118,7 +1118,7 @@ Resources:
                 Extract: true
               InputArtifacts:
                 - Name: OpenAPIFileArtifact
-              RunOrder: 1
+              RunOrder: 2
 
 ################################### APPLICATION OUTPUTS ###################################
 
