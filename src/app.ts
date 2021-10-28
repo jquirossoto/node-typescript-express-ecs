@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use('/', authorize);
+app.use('/', authorize);
 app.use('/', categoryRouter);
 app.use('/', petRouter);
 app.use('/', healthRouter);

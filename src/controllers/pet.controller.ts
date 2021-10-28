@@ -4,7 +4,7 @@ import { Pet } from './../models/pet.model';
 import * as petService from './../services/pet.service';
 import * as apiUtils from './../utils/api.utils';
 
-export async function post(req: Request, res: Response) {
+export const post = async (req: Request, res: Response) => {
     try {
         const pet: Pet = await petService.create(req.body);
         res.status(200).json(apiUtils.buildSuccessResponse(pet));
@@ -12,8 +12,7 @@ export async function post(req: Request, res: Response) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
 }
-
-export async function list(req: Request, res: Response) {
+export const list = async (req: Request, res: Response) => {
     try {
         const categories: Pet[] = await petService.list();
         res.status(200).json(apiUtils.buildSuccessResponse(categories));
@@ -22,7 +21,7 @@ export async function list(req: Request, res: Response) {
     }
 }
 
-export async function get(req: Request, res: Response) {
+export const get = async (req: Request, res: Response) => {
     try {
         const pet: Pet | null = await petService.get(+req.params.id);
         res.status(200).json(apiUtils.buildSuccessResponse(pet));
@@ -31,7 +30,7 @@ export async function get(req: Request, res: Response) {
     }
 }
 
-export async function patch(req: Request, res: Response) {
+export const patch = async (req: Request, res: Response) => {
     try {
         const pet: Pet = await petService.update(+req.params.id, req.body);
         res.status(200).json(apiUtils.buildSuccessResponse(pet));
@@ -40,7 +39,7 @@ export async function patch(req: Request, res: Response) {
     }
 }
 
-export async function remove(req: Request, res: Response) {
+export const remove = async (req: Request, res: Response) => {
     try {
         const pet: Pet = await petService.remove(+req.params.id);
         res.status(200).json(apiUtils.buildSuccessResponse(null));

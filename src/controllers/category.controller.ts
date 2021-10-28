@@ -4,7 +4,7 @@ import { Category } from './../models/category.model';
 import * as categoryService from './../services/category.service';
 import * as apiUtils from './../utils/api.utils';
 
-export async function post(req: Request, res: Response) {
+export const post = async (req: Request, res: Response) => {
     try {
         const category: Category = await categoryService.create(req.body);
         res.status(200).json(apiUtils.buildSuccessResponse(category));
@@ -13,7 +13,7 @@ export async function post(req: Request, res: Response) {
     }
 }
 
-export async function list(req: Request, res: Response) {
+export const list = async (req: Request, res: Response) => {
     try {
         const categories: Category[] = await categoryService.list();
         res.status(200).json(apiUtils.buildSuccessResponse(categories));
@@ -22,7 +22,7 @@ export async function list(req: Request, res: Response) {
     }
 }
 
-export async function get(req: Request, res: Response) {
+export const get = async (req: Request, res: Response) => {
     try {
         const category: Category | null = await categoryService.get(+req.params.id);
         res.status(200).json(apiUtils.buildSuccessResponse(category));
@@ -31,7 +31,7 @@ export async function get(req: Request, res: Response) {
     }
 }
 
-export async function patch(req: Request, res: Response) {
+export const patch = async (req: Request, res: Response) => {
     try {
         const category: Category = await categoryService.update(+req.params.id, req.body);
         res.status(200).json(apiUtils.buildSuccessResponse(category));
@@ -40,7 +40,7 @@ export async function patch(req: Request, res: Response) {
     }
 }
 
-export async function remove(req: Request, res: Response) {
+export const remove = async (req: Request, res: Response) => {
     try {
         const category: Category = await categoryService.remove(+req.params.id);
         res.status(200).json(apiUtils.buildSuccessResponse(null));

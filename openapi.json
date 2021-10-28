@@ -116,7 +116,7 @@
         }
       }
     },
-    "/categories/${categoryId}": {
+    "/categories/${id}": {
       "get":{
         "operationId": "36bdce6b-1fcd-41c6-8614-046e991d0d3d",
         "summary": "Get categories",
@@ -126,7 +126,7 @@
         ],
         "parameters": [
           {
-            "name": "categoryId",
+            "name": "id",
             "in": "path",
             "description": "Category Identifier",
             "required": true,
@@ -177,7 +177,7 @@
         ],
         "parameters": [
           {
-            "name": "categoryId",
+            "name": "id",
             "in": "path",
             "description": "Category Identifier",
             "required": true,
@@ -238,7 +238,7 @@
         ],
         "parameters": [
           {
-            "name": "categoryId",
+            "name": "id",
             "in": "path",
             "description": "Category Identifier",
             "required": true,

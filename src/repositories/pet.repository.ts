@@ -1,7 +1,7 @@
 import prisma from './../utils/client.prisma';
 import { Pet } from './../models/pet.model';
 
-export function create(pet: Pet): Promise<Pet> {
+export const create = (pet: Pet): Promise<Pet> => {
     return new Promise<Pet>((resolve, reject) => {
         prisma.pet.create({ data: pet }).then((data: Pet) => {
             resolve(data);
@@ -11,7 +11,7 @@ export function create(pet: Pet): Promise<Pet> {
     });
 }
 
-export function findUnique(id: number): Promise<Pet | null> {
+export const findUnique = (id: number): Promise<Pet | null> => {
     return new Promise<Pet | null>((resolve, reject) => {
         prisma.pet.findUnique({ where: { id } }).then((data: Pet | null) => {
             resolve(data);
@@ -21,7 +21,7 @@ export function findUnique(id: number): Promise<Pet | null> {
     });
 }
 
-export function findMany(): Promise<Pet[]> {
+export const findMany = (): Promise<Pet[]> => {
     return new Promise<Pet[]>((resolve, reject) => {
         prisma.pet.findMany().then((data: Pet[]) => {
             resolve(data);
@@ -31,7 +31,7 @@ export function findMany(): Promise<Pet[]> {
     });
 }
 
-export function update(id: number, pet: Pet): Promise<Pet> {
+export const update = (id: number, pet: Pet): Promise<Pet> => {
     return new Promise<Pet>((resolve, reject) => {
         prisma.pet.update({ where: { id }, data: pet }).then((data: Pet) => {
             resolve(data);
@@ -41,7 +41,7 @@ export function update(id: number, pet: Pet): Promise<Pet> {
     });
 }
 
-export function remove(id: number): Promise<Pet> {
+export const remove = (id: number): Promise<Pet> => {
     return new Promise<Pet>((resolve, reject) => {
         prisma.pet.delete({ where: { id } }).then((data: Pet) => {
             resolve(data);
