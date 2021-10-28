@@ -26,6 +26,7 @@ artifacts:
   files: imagedefinitions.json
   secondary-artifacts:
     openapi:
+      base-directory: $CODEBUILD_SRC_DIR
       files: openapi.yml
 reports:
   clover:
