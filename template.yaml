@@ -882,7 +882,6 @@ Resources:
       ServiceRole : !GetAtt CodeBuildRole.Arn
       Source:
         Type: CODEPIPELINE
-      # SourceVersion: !Ref BranchName
       TimeoutInMinutes: 60
       VpcConfig:
         SecurityGroupIds: 
@@ -897,7 +896,7 @@ Resources:
   OpenAPIBucket:
     Type: AWS::S3::Bucket
     Properties: 
-      BucketName: open-api-us-east-1-123456
+      BucketName: !Sub pets-api-open-api-${AWS::Region}
 
   ################################### CODE PIPELINE ###################################
 
