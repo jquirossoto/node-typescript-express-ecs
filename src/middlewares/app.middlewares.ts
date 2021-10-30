@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import Ajv, { DefinedError } from "ajv";
+import Ajv, { DefinedError, AnySchema } from "ajv";
 
 import { buildErrorResponse } from './../utils/api.utils';
 
@@ -13,7 +13,7 @@ export const authorize = (req: Request, res: Response, next: NextFunction) => {
     return next();
 }
 
-export const validateSchema = (schema: object) => {
+export const validateSchema = (schema: AnySchema) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const validate = ajv.compile(schema);
         if (!validate(req.body)) {
