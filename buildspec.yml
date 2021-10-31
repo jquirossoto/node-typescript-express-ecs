@@ -36,12 +36,12 @@ reports:
   clover:
     files:
       - clover.xml
-    base-directory: 'jest/coverage'
+    base-directory: jest/coverage
     discard-paths: false
     file-format: CLOVERXML
   junit:
     files:
       - junit.xml
-    base-directory: 'jest/junit/'
+    base-directory: jest/junit
     discard-paths: false
     file-format: JUNITXML
