@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { getMockReq, getMockRes } from '@jest-mock/express'
 
 import { post, list, get, patch, remove } from './pet.controller';
-import { Pet } from './../models/pet.model';
+import Pet from './../models/pet.model';
 import * as petService from './../services/pet.service';
 import { buildSuccessResponse, buildErrorResponse } from './../utils/api.utils';
 

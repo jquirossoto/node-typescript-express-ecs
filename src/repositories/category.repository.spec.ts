@@ -2,7 +2,7 @@ import { Category as PrismaCategory } from '@prisma/client';
 import { prismaMock } from './../../prisma/singleton';
 
 import { create, findUnique, findMany, update, remove } from './category.repository';
-import { Category } from './../models/category.model';
+import Category from './../models/category.model';
 
 describe('Category Repository', () => {
 

@@ -2,7 +2,7 @@ import { Pet as PrismaPet } from '@prisma/client';
 import { prismaMock } from './../../prisma/singleton';
 
 import { create, findUnique, findMany, update, remove } from './pet.repository';
-import { Pet } from './../models/pet.model';
+import Pet from './../models/pet.model';
 
 describe('Pet Repository', () => {
 

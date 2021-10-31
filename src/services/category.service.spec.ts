@@ -1,5 +1,5 @@
 import { create, list, get, update, remove } from './category.service';
-import { Category } from './../models/category.model';
+import Category from './../models/category.model';
 import  * as categoryRepo from './../repositories/category.repository';
 
 jest.mock('./../repositories/category.repository');

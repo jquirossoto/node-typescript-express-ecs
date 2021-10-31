@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { getMockReq, getMockRes } from '@jest-mock/express'
 
 import { post, list, get, patch, remove } from './category.controller';
-import { Category } from './../models/category.model';
+import Category from './../models/category.model';
 import * as categoryService from './../services/category.service';
 import { buildSuccessResponse, buildErrorResponse } from './../utils/api.utils';
 
