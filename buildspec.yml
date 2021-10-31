@@ -21,7 +21,7 @@ phases:
       - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest
       - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME:latest > imagedefinitions.json
       - npm run prisma:migrate:deploy
-      - npm run speccy
+      - npm run speccy:resolve
 artifacts:
   files:
     - '**/*'
