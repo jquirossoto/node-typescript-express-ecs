@@ -1,3 +1,8 @@
+/**
+ * @file Health router.
+ * @author jquirossoto
+ */
+
 import { Router } from 'express';
 
 import { list } from './../controllers/health.controller';
@@ -5,3 +10,5 @@ import { list } from './../controllers/health.controller';
 export const router = Router();
 router.route('/health')
     .get(list);
+
+export default router;

@@ -1,3 +1,8 @@
+/**
+ * @file Server.
+ * @author jquirossoto
+ */
+
 import app from './app'
 import prisma from './utils/client.prisma';
 

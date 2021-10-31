@@ -1,8 +1,13 @@
+/**
+ * @file App.
+ * @author jquirossoto
+ */
+
 import express from 'express';
 
-import { router as categoryRouter } from './routers/category.router';
-import { router as petRouter } from './routers/pet.router';
-import { router as healthRouter } from './routers/health.router';
+import categoryRouter from './routers/category.router';
+import petRouter from './routers/pet.router';
+import healthRouter from './routers/health.router';
 import { authorize } from './middlewares/app.middlewares';
 
 const app = express();

@@ -1,9 +1,20 @@
+/**
+ * @file Category controller.
+ * @author jquirossoto
+ */
+
 import { Request, Response } from 'express';
 
-import { Category } from './../models/category.model';
+import Category from './../models/category.model';
 import * as categoryService from './../services/category.service';
 import * as apiUtils from './../utils/api.utils';
 
+/**
+ * Post handler.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 export const post = async (req: Request, res: Response) => {
     try {
         const category: Category = await categoryService.create(req.body);
@@ -13,6 +24,12 @@ export const post = async (req: Request, res: Response) => {
     }
 }
 
+/**
+ * List handler.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 export const list = async (req: Request, res: Response) => {
     try {
         const categories: Category[] = await categoryService.list();
@@ -22,6 +39,12 @@ export const list = async (req: Request, res: Response) => {
     }
 }
 
+/**
+ * Get handler.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 export const get = async (req: Request, res: Response) => {
     try {
         const category: Category | null = await categoryService.get(+req.params.id);
@@ -31,6 +54,12 @@ export const get = async (req: Request, res: Response) => {
     }
 }
 
+/**
+ * Patch handler.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 export const patch = async (req: Request, res: Response) => {
     try {
         const category: Category = await categoryService.update(+req.params.id, req.body);
@@ -40,6 +69,12 @@ export const patch = async (req: Request, res: Response) => {
     }
 }
 
+/**
+ * Delete handler.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 export const remove = async (req: Request, res: Response) => {
     try {
         const category: Category = await categoryService.remove(+req.params.id);

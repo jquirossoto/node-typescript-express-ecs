@@ -1,3 +1,13 @@
+/**
+ * @file API utils.
+ * @author jquirossoto
+ */
+
+/**
+ * Builds a success response.
+ *
+ * @param  {any} data
+ */
 export const buildSuccessResponse = (data: any) => {
     return {
         status: 'SUCCESS',
@@ -5,6 +15,11 @@ export const buildSuccessResponse = (data: any) => {
     };
 }
 
+/**
+ * Builds an error response.
+ *
+ * @param  {string[]} errors
+ */
 export const buildErrorResponse = (errors: string[]) => {
     return {
         status: 'ERROR',
