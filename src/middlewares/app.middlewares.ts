@@ -36,7 +36,9 @@ export const validateSchema = (schema: AnySchema) => {
         if (!validate(req.body)) {
             const errors: string[] = [];
             for (const err of validate.errors as DefinedError[]) {
-                errors.push(err.message!);
+                if (err.message) {
+                    errors.push(err.message);
+                }
             }
             return res.status(422).json(buildErrorResponse(errors));
         }

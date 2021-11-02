@@ -8,7 +8,7 @@
  *
  * @param  {any} data
  */
-export const buildSuccessResponse = (data: any) => {
+export const buildSuccessResponse = (data: object | [] | null) => {
     return {
         status: 'SUCCESS',
         result: data

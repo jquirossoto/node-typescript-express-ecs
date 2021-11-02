@@ -77,7 +77,7 @@ export const patch = async (req: Request, res: Response) => {
  */
 export const remove = async (req: Request, res: Response) => {
     try {
-        const category: Category = await categoryService.remove(+req.params.id);
+        await categoryService.remove(+req.params.id);
         res.status(200).json(apiUtils.buildSuccessResponse(null));
     } catch (error) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));

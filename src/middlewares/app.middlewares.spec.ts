@@ -1,6 +1,5 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { getMockReq, getMockRes } from '@jest-mock/express'
-import Ajv, { JSONSchemaType } from "ajv";
 
 import { buildErrorResponse } from './../utils/api.utils';
 import { authorize, validateSchema } from './app.middlewares';

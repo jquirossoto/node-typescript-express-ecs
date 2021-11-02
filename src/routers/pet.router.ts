@@ -14,6 +14,6 @@ router.route('/pets')
 router.route('/pets/:id')
     .get(get)
     .patch(patch)
-    // .delete(remove);
+    .delete(remove);
 
 export default router;

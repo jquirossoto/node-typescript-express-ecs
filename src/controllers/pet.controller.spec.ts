@@ -123,11 +123,6 @@ describe('Pet Controller', () => {
     describe('get', () => {
 
         it('Shoud respond 200 with found pet', async () => {
-            const newPet: Pet = {
-                name: 'My pet',
-                status: 'AVAILABLE',
-                category_id: 1
-            };
             const req: Request = getMockReq({
                 params: {
                     id: 1
@@ -157,12 +152,6 @@ describe('Pet Controller', () => {
                 }
             });
             const res: Response = getMockRes().res;
-            const foundPet: Pet = {
-                id: 1,
-                name: 'My pet',
-                status: 'AVAILABLE',
-                category_id: 1
-            };
             // @ts-ignore
             petService.get.mockResolvedValue(null);
 
