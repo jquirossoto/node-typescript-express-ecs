@@ -7,27 +7,25 @@ import app from './app'
 import prisma from './utils/client.prisma';
 
 const port = process.env.PORT || 3000;
-const signals = {
-    'SIGINT': 2,
-    'SIGTERM': 15
-};
+const signals = [
+    'SIGINT',
+    'SIGTERM'
+];
 
 const server = app.listen(port, () => {
     console.log(`Running on port ${port}`);
 });
 
-const shutdown = (signal: string, value: number) => {
+const shutdown = (signal: string) => {
     server.close(async () => {
         await prisma.$disconnect();
-        console.log('Stopped by ' + signal);
-        process.exit(0);
+        console.log(`Stopped by ${signal}`);
     });
 };
 
-Object.keys(signals).forEach((signal) => {
+signals.forEach((signal) => {
     process.on(signal, () => {
-        // @ts-ignore
-        shutdown(signal, signals[signal]);
+        shutdown(signal);
     });
 });
 
