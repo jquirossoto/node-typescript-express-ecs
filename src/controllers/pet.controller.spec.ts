@@ -9,9 +9,9 @@ import { buildSuccessResponse, buildErrorResponse } from './../utils/api.utils';
 jest.mock('./../services/pet.service');
 
 describe('Pet Controller', () => {
-   
+
     describe('post', () => {
-    
+
         it('Should respond 200 with create pet', async () => {
             const newPet: Pet = {
                 name: 'My pet',
@@ -28,7 +28,7 @@ describe('Pet Controller', () => {
                 status: 'AVAILABLE',
                 category_id: 1
             };
-            //@ts-ignore
+            // @ts-ignore
             petService.create.mockResolvedValue(createdCategory);
 
             await post(req, res);
@@ -49,7 +49,7 @@ describe('Pet Controller', () => {
             });
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
-            //@ts-ignore
+            // @ts-ignore
             petService.create.mockRejectedValue(error);
 
             await post(req, res);
@@ -58,11 +58,11 @@ describe('Pet Controller', () => {
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
         });
-        
+
     });
 
     describe('list', () => {
-        
+
         it('Should respond 200 with found pets', async () => {
             const foundPets: Pet[] = [
                 {
@@ -80,7 +80,7 @@ describe('Pet Controller', () => {
             ];
             const req: Request = getMockReq();
             const res: Response = getMockRes().res;
-            //@ts-ignore
+            // @ts-ignore
             petService.list.mockResolvedValue(foundPets);
 
             await list(req, res);
@@ -94,9 +94,9 @@ describe('Pet Controller', () => {
             const foundPets: Pet[] = [];
             const req: Request = getMockReq();
             const res: Response = getMockRes().res;
-            //@ts-ignore
+            // @ts-ignore
             petService.list.mockResolvedValue(foundPets);
-            
+
             await list(req, res);
 
             expect(petService.list).toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe('Pet Controller', () => {
             const req: Request = getMockReq();
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
-            //@ts-ignore
+            // @ts-ignore
             petService.list.mockRejectedValue(error);
 
             await list(req, res);
@@ -140,7 +140,7 @@ describe('Pet Controller', () => {
                 status: 'AVAILABLE',
                 category_id: 1
             };
-            //@ts-ignore
+            // @ts-ignore
             petService.get.mockResolvedValue(foundPet);
 
             await get(req, res);
@@ -163,7 +163,7 @@ describe('Pet Controller', () => {
                 status: 'AVAILABLE',
                 category_id: 1
             };
-            //@ts-ignore
+            // @ts-ignore
             petService.get.mockResolvedValue(null);
 
             await get(req, res);
@@ -181,7 +181,7 @@ describe('Pet Controller', () => {
             });
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
-            //@ts-ignore
+            // @ts-ignore
             petService.get.mockRejectedValue(error);
 
             await get(req, res);
@@ -214,7 +214,7 @@ describe('Pet Controller', () => {
                 status: 'PENDING',
                 category_id: 2
             };
-            //@ts-ignore
+            // @ts-ignore
             petService.update.mockResolvedValue(patchedPet);
 
             await patch(req, res);
@@ -238,7 +238,7 @@ describe('Pet Controller', () => {
             });
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
-            //@ts-ignore
+            // @ts-ignore
             petService.update.mockRejectedValue(error);
 
             await patch(req, res);
@@ -266,7 +266,7 @@ describe('Pet Controller', () => {
                 status: 'AVAILABLE',
                 category_id: 1
             };
-            //@ts-ignore
+            // @ts-ignore
             petService.remove.mockResolvedValue(deletedPet);
 
             await remove(req, res);
@@ -284,7 +284,7 @@ describe('Pet Controller', () => {
             });
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
-            //@ts-ignore
+            // @ts-ignore
             petService.remove.mockRejectedValue(error)
 
             await remove(req, res);
@@ -295,5 +295,5 @@ describe('Pet Controller', () => {
         });
 
     });
-    
+
 });

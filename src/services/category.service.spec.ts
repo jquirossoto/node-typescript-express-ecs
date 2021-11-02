@@ -8,10 +8,10 @@ describe('Category Service', () => {
 
     describe('create()', () => {
         it('Should create a category', async () => {
-            let newCategory: Category = {
+            const newCategory: Category = {
                 name: 'My category'
             };
-            let createdCategory: Category = {
+            const createdCategory: Category = {
                 id: 1,
                 name: 'My Category'
             };
@@ -25,7 +25,7 @@ describe('Category Service', () => {
     describe('list()', () => {
 
         it('Should list categories', async () => {
-            let foundCategories: Category[] = [
+            const foundCategories: Category[] = [
                 {
                     id: 1,
                     name: 'My category'
@@ -46,7 +46,7 @@ describe('Category Service', () => {
     describe('get()', () => {
 
         it('Should get one category', async () => {
-            let foundCategory: Category = {
+            const foundCategory: Category = {
                 id: 1,
                 name: 'My category'
             };
@@ -61,10 +61,10 @@ describe('Category Service', () => {
     describe('update()', () => {
 
         it('Should update a category', async () => {
-            let dataToUpdate: Category = {
+            const dataToUpdate: Category = {
                 name: 'Updated category'
             };
-            let updatedCategory: Category = {
+            const updatedCategory: Category = {
                 id: 1,
                 name: 'Updated category'
             };
@@ -79,7 +79,7 @@ describe('Category Service', () => {
     describe('remove()', () => {
 
         it('Should delete a category', async () => {
-            let deletedCategory: Category = {
+            const deletedCategory: Category = {
                 id: 1,
                 name: 'Delete category'
             };

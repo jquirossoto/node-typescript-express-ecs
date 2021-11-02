@@ -24,7 +24,7 @@ describe('Category Controller', () => {
                 id: 1,
                 name: 'My category'
             };
-            //@ts-ignore
+            // @ts-ignore
             categoryService.create.mockResolvedValue(createdCategory);
 
             await post(req, res);
@@ -43,7 +43,7 @@ describe('Category Controller', () => {
             });
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
-            //@ts-ignore
+            // @ts-ignore
             categoryService.create.mockRejectedValue(error);
 
             await post(req, res);
@@ -70,7 +70,7 @@ describe('Category Controller', () => {
                     name: 'Second category'
                 }
             ];
-            //@ts-ignore
+            // @ts-ignore
             categoryService.list.mockResolvedValue(foundCategories);
 
             await list(req, res);
@@ -84,7 +84,7 @@ describe('Category Controller', () => {
             const req: Request = getMockReq();
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
-            //@ts-ignore
+            // @ts-ignore
             categoryService.list.mockRejectedValue(error);
 
             await list(req, res);
@@ -97,7 +97,7 @@ describe('Category Controller', () => {
     });
 
     describe('get', () => {
-        
+
         it('Should respond 200 with a category', async () => {
             const req: Request = getMockReq({
                 params: {
@@ -109,7 +109,7 @@ describe('Category Controller', () => {
                 id: 1,
                 name: 'My category'
             };
-            //@ts-ignore
+            // @ts-ignore
             categoryService.get.mockResolvedValue(foundCategory);
 
             await get(req, res);
@@ -126,7 +126,7 @@ describe('Category Controller', () => {
                 }
             });
             const res: Response = getMockRes().res;
-            //@ts-ignore
+            // @ts-ignore
             categoryService.get.mockResolvedValue(null);
 
             await get(req, res);
@@ -144,7 +144,7 @@ describe('Category Controller', () => {
             });
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
-            //@ts-ignore
+            // @ts-ignore
             categoryService.get.mockRejectedValue(error);
 
             await get(req, res);
@@ -157,7 +157,7 @@ describe('Category Controller', () => {
     });
 
     describe('patch', () => {
-        
+
         it('Should respond 200 with patched category', async () => {
             const dataToPatch: Category = {
                 name: 'Patched category'
@@ -173,7 +173,7 @@ describe('Category Controller', () => {
                 id: 1,
                 name: 'Patched category'
             };
-            //@ts-ignore
+            // @ts-ignore
             categoryService.update.mockResolvedValue(patchedCategory);
 
             await patch(req, res);
@@ -195,7 +195,7 @@ describe('Category Controller', () => {
             });
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
-            //@ts-ignore
+            // @ts-ignore
             categoryService.update.mockRejectedValue(error);
 
             await patch(req, res);
@@ -208,7 +208,7 @@ describe('Category Controller', () => {
     });
 
     describe('remove', () => {
-    
+
         it('Should respond 200', async () => {
             const req: Request = getMockReq({
                 params: {
@@ -220,7 +220,7 @@ describe('Category Controller', () => {
                 id: 1,
                 name: 'My category'
             };
-            //@ts-ignore
+            // @ts-ignore
             categoryService.remove.mockResolvedValue(deletedCategory);
 
             await remove(req, res);
@@ -238,7 +238,7 @@ describe('Category Controller', () => {
             });
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
-            //@ts-ignore
+            // @ts-ignore
             categoryService.remove.mockRejectedValue(error)
 
             await remove(req, res);

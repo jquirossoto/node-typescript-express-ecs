@@ -9,12 +9,12 @@ describe('Pet Service', () => {
     describe('create()', () => {
 
         it('Should create a pet', async () => {
-            let newPet: Pet = {
+            const newPet: Pet = {
                 name: 'My pet',
                 status: 'AVAILABLE',
                 category_id: 1
             };
-            let createdPet: Pet = {
+            const createdPet: Pet = {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
