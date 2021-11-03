@@ -57,7 +57,7 @@ To run the application in watch mode execute the following commands:
 2. ```npm run start:watch```
 
 ## How to deploy and run the solution in AWS
-:warning: If you deploy this solution to AWS you will start to incur charges with the following services:
+:warning: If you deploy this solution, AWS will start charging you for the following services:
 1. NatGateway
 2. RDS
 3. Secrets Manager
@@ -66,11 +66,11 @@ To run the application in watch mode execute the following commands:
 1. AWS account
 2. AWS CLI
 
-To deploy and run the solution in AWS execute the following procedure:
+To deploy and run the solution in AWS, execute the following procedure:
 
 1. Fork this repo.
 2. Clone the forked repo in your machine.
-3. Create create a .env file in the root of the project. The contents of this file will include the parameters for the Cloudformation template:
+3. Create create a .env file in the root of the project. The contents of this file will include the parameters for the CloudFormation template:
 * **CodestarConnectionId**: To generate the Codestar Connection, follow this tutorial: [Create connection](https://docs.aws.amazon.com/dtconsole/latest/userguide/connections-create.html). **The value should be a UUID**.
 * **FullRepositoryId**: Specify the owner and name of the repository where source changes are to be detected. Example: user/your-forked-repo.
 * **BranchName**: Specify the name of the branch where source changes are to be detected.
@@ -91,23 +91,23 @@ AutoScalingMaxCapacity=0
 DockerHubUsername=dockerhub-username
 DockerHubPassword=dockerhub-password
 ```
-4. Verify that the VPC CIDR configuration defined in the Cloudformation template does not conflict with any other VPC in your AWS account.
-5. Make sure the credentials that you will use to deploy the Cloudformation stack have enough permissions to create all of the resources.
-6. Deploy the Cloudformation stack:
+4. Verify that the VPC CIDR configuration defined in the CloudFormation template does not conflict with any other VPC in your AWS account.
+5. Make sure the credentials that you will use to deploy the CloudFormation stack have enough permissions to create all of the resources.
+6. Deploy the CloudFormation stack:
 ```
 npm run cf:deploy
 ```
 7. [Check that the pipeline executes successfully.](https://console.aws.amazon.com/codesuite/codepipeline/pipelines/pets-api-pipeline/view)
-8. Change the AutoScalingMinCapacity and AutoScalingMaxCapacity to for example 1 and 2 respectively. 
-9. Redeploy the Cloudformation stack:
+8. Change the AutoScalingMinCapacity and AutoScalingMaxCapacity to for example 1 and 2 respectively in the .env file.
+9. Redeploy the CloudFormation stack:
 ```
-npm run cf:deploy
+npm run cf:stack:deploy
 ```
 10. Start making requests to the API. :confetti_ball: To obtain the API Invoke URL, run the following command. The API Invoke URL is in the Outputs section.
 ```
-npm run cf:describe
+npm run cf:stack:describe
 ```
-11. If you don't want the solution deployed anymore, delete the Cloudformation stack:
+11. If you don't want the solution deployed anymore, delete the CloudFormation stack. Make sure the ECR repository and the open-api bucket are empty.
 ```
-npm run cf:delete
+npm run cf:stack:delete
 ```
