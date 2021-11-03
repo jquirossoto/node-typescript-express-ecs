@@ -26,8 +26,8 @@ Express API developed in Typescript and deployed to ECS Fargate that sits behind
 ## How to run the application in localhost
 
 ### Things you will need
-1. NodeJS 12
-2. Docker
+1. [NodeJS 12](https://nodejs.org/en/download/releases/)
+2. [Docker](https://docs.docker.com/get-docker/)
 
 To run the application execute the following procedure:
 1. Set up the database connection 
@@ -63,8 +63,8 @@ To run the application in watch mode execute the following commands:
 3. Secrets Manager
 
 ### Things you will need
-1. AWS account
-2. AWS CLI
+1. [AWS account](https://portal.aws.amazon.com/billing/signup?nc2=h_ct&src=header_signup&redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start)
+2. [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 
 To deploy and run the solution in AWS, execute the following procedure:
 
