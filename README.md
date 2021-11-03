@@ -3,7 +3,7 @@
 ## Description
 Express API developed in Typescript and deployed to ECS Fargate that sits behind a private Application Load Balancer and is exposed to the world using an Http API Gateway. This repo includes the CloudFormation template the defines all the resources.
 
-:warning: This solution its not production ready! For example:
+:warning: This CloudFormation stack its not production ready! For example:
 1. The database has been configured to reduce expenses.
 2. The CodeBuild project has been configured to reduce expenses.
 3. The VPC configuration might not fit your requirements.
