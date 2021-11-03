@@ -10,7 +10,7 @@ Express API developed in Typescript and deployed to ECS Fargate that sits behind
 2. The AutoScaling policy might not fit your requirements.
 
 ## Architecture
-[Pets-API-Architecture.pdf](https://github.com/jquirossoto/ecs-node-typescript-express-api/files/7470800/Pets-API-Architecture.pdf)
+![Pets-API-Architecture]([Pets-API-Architecture.pdf](https://github.com/jquirossoto/ecs-node-typescript-express-api/files/7470800/Pets-API-Architecture.pdf))
 
 ## Stack of technologies & services
 1. Database migrations: [prisma.io](https://www.prisma.io/)
