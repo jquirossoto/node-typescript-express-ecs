@@ -95,7 +95,7 @@ DockerHubPassword=dockerhub-password
 5. Make sure the credentials that you will use to deploy the CloudFormation stack have enough permissions to create all of the resources.
 6. Deploy the CloudFormation stack:
 ```
-npm run cf:deploy
+npm run cf:stack:deploy
 ```
 7. [Check that the pipeline executes successfully.](https://console.aws.amazon.com/codesuite/codepipeline/pipelines/pets-api-pipeline/view)
 8. Change the AutoScalingMinCapacity and AutoScalingMaxCapacity to for example 1 and 2 respectively in the .env file.
