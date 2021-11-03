@@ -9,6 +9,9 @@ Express API developed in Typescript and deployed to ECS Fargate that sits behind
 3. The VPC configuration might not fit your requirements.
 2. The AutoScaling policy might not fit your requirements.
 
+## Architecture
+[Pets-API-Architecture.pdf](https://github.com/jquirossoto/ecs-node-typescript-express-api/files/7470800/Pets-API-Architecture.pdf)
+
 ## Stack of technologies & services
 1. Database migrations: [prisma.io](https://www.prisma.io/)
 2. Database: [AWS RDS (Postgres)](https://aws.amazon.com/rds/?p=pm&c=db&z=3)
@@ -16,10 +19,9 @@ Express API developed in Typescript and deployed to ECS Fargate that sits behind
 4. Building and testing: [AWS CodeBuild](https://aws.amazon.com/codebuild/)
 5. Container orchestration: [AWS ECS (Fargate)](https://aws.amazon.com/ecs/)
 6. Container image registry: [AWS ECR](https://aws.amazon.com/ecr/)
-7. Load Balancing: [AWS Application Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
+7. Load balancing: [AWS Application Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
 8. API Gateway: [AWS Http API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html)
-9. API Gateway Private integration: [AWS VPC Link](https://aws.amazon.com/blogs/compute/understanding-vpc-links-in-amazon-api-gateway-private-integrations/)
-## Architecture
+9. API Gateway private integration: [AWS VPC Link](https://aws.amazon.com/blogs/compute/understanding-vpc-links-in-amazon-api-gateway-private-integrations/)
 
 ## How to run the application in localhost
 
@@ -55,15 +57,14 @@ To run the application in watch mode execute the following commands:
 2. ```npm run start:watch```
 
 ## How to deploy and run the solution in AWS
+:warning: If you deploy this solution to AWS you will start to incur charges with the following services:
+1. NatGateway
+2. RDS
+3. Secrets Manager
 
 ### Things you will need
 1. AWS account
 2. AWS CLI
-
-:warning: If you deploy this solution to AWS you will start to incur expenses with the following services:
-1. NatGateway
-2. RDS
-3. Secrets Manager
 
 To deploy and run the solution in AWS execute the following procedure:
 
@@ -91,21 +92,22 @@ DockerHubUsername=dockerhub-username
 DockerHubPassword=dockerhub-password
 ```
 4. Verify that the VPC CIDR configuration defined in the Cloudformation template does not conflict with any other VPC in your AWS account.
-5. Deploy the Cloudformation stack:
+5. Make sure the credentials that you will use to deploy the Cloudformation stack have enough permissions to create all of the resources.
+6. Deploy the Cloudformation stack:
 ```
 npm run cf:deploy
 ```
-6. [Check that the pipeline executes successfully.](https://console.aws.amazon.com/codesuite/codepipeline/pipelines/pets-api-pipeline/view)
-7. Change the AutoScalingMinCapacity and AutoScalingMaxCapacity to for example 1 and 2 respectively. 
-8. Redeploy the Cloudformation stack:
+7. [Check that the pipeline executes successfully.](https://console.aws.amazon.com/codesuite/codepipeline/pipelines/pets-api-pipeline/view)
+8. Change the AutoScalingMinCapacity and AutoScalingMaxCapacity to for example 1 and 2 respectively. 
+9. Redeploy the Cloudformation stack:
 ```
 npm run cf:deploy
 ```
-9. Start making requests to the API. :confetti_ball: To obtain the API Invoke URL, run the following command. The API Invoke URL is in the Outputs section.
+10. Start making requests to the API. :confetti_ball: To obtain the API Invoke URL, run the following command. The API Invoke URL is in the Outputs section.
 ```
 npm run cf:describe
 ```
-10. If you don't want the solution deployed anymore, delete the Cloudformation stack:
+11. If you don't want the solution deployed anymore, delete the Cloudformation stack:
 ```
 npm run cf:delete
 ```
