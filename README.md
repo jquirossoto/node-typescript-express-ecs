@@ -9,21 +9,24 @@ Express API developed in Typescript and deployed to ECS Fargate that sits behind
 3. The VPC configuration might not fit your requirements.
 2. The AutoScaling policy might not fit your requirements.
 
-## Stack of technologies
+## Stack of technologies & services
 1. Database migrations: [prisma.io](https://www.prisma.io/)
-2. Deployments: [AWS CodePipeline](https://aws.amazon.com/codepipeline/)
-3. Building and testing: [AWS CodeBuild](https://aws.amazon.com/codebuild/)
-4. Database: [AWS RDS (Postgres)](https://aws.amazon.com/rds/?p=pm&c=db&z=3)
+2. Database: [AWS RDS (Postgres)](https://aws.amazon.com/rds/?p=pm&c=db&z=3)
+3. Deployments: [AWS CodePipeline](https://aws.amazon.com/codepipeline/)
+4. Building and testing: [AWS CodeBuild](https://aws.amazon.com/codebuild/)
 5. Container orchestration: [AWS ECS (Fargate)](https://aws.amazon.com/ecs/)
-
+6. Container image registry: [AWS ECR](https://aws.amazon.com/ecr/)
+7. Load Balancing: [AWS Application Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
+8. API Gateway: [AWS Http API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html)
+9. API Gateway Private integration: [AWS VPC Link](https://aws.amazon.com/blogs/compute/understanding-vpc-links-in-amazon-api-gateway-private-integrations/)
 ## Architecture
 
-## Things you will need
-1. AWS account and AWS CLI (if you want to deploy and run the solution to AWS)
-2. NodeJS 12
-4. Docker
-
 ## How to run the application in localhost
+
+### Things you will need
+1. NodeJS 12
+2. Docker
+
 To run the application execute the following procedure:
 1. Set up the database connection 
 ```
@@ -52,6 +55,11 @@ To run the application in watch mode execute the following commands:
 2. ```npm run start:watch```
 
 ## How to deploy and run the solution in AWS
+
+### Things you will need
+1. AWS account
+2. AWS CLI
+
 :warning: If you deploy this solution to AWS you will start to incur expenses with the following services:
 1. NatGateway
 2. RDS
@@ -82,7 +90,7 @@ AutoScalingMaxCapacity=0
 DockerHubUsername=dockerhub-username
 DockerHubPassword=dockerhub-password
 ```
-4. Verify the VPC CIDR configuration defined in the Cloudformation template does not conflict with any other VPC in your AWS account.
+4. Verify that the VPC CIDR configuration defined in the Cloudformation template does not conflict with any other VPC in your AWS account.
 5. Deploy the Cloudformation stack:
 ```
 npm run cf:deploy
@@ -93,7 +101,7 @@ npm run cf:deploy
 ```
 npm run cf:deploy
 ```
-9. **Start making requests to the API.** :confetti_ball: To obtain the API Invoke URL, run the following command. The API Invoke URL is in the Outputs section.
+9. Start making requests to the API. :confetti_ball: To obtain the API Invoke URL, run the following command. The API Invoke URL is in the Outputs section.
 ```
 npm run cf:describe
 ```
