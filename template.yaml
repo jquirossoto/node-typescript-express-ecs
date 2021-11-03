@@ -19,7 +19,7 @@ Parameters:
 
   ArtifactStoreS3Location:
     Type: String
-    Description: Specify the name of the S3 bucket to store the CodePipeline artificats.
+    Description: Specify the name of the S3 bucket to store the CodePipeline artifacts.
 
   AutoScalingMinCapacity:
     Type: Number
@@ -31,11 +31,11 @@ Parameters:
     Description: Specify the minimum value that you plan to scale in to
     Default: 0
 
-  DuckerHubUsername:
+  DockerHubUsername:
     Type: String
     Description: Specify the DockerHub username to be used when building the docker image.
 
-  DuckerHubPassword:
+  DockerHubPassword:
     Type: String
     Description: Specify the DockerHub password to be used when building the docker image.
     NoEcho: true
@@ -695,7 +695,7 @@ Resources:
     Properties:
       Description: Secret for DockerHub credentials
       Name: !FindInMap [ NameConfig, DockerHubSecret, Name ]
-      SecretString: !Sub '{"username": "${DuckerHubUsername}", "password": "${DuckerHubPassword}"}'
+      SecretString: !Sub '{"username": "${DockerHubUsername}", "password": "${DockerHubPassword}"}'
 
   CodeBuildSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -1122,6 +1122,6 @@ Resources:
 ################################### APPLICATION OUTPUTS ###################################
 
 Outputs:
-  APIURL:
-    Description: Invoke URL
+  APIInvokeURL:
+    Description: API Invoke URL
     Value: !Sub https://${APIGateway}.execute-api.${AWS::Region}.amazonaws.com/

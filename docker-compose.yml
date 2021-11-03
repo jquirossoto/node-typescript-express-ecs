@@ -12,15 +12,3 @@ services:
       POSTGRES_SCHEMA: pets
     ports:
       - "5432:5432"
-    volumes:
-      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-    
-  localstack:
-    container_name: localstack
-    image: localstack/localstack-full
-    environment: 
-      - AWS_DEFAULT_REGION=us-east-1
-      - EDGE_PORT=4566
-      - SERVICES=sqs
-    ports:
-      - "4566:4566"
