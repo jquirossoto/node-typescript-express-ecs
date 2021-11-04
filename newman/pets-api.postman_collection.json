@@ -1,0 +1,593 @@
+{
+	"info": {
+		"_postman_id": "45d10dfc-9821-4444-af34-c47839941027",
+		"name": "Pets API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Create category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set('category_id', null);",
+									"pm.test(\"Should response with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with an id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result.id).to.not.be.null;",
+									"});",
+									"pm.environment.set('category_id', pm.response.json().result.id);",
+									"postman.setNextRequest(\"List category\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Created category\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/categories",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should return more than 0 results\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result).length.to.be.greaterThan(0);",
+									"});",
+									"pm.test(\"Should return the create category\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result.map((e) => e['id']).includes(pm.environment.get('category_id'))).to.be.true;",
+									"});",
+									"postman.setNextRequest(\"Get category\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/categories",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get category",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with a result\", function () {",
+									"    pm.expect(pm.response.json().result).to.not.be.null;",
+									"});",
+									"postman.setNextRequest(\"Update category\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/categories/{{category_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update category",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with a result\", function () {",
+									"    pm.expect(pm.response.json().result).to.not.be.null;",
+									"});",
+									"pm.test(\"Should respond with an updated name\", function () {",
+									"    pm.expect(pm.response.json().result.name).to.be.equals(\"Updated category\");",
+									"});",
+									"postman.setNextRequest(\"Create pet\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated category\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/categories/{{category_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with a result\", function () {",
+									"    pm.expect(pm.response.json().result).to.be.null;",
+									"});",
+									"postman.setNextRequest(null);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/categories/{{category_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pet",
+			"item": [
+				{
+					"name": "Create pet",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set('pet_id', null);",
+									"pm.test(\"Should response with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with an id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result.id).to.not.be.null;",
+									"});",
+									"pm.environment.set('pet_id', pm.response.json().result.id);",
+									"postman.setNextRequest(\"List pet\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"First pet\",\n    \"status\": \"AVAILABLE\",\n    \"category_id\": {{category_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/pets",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"pets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should return more than 0 results\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result).length.to.be.greaterThan(0);",
+									"});",
+									"pm.test(\"Should return the create pet\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result.map((e) => e['id']).includes(pm.environment.get('pet_id'))).to.be.true;",
+									"});",
+									"postman.setNextRequest(\"Get pet\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/pets",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"pets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get pet",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with a result\", function () {",
+									"    pm.expect(pm.response.json().result).to.not.be.null;",
+									"});",
+									"postman.setNextRequest(\"Update pet\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/pets/{{pet_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"pets",
+								"{{pet_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update pet",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with a result\", function () {",
+									"    pm.expect(pm.response.json().result).to.not.be.null;",
+									"});",
+									"pm.test(\"Should respond with an updated name\", function () {",
+									"    pm.expect(pm.response.json().result.name).to.be.equals(\"Updated pet\");",
+									"});",
+									"postman.setNextRequest(\"Delete pet\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated pet\",\n    \"category_id\": {{category_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/pets/{{pet_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"pets",
+								"{{pet_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete pet",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with a result\", function () {",
+									"    pm.expect(pm.response.json().result).to.be.null;",
+									"});",
+									"postman.setNextRequest(\"Delete category\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/pets/{{pet_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"pets",
+								"{{pet_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

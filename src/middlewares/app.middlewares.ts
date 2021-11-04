@@ -19,7 +19,7 @@ const ajv = new Ajv({ allErrors: true });
  */
 export const authorize = (req: Request, res: Response, next: NextFunction) => {
     const apiKey = req.headers['x-api-key'];
-    if (!apiKey) {
+    if (!apiKey || apiKey !== '65c95f0d-debc-4f4f-9b1d-473b0b492fde') {
         return res.status(403).json(buildErrorResponse(['UNAUTHORIZED']));
     }
     return next();
