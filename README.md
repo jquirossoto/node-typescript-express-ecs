@@ -107,7 +107,7 @@ AutoScalingMaxCapacity=0
 DockerHubUsername=dockerhub-username
 DockerHubPassword=dockerhub-password
 ```
-:warning: By setting the AutoScalingMinCapacity and AutoScalingMaxCapacity to 0 the stack will create the ECS Service without a running task. This will allow the CodePipeline to execute, build the docker image and push it to the ECR repository. If you set those parameters with values other than 0, the ECS Service will atempt to run a task and because there is no image in the ECR repository the deployment will fail. Set those values to 0 in the first deployment, verify that the CodePipeline executes successfully, change the values to the min and max capacity that you want and then redeploy the stack. After that second deploy is done, the ECS Service will grab the image from the ECR repository and run the task.
+:warning: By setting the AutoScalingMinCapacity and AutoScalingMaxCapacity to 0 the stack will create the ECS Service without a running task. This will allow the CodePipeline to execute, build the docker image and push it to the ECR repository. If you set those parameters with values other than 0, the ECS Service will atempt to run a task and because there is no image in the ECR repository the deployment will fail.
 
 4. Verify that the VPC CIDR configuration defined in the CloudFormation template does not conflict with any other VPC in your AWS account.
 5. Make sure the credentials that you will use to deploy the CloudFormation stack have enough permissions to create all of the resources.
