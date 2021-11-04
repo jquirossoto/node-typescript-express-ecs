@@ -81,6 +81,7 @@ npm run docker:run
 ### Things you will need
 1. [AWS account](https://portal.aws.amazon.com/billing/signup?nc2=h_ct&src=header_signup&redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start)
 2. [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+3. [DockerHub account](https://hub.docker.com/signup), you can use a **personal account** (free).
 
 To deploy and run the solution in AWS, execute the following procedure:
 
@@ -93,7 +94,7 @@ To deploy and run the solution in AWS, execute the following procedure:
 * **ArtifactStoreS3Location**: Specify the name of the S3 bucket to store the CodePipeline artifacts. Your AWS account should have an already created S3 bucket for codepipeline. The name follows this format: codepipeline-{region}-{random-number}
 * **AutoScalingMinCapacity**: Specify the maximum value that you plan to scale out to. **If this is the first deployment, set the value to 0.**
 * **AutoScalingMaxCapacity**: Specify the minimum value that you plan to scale in to. **If this is the first deployment, set the value to 0.**
-* **DockerHubUsername**: Specify the DockerHub username to be used when building the docker image. If you don't have an account, [sign up](https://hub.docker.com/signup). You can use a **personal account** (free).
+* **DockerHubUsername**: Specify the DockerHub username to be used when building the docker image.
 * **DockerHubPassword**: Specify the DockerHub password to be used when building the docker image.
 
 The contents of the .env file should look like this:
@@ -121,7 +122,7 @@ npm run cf:stack:deploy
 ```
 npm run cf:stack:deploy
 ```
-10. Start making requests to the API. :confetti_ball: To obtain the API Invoke URL, run the following command. The API Invoke URL is in the Outputs section.
+10. :confetti_ball: Start making requests to the API. To obtain the API Invoke URL, run the following command. The API Invoke URL is in the Outputs section.
 ```
 npm run cf:stack:describe
 ```
