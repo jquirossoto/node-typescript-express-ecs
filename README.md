@@ -12,17 +12,6 @@ Express API developed in Typescript and deployed to ECS Fargate that sits behind
 ## Architecture
 ![petsapi-architecture](https://user-images.githubusercontent.com/4935587/140231043-719e83d2-b2af-40f2-bbd8-c98229c626c3.png)
 
-## Stack of technologies & services
-1. Database migrations: [prisma.io](https://www.prisma.io/)
-2. Database: [AWS RDS (Postgres)](https://aws.amazon.com/rds/?p=pm&c=db&z=3)
-3. Deployments: [AWS CodePipeline](https://aws.amazon.com/codepipeline/)
-4. Building and testing: [AWS CodeBuild](https://aws.amazon.com/codebuild/)
-5. Container orchestration: [AWS ECS (Fargate)](https://aws.amazon.com/ecs/)
-6. Container image registry: [AWS ECR](https://aws.amazon.com/ecr/)
-7. Load balancing: [AWS Application Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
-8. API Gateway: [AWS Http API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html)
-9. API Gateway private integration: [AWS VPC Link](https://aws.amazon.com/blogs/compute/understanding-vpc-links-in-amazon-api-gateway-private-integrations/)
-
 ## How to run the application
 
 ### Things you will need
@@ -108,7 +97,7 @@ AutoScalingMaxCapacity=0
 DockerHubUsername=dockerhub-username
 DockerHubPassword=dockerhub-password
 ```
-:warning: By setting the AutoScalingMinCapacity and AutoScalingMaxCapacity to 0 the stack will create the ECS Service without a running task. This will allow the CodePipeline to execute, build the docker image and push it to the ECR repository. If you set those parameters with values other than 0, the ECS Service will atempt to run a task and because there is no image in the ECR repository the deployment will fail.
+:warning: By setting the AutoScalingMinCapacity and AutoScalingMaxCapacity to 0 the stack will create the ECS Service without a running task. This will allow the CodePipeline to execute, build the Docker image and push it to the ECR repository. If you set those parameters with values other than 0, the ECS Service will atempt to run a task and because the CodePipeline hasn't executed there is no image in the ECR repository and the deployment will fail.
 
 4. Verify that the VPC CIDR configuration defined in the CloudFormation template does not conflict with any other VPC in your AWS account.
 5. Make sure the credentials that you will use to deploy the CloudFormation stack have enough permissions to create all of the resources.
