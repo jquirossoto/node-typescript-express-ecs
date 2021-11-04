@@ -9,7 +9,6 @@ RUN mkdir -p /usr/src/app
 # sets workdir
 WORKDIR /usr/src/app
 
-
 # ---------------------------- DEPENDENCIES ----------------------------
 FROM base AS dependencies
 # copies package*.json files
@@ -33,7 +32,7 @@ ENV NODE_ENV production
 COPY --chown=node:node --from=dependencies /usr/src/app/node_modules node_modules/
 # copies the built app from the build image
 COPY --chown=node:node dist/ .
-# copies prisma .env to resolve database credentials
+# copies prisma .env to resolve database credentials from the dependencies image
 COPY --chown=node:node --from=dependencies /usr/src/app/.env .
 # exposes port
 EXPOSE 3000
