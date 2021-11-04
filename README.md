@@ -57,7 +57,7 @@ To run the application in watch mode execute the following commands:
 2. ```npm run start:watch```
 
 ## How to run the application in a container
-Asumming that you executed the "How to run the application" procedure up to the step 4, to run the application in a container execute the following steps:
+Asumming that you executed the [How to run the application](#how-to-run-the-application) procedure up to the step 4, to run the application in a container execute the following steps:
 
 1. Reset the database connection. For communication between containers, you need to use the container name as the host instead of localhost.
 ```
