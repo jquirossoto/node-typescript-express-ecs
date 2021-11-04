@@ -23,7 +23,7 @@ Express API developed in Typescript and deployed to ECS Fargate that sits behind
 8. API Gateway: [AWS Http API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html)
 9. API Gateway private integration: [AWS VPC Link](https://aws.amazon.com/blogs/compute/understanding-vpc-links-in-amazon-api-gateway-private-integrations/)
 
-## How to run the application in localhost
+## How to run the application
 
 ### Things you will need
 1. [NodeJS 12](https://nodejs.org/en/download/releases/)
@@ -46,7 +46,7 @@ npm run docker:up
 ```
 npm run prisma:db:push
 ```
-5. Start the application
+5. Start the application. The application will be listening on port 3000.
 ```
 npm run start
 ```
@@ -55,6 +55,22 @@ npm run start
 To run the application in watch mode execute the following commands:
 1. ```npm run build:watch```
 2. ```npm run start:watch```
+
+## How to run the application in a container
+Asumming that you executed the "How to run the application" procedure up to the step 4, to run the application in a container execute the following steps:
+
+1. Reset the database connection. For communication between containers, you need to use the container name as the host instead of localhost.
+```
+echo "DATABASE_URL=postgresql://pets:pets123@postgres:5432/petsdb" > ./prisma/.env
+```
+2. Build the docker image
+```
+npm run docker:build
+```
+3. Run the docker image. The container will be listening on port 80.
+```
+npm run docker:run
+```
 
 ## How to deploy and run the solution in AWS
 :warning: If you deploy this solution, AWS will start charging you for the following services:

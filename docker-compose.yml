@@ -12,3 +12,8 @@ services:
       POSTGRES_SCHEMA: pets
     ports:
       - "5432:5432"
+    networks:
+      - pets-api-network
+networks:
+  pets-api-network:
+    driver: bridge

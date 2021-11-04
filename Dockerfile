@@ -8,17 +8,18 @@ RUN apk add --no-cache curl
 RUN mkdir -p /usr/src/app
 # sets workdir
 WORKDIR /usr/src/app
-# copies package*.json files
-COPY package.json .
-COPY package-lock.json .
+
 
 # ---------------------------- DEPENDENCIES ----------------------------
 FROM base AS dependencies
-# copies schema.prisma to generate client after installing modules (https://www.prisma.io/)
+# copies package*.json files
+COPY package.json .
+COPY package-lock.json .
+# copies schema.prisma and .env to generate prisma client while installing modules (https://www.prisma.io/)
 COPY prisma/schema.prisma .
 COPY prisma/.env .
-# installs modules (--only=production)
-RUN npm ci
+# installs production modules
+RUN npm ci --only=production
 
 # ---------------------------- RELEASE ----------------------------
 FROM base AS release
@@ -33,7 +34,7 @@ COPY --chown=node:node --from=dependencies /usr/src/app/node_modules node_module
 # copies the built app from the build image
 COPY --chown=node:node dist/ .
 # copies prisma .env to resolve database credentials
-COPY --chown=node:node prisma/.env .
+COPY --chown=node:node --from=dependencies /usr/src/app/.env .
 # exposes port
 EXPOSE 3000
 # executes app

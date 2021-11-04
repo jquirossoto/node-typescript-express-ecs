@@ -18,7 +18,7 @@
     "docker:up": "docker-compose -f ./docker-compose.yml up -d",
     "docker:down": "docker-compose kill",
     "docker:build": "npm run build && docker build -t pets-api .",
-    "docker:run": "docker run -it --rm -p 80:3000 --name='pets-api' pets-api",
+    "docker:run": "docker run -it --rm -p 80:3000 --name='pets-api' --network=ecs-node-typescript-express-api_pets-api-network pets-api",
     "prisma:db:seed": "prisma db seed",
     "prisma:db:pull": "prisma db pull",
     "prisma:db:push": "prisma db push",
@@ -37,9 +37,10 @@
   "author": "jquirossoto",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^3.1.1",
+    "@prisma/client": "^3.4.0",
     "ajv": "^8.6.3",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "prisma": "^3.4.0"
   },
   "devDependencies": {
     "@jest-mock/express": "^1.4.5",
@@ -54,7 +55,6 @@
     "jest-junit": "^13.0.0",
     "jest-mock-extended": "^2.0.2-beta2",
     "nodemon": "^2.0.14",
-    "prisma": "^3.1.1",
     "serve": "^12.0.1",
     "source-map-support": "^0.5.20",
     "speccy": "^0.11.0",
