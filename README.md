@@ -7,7 +7,7 @@ Express API developed in Typescript and deployed to ECS Fargate that sits behind
 1. The database has been configured to reduce expenses.
 2. The CodeBuild project has been configured to reduce expenses.
 3. The VPC configuration might not fit your requirements.
-2. The AutoScaling policy might not fit your requirements.
+4. The AutoScaling policy might not fit your requirements.
 
 ## Architecture
 ![petsapi-architecture](https://user-images.githubusercontent.com/4935587/140231043-719e83d2-b2af-40f2-bbd8-c98229c626c3.png)
