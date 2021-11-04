@@ -33,7 +33,7 @@
     "cf:stack:deploy": "aws cloudformation deploy --template-file ./template.yaml --stack-name pets-api --capabilities CAPABILITY_NAMED_IAM --parameter-overrides $(cat .env)",
     "cf:stack:delete": "aws cloudformation delete-stack --stack-name pets-api",
     "cf:stack:describe": "aws cloudformation describe-stacks --stack-name pets-api",
-    "newman:run": "newman run ./newman/PetsAPI.postman_collection.json -e ./newman/pets-api-localhost.postman_environment.json -n"
+    "newman:run": "newman run ./newman/pets-api.postman_collection.json -e ./newman/pets-api-localhost.postman_environment.json -n"
   },
   "author": "jquirossoto",
   "license": "ISC",
