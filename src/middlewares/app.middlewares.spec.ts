@@ -12,7 +12,7 @@ describe('App Middlewares', () => {
         it('Should authorize the request', () => {
             const req: Request = getMockReq({
                 headers: {
-                    'x-api-key': '123'
+                    'x-api-key': '65c95f0d-debc-4f4f-9b1d-473b0b492fde'
                 }
             });
             const { res, next } = getMockRes();
