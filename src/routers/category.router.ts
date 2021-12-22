@@ -5,18 +5,18 @@
 
 import { Router } from 'express';
 
-import { validateSchema } from './../middlewares/app.middlewares';
+import { authorize, validateSchema } from './../middlewares/app.middlewares';
 import postSchema from './../schemas/create-categories-request.schema.json';
 import patchSchema from './../schemas/update-categories-request.schema.json';
 import { post, list, get, patch, remove } from './../controllers/category.controller';
 
 const router = Router();
 router.route('/categories')
-    .post(validateSchema(postSchema), post)
-    .get(list);
+    .post([authorize, validateSchema(postSchema)], post)
+    .get(authorize, list);
 router.route('/categories/:id')
-    .get(get)
-    .patch(validateSchema(patchSchema), patch)
-    .delete(remove);
+    .get(authorize, get)
+    .patch(authorize, validateSchema(patchSchema), patch)
+    .delete(authorize, remove);
 
 export default router;

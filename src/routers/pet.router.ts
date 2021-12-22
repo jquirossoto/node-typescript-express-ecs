@@ -5,15 +5,16 @@
 
 import { Router } from 'express';
 
+import { authorize } from './../middlewares/app.middlewares';
 import { post, list, get, patch, remove } from './../controllers/pet.controller';
 
 export const router = Router();
 router.route('/pets')
-    .post(post)
-    .get(list);
+    .post(authorize, post)
+    .get(authorize, list);
 router.route('/pets/:id')
-    .get(get)
-    .patch(patch)
-    .delete(remove);
+    .get(authorize, get)
+    .patch(authorize, patch)
+    .delete(authorize, remove);
 
 export default router;
