@@ -1,6 +1,5 @@
 # Pets API
 
-## Description
 Express API developed in Typescript and deployed to ECS Fargate that sits behind a private Application Load Balancer and is exposed to the world using an Http API Gateway. This repo includes the CloudFormation template the defines all the resources.
 
 :warning: This CloudFormation stack its not production ready! For example:
