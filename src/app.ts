@@ -3,13 +3,13 @@
  * @author jquirossoto
  */
 
-import express from 'express';
+import express, { Application } from 'express';
 
 import categoryRouter from './routers/category.router';
 import petRouter from './routers/pet.router';
 import healthRouter from './routers/health.router';
 
-const app = express();
+const app: Application = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
