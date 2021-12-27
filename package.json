@@ -32,6 +32,7 @@
     "speccy:lint": "speccy lint -j openapi.json",
     "speccy:clean": "rm -f openapi.yml",
     "cf:stack:deploy": "aws cloudformation deploy --template-file ./template.yaml --stack-name pets-api --capabilities CAPABILITY_NAMED_IAM --parameter-overrides $(cat .env)",
+    "cf:stack:deploy:role": "aws cloudformation deploy --template-file ./template.yaml --stack-name pets-api --capabilities CAPABILITY_NAMED_IAM --parameter-overrides $(cat .env) --role-arn",
     "cf:stack:delete": "aws cloudformation delete-stack --stack-name pets-api",
     "cf:stack:describe": "aws cloudformation describe-stacks --stack-name pets-api",
     "cf:template:validate": "aws cloudformation validate-template --template-body file://template.yaml",
