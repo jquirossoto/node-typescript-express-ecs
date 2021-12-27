@@ -34,7 +34,8 @@
     "cf:stack:delete": "aws cloudformation delete-stack --stack-name pets-api",
     "cf:stack:describe": "aws cloudformation describe-stacks --stack-name pets-api",
     "cf:template:validate": "aws cloudformation validate-template --template-body file://template.yaml",
-    "newman:run": "newman run ./newman/pets-api.postman_collection.json -e ./newman/pets-api-localhost.postman_environment.json -n"
+    "newman:run": "newman run ./newman/pets-api.postman_collection.json -e ./newman/pets-api-localhost.postman_environment.json -n",
+    "prepare": "husky install"
   },
   "author": "jquirossoto",
   "license": "ISC",
@@ -65,7 +66,8 @@
     "speccy": "^0.11.0",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.3",
+    "husky": "^7.0.0"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
