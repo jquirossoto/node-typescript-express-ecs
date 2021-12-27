@@ -4,6 +4,7 @@
   "description": "Express API developed in Typescript and deployed to ECS Fargate that sits behind a private Application Load Balancer and exposed to the world using an Http API Gateway.",
   "main": "dist/server.js",
   "scripts": {
+    "prepare": "husky install",
     "prebuild": "eslint . --ext .ts --fix",
     "build": "tsc",
     "build:watch": "npm run build -- --watch",
@@ -30,12 +31,11 @@
     "speccy:resolve": "speccy resolve -j openapi.json -o openapi.yml",
     "speccy:lint": "speccy lint -j openapi.json",
     "speccy:clean": "rm -f openapi.yml",
-    "cf:stack:deploy": "aws cloudformation deploy --template-file ./template.yaml --stack-name pets-api --capabilities CAPABILITY_NAMED_IAM --parameter-overrides $(cat .env)",
+    "cf:stack:deploy": "aws cloudformation deploy --template-file ./template.yaml --stack-name pets-api --capabilities CAPABILITY_NAMED_IAM --parameter-overrides $(cat .env) --role-arn arn:aws:iam::186521841143:role/CloudFormationRole",
     "cf:stack:delete": "aws cloudformation delete-stack --stack-name pets-api",
     "cf:stack:describe": "aws cloudformation describe-stacks --stack-name pets-api",
     "cf:template:validate": "aws cloudformation validate-template --template-body file://template.yaml",
-    "newman:run": "newman run ./newman/pets-api.postman_collection.json -e ./newman/pets-api-localhost.postman_environment.json -n",
-    "prepare": "husky install"
+    "newman:run": "newman run ./newman/pets-api.postman_collection.json -e ./newman/pets-api-localhost.postman_environment.json -n"
   },
   "author": "jquirossoto",
   "license": "ISC",
