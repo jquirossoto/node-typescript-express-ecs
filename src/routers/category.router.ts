@@ -16,7 +16,7 @@ router.route('/categories')
     .get(authorize, list);
 router.route('/categories/:id')
     .get(authorize, get)
-    .patch(authorize, validateSchema(patchSchema), patch)
+    .patch([authorize, validateSchema(patchSchema)], patch)
     .delete(authorize, remove);
 
 export default router;

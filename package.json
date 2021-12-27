@@ -42,7 +42,9 @@
     "@prisma/client": "^3.4.0",
     "ajv": "^8.6.3",
     "express": "^4.17.1",
-    "prisma": "^3.4.0"
+    "express-winston": "^4.2.0",
+    "prisma": "^3.4.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@jest-mock/express": "^1.4.5",

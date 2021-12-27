@@ -1,5 +1,7 @@
-import prisma from './../src/utils/client.prisma';
 import { Category, PetStatus } from '@prisma/client'
+
+import prisma from './../src/utils/client.prisma';
+import logger from './../src/utils/logger';
 
 async function main() {
     const category: Category = await prisma.category.upsert({
@@ -32,7 +34,7 @@ async function main() {
 
 main()
     .catch((e) => {
-        console.error(e);
+        logger.error(e);
         process.exit(1);
     })
     .finally(async () => {

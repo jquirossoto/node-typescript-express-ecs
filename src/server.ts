@@ -5,6 +5,7 @@
 
 import app from './app'
 import prisma from './utils/client.prisma';
+import logger from './utils/logger';
 
 const port = process.env.PORT || 3000;
 const signals = [
@@ -13,13 +14,13 @@ const signals = [
 ];
 
 const server = app.listen(port, () => {
-    console.log(`Running on port ${port}`);
+    logger.info(`Running on port ${port}`);
 });
 
 const shutdown = (signal: string) => {
     server.close(async () => {
         await prisma.$disconnect();
-        console.log(`Stopped by ${signal}`);
+        logger.info(`Stopped by ${signal}`);
     });
 };
 
