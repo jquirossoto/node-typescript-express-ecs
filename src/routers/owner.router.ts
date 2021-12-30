@@ -5,7 +5,7 @@ import { post, get, list, patch, remove } from './../controllers/owner.controlle
 
 const router: Router = Router();
 router.route('/owners')
-    .post([ authorize, whitelist({ body: ['firstName', 'lastName', 'address.countryCode'] }) ], post)
+    .post([ authorize, whitelist({ body: [ 'firstName', 'lastName', 'address.countryCode' ] }) ], post)
     .get(authorize, list);
 router.route('/owners/:id')
     .get(authorize, get)

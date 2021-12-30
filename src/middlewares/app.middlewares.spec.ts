@@ -43,16 +43,16 @@ describe('App Middlewares', () => {
             });
             const { res, next } = getMockRes();
             const schema = {
-                type: "object",
+                type: 'object',
                 properties: {
                     id: {
                         type: 'null'
                     },
                     name: {
-                        type: "string"
+                        type: 'string'
                     }
                 },
-                required: ["name"],
+                required: ['name'],
                 additionalProperties: false
             };
             const validateSchemaMiddleware = validateSchema(schema);
@@ -68,13 +68,13 @@ describe('App Middlewares', () => {
             });
             const { res, next } = getMockRes();
             const schema = {
-                type: "object",
+                type: 'object',
                 properties: {
                     name: {
-                        type: "string"
+                        type: 'string'
                     }
                 },
-                required: ["name"],
+                required: ['name'],
                 additionalProperties: false
             };
             const validateSchemaMiddleware = validateSchema(schema);

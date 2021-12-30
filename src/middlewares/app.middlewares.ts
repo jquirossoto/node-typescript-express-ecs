@@ -4,7 +4,7 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import Ajv, { DefinedError, AnySchema } from "ajv";
+import Ajv, { DefinedError, AnySchema } from 'ajv';
 
 import { buildErrorResponse } from './../utils/api.utils';
 import { ExpressWinstonRequest } from 'express-winston';

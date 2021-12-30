@@ -21,12 +21,12 @@ describe('Owner controller', () => {
                 lastName: 'Doe',
                 identification_number: '109876543',
                 address: {
-                    street: "995 Huel Curve",
-                    buildingNumber: "Suite 204",
-                    city: "Grimesview",
-                    state: "Bilzen",
-                    countryCode: "US",
-                    postalCode: "65888-1483"
+                    street: '995 Huel Curve',
+                    buildingNumber: 'Suite 204',
+                    city: 'Grimesview',
+                    state: 'Bilzen',
+                    countryCode: 'US',
+                    postalCode: '65888-1483'
                 }
             };
             const req: Request = getMockReq({
@@ -40,12 +40,12 @@ describe('Owner controller', () => {
                 lastName: 'Doe',
                 identification_number: '109876543',
                 address: {
-                    street: "995 Huel Curve",
-                    buildingNumber: "Suite 204",
-                    city: "Grimesview",
-                    state: "Bilzen",
-                    countryCode: "US",
-                    postalCode: "65888-1483"
+                    street: '995 Huel Curve',
+                    buildingNumber: 'Suite 204',
+                    city: 'Grimesview',
+                    state: 'Bilzen',
+                    countryCode: 'US',
+                    postalCode: '65888-1483'
                 }
             };
             // @ts-ignore
@@ -66,12 +66,12 @@ describe('Owner controller', () => {
                 lastName: 'Doe',
                 identification_number: '109876543',
                 address: {
-                    street: "995 Huel Curve",
-                    buildingNumber: "Suite 204",
-                    city: "Grimesview",
-                    state: "Bilzen",
-                    countryCode: "US",
-                    postalCode: "65888-1483"
+                    street: '995 Huel Curve',
+                    buildingNumber: 'Suite 204',
+                    city: 'Grimesview',
+                    state: 'Bilzen',
+                    countryCode: 'US',
+                    postalCode: '65888-1483'
                 }
             };
             const req: Request = getMockReq({
@@ -104,12 +104,12 @@ describe('Owner controller', () => {
                     lastName: 'Doe',
                     identification_number: '109876543',
                     address: {
-                        street: "995 Huel Curve",
-                        buildingNumber: "Suite 204",
-                        city: "Grimesview",
-                        state: "Bilzen",
-                        countryCode: "US",
-                        postalCode: "65888-1483"
+                        street: '995 Huel Curve',
+                        buildingNumber: 'Suite 204',
+                        city: 'Grimesview',
+                        state: 'Bilzen',
+                        countryCode: 'US',
+                        postalCode: '65888-1483'
                     }
                 },
                 {
@@ -119,12 +119,12 @@ describe('Owner controller', () => {
                     lastName: 'Doe',
                     identification_number: '109876544',
                     address: {
-                        street: "995 Huel Curve",
-                        buildingNumber: "Suite 204",
-                        city: "Grimesview",
-                        state: "Bilzen",
-                        countryCode: "US",
-                        postalCode: "65888-1483"
+                        street: '995 Huel Curve',
+                        buildingNumber: 'Suite 204',
+                        city: 'Grimesview',
+                        state: 'Bilzen',
+                        countryCode: 'US',
+                        postalCode: '65888-1483'
                     }
                 }
             ];
@@ -170,12 +170,12 @@ describe('Owner controller', () => {
                 lastName: 'Doe',
                 identification_number: '109876543',
                 address: {
-                    street: "995 Huel Curve",
-                    buildingNumber: "Suite 204",
-                    city: "Grimesview",
-                    state: "Bilzen",
-                    countryCode: "US",
-                    postalCode: "65888-1483"
+                    street: '995 Huel Curve',
+                    buildingNumber: 'Suite 204',
+                    city: 'Grimesview',
+                    state: 'Bilzen',
+                    countryCode: 'US',
+                    postalCode: '65888-1483'
                 }
             };
             // @ts-ignore
@@ -235,12 +235,12 @@ describe('Owner controller', () => {
                 lastName: 'Doe',
                 identification_number: '109876543',
                 address: {
-                    street: "995 Huel Curve",
-                    buildingNumber: "Suite 204",
-                    city: "Grimesview",
-                    state: "Bilzen",
-                    countryCode: "US",
-                    postalCode: "65888-1483"
+                    street: '995 Huel Curve',
+                    buildingNumber: 'Suite 204',
+                    city: 'Grimesview',
+                    state: 'Bilzen',
+                    countryCode: 'US',
+                    postalCode: '65888-1483'
                 }
             };
             const req: Request = getMockReq({
@@ -257,12 +257,12 @@ describe('Owner controller', () => {
                 lastName: 'Doe',
                 identification_number: '109876543',
                 address: {
-                    street: "995 Huel Curve",
-                    buildingNumber: "Suite 204",
-                    city: "Grimesview",
-                    state: "Bilzen",
-                    countryCode: "US",
-                    postalCode: "65888-1483"
+                    street: '995 Huel Curve',
+                    buildingNumber: 'Suite 204',
+                    city: 'Grimesview',
+                    state: 'Bilzen',
+                    countryCode: 'US',
+                    postalCode: '65888-1483'
                 }
             };
             // @ts-ignore
@@ -283,12 +283,12 @@ describe('Owner controller', () => {
                 lastName: 'Doe',
                 identification_number: '109876543',
                 address: {
-                    street: "995 Huel Curve",
-                    buildingNumber: "Suite 204",
-                    city: "Grimesview",
-                    state: "Bilzen",
-                    countryCode: "US",
-                    postalCode: "65888-1483"
+                    street: '995 Huel Curve',
+                    buildingNumber: 'Suite 204',
+                    city: 'Grimesview',
+                    state: 'Bilzen',
+                    countryCode: 'US',
+                    postalCode: '65888-1483'
                 }
             };
             const req: Request = getMockReq({
@@ -327,12 +327,12 @@ describe('Owner controller', () => {
                 lastName: 'Doe',
                 identification_number: '109876543',
                 address: {
-                    street: "995 Huel Curve",
-                    buildingNumber: "Suite 204",
-                    city: "Grimesview",
-                    state: "Bilzen",
-                    countryCode: "US",
-                    postalCode: "65888-1483"
+                    street: '995 Huel Curve',
+                    buildingNumber: 'Suite 204',
+                    city: 'Grimesview',
+                    state: 'Bilzen',
+                    countryCode: 'US',
+                    postalCode: '65888-1483'
                 }
             };
             // @ts-ignore
