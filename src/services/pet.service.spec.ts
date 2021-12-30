@@ -10,15 +10,18 @@ describe('Pet Service', () => {
 
         it('Should create a pet', async () => {
             const newPet: Pet = {
+                id: null,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1
+                category_id: 1,
+                owner_id: 1
             };
             const createdPet: Pet = {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1
+                category_id: 1,
+                owner_id: 1
             };
             /* @ts-ignore */
             petRepo.create.mockResolvedValue(createdPet);
@@ -36,13 +39,15 @@ describe('Pet Service', () => {
                     id: 1,
                     name: 'My pet',
                     status: 'AVAILABLE',
-                    category_id: 1
+                    category_id: 1,
+                    owner_id: 1
                 },
                 {
                     id: 2,
                     name: 'Second pet',
                     status: 'AVAILABLE',
-                    category_id: 1
+                    category_id: 1,
+                    owner_id: 1
                 }
             ];
             /* @ts-ignore */
@@ -60,7 +65,8 @@ describe('Pet Service', () => {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1
+                category_id: 1,
+                owner_id: 1
             };
             /* @ts-ignore */
             petRepo.findUnique.mockResolvedValue(foundPet);
@@ -74,15 +80,18 @@ describe('Pet Service', () => {
 
         it('Should update a pet', async () => {
             const dataToUpdate: Pet = {
+                id: null,
                 name: 'Updated pet',
                 status: 'PENDING',
-                category_id: 2
+                category_id: 2,
+                owner_id: 2
             };
             const updatedPet: Pet = {
                 id: 1,
                 name: 'Updated pet',
                 status: 'PENDING',
-                category_id: 2
+                category_id: 2,
+                owner_id: 2
             };
             /* @ts-ignore */
             petRepo.update.mockResolvedValue(updatedPet);
@@ -99,7 +108,8 @@ describe('Pet Service', () => {
                 id: 1,
                 name: 'Delete pet',
                 status: 'SOLD',
-                category_id: 3
+                category_id: 3,
+                owner_id: 3
             };
             /* @ts-ignore */
             petRepo.remove.mockResolvedValue(deletedPet);

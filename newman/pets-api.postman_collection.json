@@ -195,7 +195,7 @@
 									"pm.test(\"Should respond with an updated name\", function () {",
 									"    pm.expect(pm.response.json().result.name).to.be.equals(\"Updated category\");",
 									"});",
-									"postman.setNextRequest(\"Create pet\");"
+									"postman.setNextRequest(\"Create owner\");"
 								],
 								"type": "text/javascript"
 							}
@@ -290,6 +290,293 @@
 			]
 		},
 		{
+			"name": "Owner",
+			"item": [
+				{
+					"name": "Create owner",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set('owner_id', null);",
+									"pm.test(\"Should response with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with an id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result.id).to.not.be.null;",
+									"});",
+									"pm.environment.set('owner_id', pm.response.json().result.id);",
+									"postman.setNextRequest(\"List owner\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Jane\",\n    \"middleInitial\": \"M\",\n    \"lastName\": \"Doe\",\n    \"identification_number\": \"187659844\",\n    \"address\": {\n        \"street\": \"995 Huel Curve\",\n        \"buildingNumber\": \"Suite 204\",\n        \"city\": \"Grimesview\",\n        \"state\": \"Bilzen\",\n        \"countryCode\": \"US\",\n        \"postalCode\": \"65888-1483\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/owners",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"owners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List owner",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should return more than 0 results\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result).length.to.be.greaterThan(0);",
+									"});",
+									"pm.test(\"Should return the create category\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result.map((e) => e['id']).includes(pm.environment.get('owner_id'))).to.be.true;",
+									"});",
+									"postman.setNextRequest(\"Get owner\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/owners",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"owners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get owner",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with a result\", function () {",
+									"    pm.expect(pm.response.json().result).to.not.be.null;",
+									"});",
+									"postman.setNextRequest(\"Update owner\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/owners/{{owner_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"owners",
+								"{{owner_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update owner",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with a result\", function () {",
+									"    pm.expect(pm.response.json().result).to.not.be.null;",
+									"});",
+									"pm.test(\"Should respond with an updated firstName\", function () {",
+									"    pm.expect(pm.response.json().result.firstName).to.be.equals(\"Jane updated\");",
+									"});",
+									"pm.test(\"Should respond with an updated address street\", function () {",
+									"    pm.expect(pm.response.json().result.address.street).to.be.equals(\"995 Huel Curve updated\");",
+									"});",
+									"postman.setNextRequest(\"Create pet\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Jane updated\",\n    \"middleInitial\": \"M\",\n    \"lastName\": \"Doe\",\n    \"identification_number\": \"187659844\",\n    \"address\": {\n        \"street\": \"995 Huel Curve updated\",\n        \"buildingNumber\": \"Suite 204\",\n        \"city\": \"Grimesview\",\n        \"state\": \"Bilzen\",\n        \"countryCode\": \"US\",\n        \"postalCode\": \"65888-1483\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/owners/{{owner_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"owners",
+								"{{owner_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete owner",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should respond with status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Should respond with status SUCCESS\", function () {",
+									"    pm.expect(pm.response.json().status).to.be.equals(\"SUCCESS\");",
+									"});",
+									"pm.test(\"Should respond with a result\", function () {",
+									"    pm.expect(pm.response.json().result).to.be.null;",
+									"});",
+									"postman.setNextRequest(\"Delete category\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{X-API-Key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/owners/{{owner_id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"owners",
+								"{{owner_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Pet",
 			"item": [
 				{
@@ -337,7 +624,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"First pet\",\n    \"status\": \"AVAILABLE\",\n    \"category_id\": {{category_id}}\n}",
+							"raw": "{\n    \"name\": \"First pet\",\n    \"status\": \"AVAILABLE\",\n    \"category_id\": {{category_id}},\n    \"owner_id\": {{owner_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -512,7 +799,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Updated pet\",\n    \"category_id\": {{category_id}}\n}",
+							"raw": "{\n    \"name\": \"Updated pet\",\n    \"category_id\": {{category_id}},\n    \"owner_id\": {{owner_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -558,7 +845,7 @@
 									"pm.test(\"Should respond with a result\", function () {",
 									"    pm.expect(pm.response.json().result).to.be.null;",
 									"});",
-									"postman.setNextRequest(\"Delete category\");"
+									"postman.setNextRequest(\"Delete owner\");"
 								],
 								"type": "text/javascript"
 							}

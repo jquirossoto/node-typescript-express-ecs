@@ -35,6 +35,7 @@ describe('App Middlewares', () => {
 
         it('Should validate the schema', () => {
             const newCategory: Category = {
+                id: null,
                 name: 'My category'
             };
             const req: Request = getMockReq({
@@ -44,6 +45,9 @@ describe('App Middlewares', () => {
             const schema = {
                 type: "object",
                 properties: {
+                    id: {
+                        type: 'null'
+                    },
                     name: {
                         type: "string"
                     }

@@ -14,6 +14,7 @@ describe('Category Controller', () => {
 
         it('Should respond 200 with created category', async () => {
             const newCategory: Category = {
+                id: null,
                 name: 'My category'
             };
             const req: Request = getMockReq({
@@ -36,6 +37,7 @@ describe('Category Controller', () => {
 
         it('Should respond 500 with error response', async () => {
             const newCategory: Category = {
+                id: null,
                 name: 'My category'
             };
             const req: Request = getMockReq({
@@ -160,6 +162,7 @@ describe('Category Controller', () => {
 
         it('Should respond 200 with patched category', async () => {
             const dataToPatch: Category = {
+                id: null,
                 name: 'Patched category'
             };
             const req: Request = getMockReq({
@@ -185,6 +188,7 @@ describe('Category Controller', () => {
 
         it('Should respond 500 with error response', async () => {
             const dataToPatch: Category = {
+                id: null,
                 name: 'Patched category'
             };
             const req: Request = getMockReq({

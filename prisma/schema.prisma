@@ -8,21 +8,49 @@ datasource db {
 }
 
 model Category {
-    id      Int     @id @default(autoincrement())
-    name    String
-    pets    Pet[]
+  id   Int    @id @default(autoincrement())
+  name String
+  pets Pet[]
 
-    @@map(name: "categories")
+  @@map(name: "categories")
 }
 
 model Pet {
-    id          Int     @id @default(autoincrement())
-    name        String
-    status      PetStatus
-    category_id Int
-    category    Category    @relation(fields: [category_id], references: [id])
+  id          Int       @id @default(autoincrement())
+  name        String
+  status      PetStatus
+  category_id Int
+  category    Category  @relation(fields: [category_id], references: [id])
+  owner_id    Int?
+  owner       Owner?     @relation(fields: [owner_id], references: [id])
 
-    @@map(name: "pets")
+  @@map(name: "pets")
+}
+
+model Owner {
+  id                    Int     @id @default(autoincrement())
+  firstName             String
+  middleInitial         String
+  lastName              String
+  identification_number String
+  address_id            Int
+  address               Address @relation(fields: [address_id], references: [id])
+  pets                  Pet[]
+
+  @@map("owners")
+}
+
+model Address {
+  id             Int    @id @default(autoincrement())
+  street         String
+  buildingNumber String
+  city           String
+  state          String
+  countryCode    String
+  postalCode     String
+  Owner          Owner?
+
+  @@map("addresses")
 }
 
 enum PetStatus {

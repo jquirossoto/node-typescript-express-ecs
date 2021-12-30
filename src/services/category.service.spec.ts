@@ -9,6 +9,7 @@ describe('Category Service', () => {
     describe('create()', () => {
         it('Should create a category', async () => {
             const newCategory: Category = {
+                id: null,
                 name: 'My category'
             };
             const createdCategory: Category = {
@@ -62,6 +63,7 @@ describe('Category Service', () => {
 
         it('Should update a category', async () => {
             const dataToUpdate: Category = {
+                id: null,
                 name: 'Updated category'
             };
             const updatedCategory: Category = {

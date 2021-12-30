@@ -9,6 +9,7 @@ import winstonMiddleware from 'express-winston';
 import logger from './utils/logger';
 import categoryRouter from './routers/category.router';
 import petRouter from './routers/pet.router';
+import ownerRouter from './routers/owner.router';
 import healthRouter from './routers/health.router';
 
 const app: Application = express();
@@ -20,6 +21,7 @@ app.use(winstonMiddleware.logger({
 }));
 app.use('/', categoryRouter);
 app.use('/', petRouter);
+app.use('/', ownerRouter);
 app.use('/', healthRouter);
 
 export default app;

@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import { getMockReq, getMockRes } from '@jest-mock/express'
 
 import { post, list, get, patch, remove } from './pet.controller';
-import Pet from './../models/pet.model';
-import * as petService from './../services/pet.service';
-import { buildSuccessResponse, buildErrorResponse } from './../utils/api.utils';
+import Pet from '../models/pet.model';
+import * as petService from '../services/pet.service';
+import { buildSuccessResponse, buildErrorResponse } from '../utils/api.utils';
 
 jest.mock('./../services/pet.service');
 
@@ -14,9 +14,11 @@ describe('Pet Controller', () => {
 
         it('Should respond 200 with create pet', async () => {
             const newPet: Pet = {
+                id: null,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1
+                category_id: 1,
+                owner_id: 1
             };
             const req: Request = getMockReq({
                 body: newPet
@@ -26,7 +28,8 @@ describe('Pet Controller', () => {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1
+                category_id: 1,
+                owner_id: 1
             };
             // @ts-ignore
             petService.create.mockResolvedValue(createdCategory);
@@ -40,9 +43,11 @@ describe('Pet Controller', () => {
 
         it('Should respond 500 with error response', async () => {
             const newPet: Pet = {
+                id: null,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1
+                category_id: 1,
+                owner_id: 1
             };
             const req: Request = getMockReq({
                 body: newPet
@@ -69,13 +74,15 @@ describe('Pet Controller', () => {
                     id: 1,
                     name: 'My pet',
                     status: 'AVAILABLE',
-                    category_id: 1
+                    category_id: 1,
+                    owner_id: 1
                 },
                 {
                     id: 2,
                     name: 'Second pet',
                     status: 'SOLD',
-                    category_id: 1
+                    category_id: 1,
+                    owner_id: 1
                 }
             ];
             const req: Request = getMockReq();
@@ -133,7 +140,8 @@ describe('Pet Controller', () => {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1
+                category_id: 1,
+                owner_id: 1
             };
             // @ts-ignore
             petService.get.mockResolvedValue(foundPet);
@@ -186,9 +194,11 @@ describe('Pet Controller', () => {
 
         it('Should respond 200 with patched pet', async () => {
             const dataToPatch: Pet = {
-               name: 'Patched pet',
-               status: 'PENDING',
-               category_id: 2
+                id: null,
+                name: 'Patched pet',
+                status: 'PENDING',
+                category_id: 2,
+                owner_id: 2
             };
             const req: Request = getMockReq({
                 params: {
@@ -201,7 +211,8 @@ describe('Pet Controller', () => {
                 id: 1,
                 name: 'Patched pet',
                 status: 'PENDING',
-                category_id: 2
+                category_id: 2,
+                owner_id: 2
             };
             // @ts-ignore
             petService.update.mockResolvedValue(patchedPet);
@@ -215,9 +226,11 @@ describe('Pet Controller', () => {
 
         it('Should respond 500 with error response', async () => {
             const dataToPatch: Pet = {
+                id: null,
                 name: 'Patched pet',
                 status: 'PENDING',
-                category_id: 2
+                category_id: 2,
+                owner_id: 2
              };
             const req: Request = getMockReq({
                 params: {
@@ -253,7 +266,8 @@ describe('Pet Controller', () => {
                 id: 1,
                 name: 'Deleted pet',
                 status: 'AVAILABLE',
-                category_id: 1
+                category_id: 1,
+                owner_id: 1
             };
             // @ts-ignore
             petService.remove.mockResolvedValue(deletedPet);
