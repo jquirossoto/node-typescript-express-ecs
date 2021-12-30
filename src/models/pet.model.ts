@@ -30,7 +30,7 @@ export default class Pet {
                 }
             }
         };
-    }
+    };
 
     static toUpdateInput = (pet: Pet): Prisma.PetUncheckedUpdateInput => {
         return {
@@ -39,7 +39,7 @@ export default class Pet {
             category_id: pet.category_id,
             owner_id: pet.owner_id
         };
-    }
+    };
 
     static toModel (pet: null): null;
     static toModel (pet: PrismaPet | null): Pet;

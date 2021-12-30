@@ -14,7 +14,7 @@ import Pet from './../models/pet.model';
  */
 export const create = async (pet: Pet): Promise<Pet> => {
     return await repo.create(pet);
-}
+};
 
 /**
  * Finds a list of Pet.
@@ -23,7 +23,7 @@ export const create = async (pet: Pet): Promise<Pet> => {
  */
 export const list = async (): Promise<Pet[]> => {
     return await repo.findMany();
-}
+};
 
 /**
  * Finds a Pet by id.
@@ -33,7 +33,7 @@ export const list = async (): Promise<Pet[]> => {
  */
 export const get = async (id: number): Promise<Pet | null> => {
     return await repo.findUnique(id);
-}
+};
 
 /**
  * Updates a Pet.
@@ -44,7 +44,7 @@ export const get = async (id: number): Promise<Pet | null> => {
  */
 export const update = async (id: number, pet: Pet): Promise<Pet> => {
     return await repo.update(id, pet);
-}
+};
 
 /**
  * Deletes a Pet.
@@ -54,4 +54,4 @@ export const update = async (id: number, pet: Pet): Promise<Pet> => {
  */
 export const remove = async (id: number): Promise<Pet> => {
     return await repo.remove(id);
-}
+};

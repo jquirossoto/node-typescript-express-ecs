@@ -13,7 +13,7 @@ export const buildSuccessResponse = (data: object | [] | null) => {
         status: 'SUCCESS',
         result: data
     };
-}
+};
 
 /**
  * Builds an error response.
@@ -25,4 +25,4 @@ export const buildErrorResponse = (errors: string[]) => {
         status: 'ERROR',
         errors
     };
-}
+};

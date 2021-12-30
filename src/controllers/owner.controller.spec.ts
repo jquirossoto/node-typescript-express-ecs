@@ -47,7 +47,7 @@ describe('Owner controller', () => {
                     countryCode: "US",
                     postalCode: "65888-1483"
                 }
-            }
+            };
             // @ts-ignore
             ownerService.create.mockResolvedValue(createdOwner);
 
@@ -354,7 +354,7 @@ describe('Owner controller', () => {
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
             // @ts-ignore
-            ownerService.remove.mockRejectedValue(error)
+            ownerService.remove.mockRejectedValue(error);
 
             await remove(req, res);
 

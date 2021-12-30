@@ -14,7 +14,7 @@ import Category from './../models/category.model';
  */
 export const create = async (category: Category): Promise<Category> => {
     return await repo.create(category);
-}
+};
 
 /**
  * Finds a list of Category.
@@ -23,7 +23,7 @@ export const create = async (category: Category): Promise<Category> => {
  */
 export const list = async (): Promise<Category[]> => {
     return await repo.findMany();
-}
+};
 
 /**
  * Finds a Category by id.
@@ -33,7 +33,7 @@ export const list = async (): Promise<Category[]> => {
  */
 export const get = async (id: number): Promise<Category | null> => {
     return await repo.findUnique(id);
-}
+};
 
 /**
  * Updates a Category.
@@ -44,7 +44,7 @@ export const get = async (id: number): Promise<Category | null> => {
  */
 export const update = async (id: number, category: Category): Promise<Category> => {
     return await repo.update(id, category);
-}
+};
 
 /**
  * Deletes a Category.
@@ -54,4 +54,4 @@ export const update = async (id: number, category: Category): Promise<Category> 
  */
 export const remove = async (id: number): Promise<Category> => {
     return await repo.remove(id);
-}
+};

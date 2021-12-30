@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getMockReq, getMockRes } from '@jest-mock/express'
+import { getMockReq, getMockRes } from '@jest-mock/express';
 
 import { list } from './health.controller';
 

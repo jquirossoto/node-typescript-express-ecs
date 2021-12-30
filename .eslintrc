@@ -14,6 +14,7 @@
     ],
     "rules": { 
       "no-console": 1,
-      "@typescript-eslint/ban-ts-comment": "off"
+      "@typescript-eslint/ban-ts-comment": "off",
+      "semi": [ 1, "always" ]    
     }
   }

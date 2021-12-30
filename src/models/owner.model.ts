@@ -30,7 +30,7 @@ export default class Owner {
                     ...owner.address
                 }
             }
-        }
+        };
     }
 
     static toUpdateInput(owner: Owner): Prisma.OwnerUpdateInput {
@@ -44,7 +44,7 @@ export default class Owner {
                     ...owner.address
                 }
             }
-        }
+        };
     }
 
     static toModel (owner: null): null;
@@ -57,14 +57,14 @@ export default class Owner {
             result = [];
             for (let i = 0; i < owner.length; i++) {
                 // @ts-ignore
-                delete owner[i].address.id
+                delete owner[i].address.id;
                 // @ts-ignore
                 result.push(new Owner(owner[i].id, owner[i].firstName, owner[i].middleInitial, owner[i].lastName, owner[i].identification_number, owner[i].address));
             }
         } else {
             if (owner) {
                 // @ts-ignore
-                delete owner.address.id
+                delete owner.address.id;
                 // @ts-ignore
                 result = new Owner(owner.id, owner.firstName, owner.middleInitial, owner.lastName, owner.identification_number, owner.address);
             } else {

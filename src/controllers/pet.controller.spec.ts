@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getMockReq, getMockRes } from '@jest-mock/express'
+import { getMockReq, getMockRes } from '@jest-mock/express';
 
 import { post, list, get, patch, remove } from './pet.controller';
 import Pet from '../models/pet.model';
@@ -288,7 +288,7 @@ describe('Pet Controller', () => {
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
             // @ts-ignore
-            petService.remove.mockRejectedValue(error)
+            petService.remove.mockRejectedValue(error);
 
             await remove(req, res);
 

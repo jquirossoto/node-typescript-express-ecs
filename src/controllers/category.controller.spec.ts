@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getMockReq, getMockRes } from '@jest-mock/express'
+import { getMockReq, getMockRes } from '@jest-mock/express';
 
 import { post, list, get, patch, remove } from './category.controller';
 import Category from './../models/category.model';
@@ -243,7 +243,7 @@ describe('Category Controller', () => {
             const res: Response = getMockRes().res;
             const error: Error = new Error('Unable to process request');
             // @ts-ignore
-            categoryService.remove.mockRejectedValue(error)
+            categoryService.remove.mockRejectedValue(error);
 
             await remove(req, res);
 

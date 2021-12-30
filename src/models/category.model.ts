@@ -19,13 +19,13 @@ export default class Category {
         return {
             name: category.name
         };
-    }
+    };
 
     static toUpdateInput = (category: Category): Prisma.CategoryUpdateInput => {
         return {
             name: category.name
         };
-    }
+    };
 
     static toModel (category: null): null;
     static toModel (category: PrismaCategory | null): Category;

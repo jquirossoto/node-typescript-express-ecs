@@ -11,16 +11,16 @@ export const post = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
-}
+};
 
 export const list = async (req: Request, res: Response) => {
     try {
         const owners: Owner[] = await ownerService.list();
         res.status(200).json(apiUtils.buildSuccessResponse(owners));
     } catch (error) {
-        res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]))
+        res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
-}
+};
 
 export const get = async (req: Request, res: Response) => {
     try {
@@ -29,7 +29,7 @@ export const get = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
-}
+};
 
 export const patch = async (req: Request, res: Response) => {
     try {
@@ -38,7 +38,7 @@ export const patch = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
-}
+};
 
 export const remove = async (req: Request, res: Response) => {
     try {
@@ -47,4 +47,4 @@ export const remove = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
-}
+};

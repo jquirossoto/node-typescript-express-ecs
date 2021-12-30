@@ -1,4 +1,4 @@
-import { Category, PetStatus } from '@prisma/client'
+import { Category, PetStatus } from '@prisma/client';
 
 import prisma from './../src/utils/client.prisma';
 import logger from './../src/utils/logger';
@@ -38,5 +38,5 @@ main()
         process.exit(1);
     })
     .finally(async () => {
-        await prisma.$disconnect()
+        await prisma.$disconnect();
     });

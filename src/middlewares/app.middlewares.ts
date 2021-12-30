@@ -23,7 +23,7 @@ export const authorize = (req: Request, res: Response, next: NextFunction) => {
         return res.status(403).json(buildErrorResponse(['UNAUTHORIZED']));
     }
     return next();
-}
+};
 
 /**
  * Validate schema middleware.
@@ -44,4 +44,4 @@ export const validateSchema = (schema: AnySchema) => {
         }
         return next();
     };
-}
+};

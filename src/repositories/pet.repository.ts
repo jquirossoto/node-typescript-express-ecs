@@ -21,7 +21,7 @@ export const create = (pet: Pet): Promise<Pet> => {
             reject(err);
         });
     });
-}
+};
 
 /**
  * Finds a Pet by id.
@@ -37,7 +37,7 @@ export const findUnique = (id: number): Promise<Pet | null> => {
             reject(err);
         });
     });
-}
+};
 
 /**
  * Finds a list of Pet.
@@ -52,7 +52,7 @@ export const findMany = (): Promise<Pet[]> => {
             reject(err);
         });
     });
-}
+};
 
 /**
  * Updates a Pet.
@@ -69,7 +69,7 @@ export const update = (id: number, pet: Pet): Promise<Pet> => {
             reject(err);
         });
     });
-}
+};
 
 /**
  * Deletes a Pet.
@@ -85,4 +85,4 @@ export const remove = (id: number): Promise<Pet> => {
             reject(err);
         });
     });
-}
+};

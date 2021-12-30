@@ -21,7 +21,7 @@ export const create = (category: Category): Promise<Category> => {
             reject(err);
         });
     });
-}
+};
 
 /**
  * Finds a Category by id.
@@ -37,7 +37,7 @@ export const findUnique = (id: number): Promise<Category | null> => {
             reject(err);
         });
     });
-}
+};
 
 /**
  * Finds a list of Category.
@@ -52,7 +52,7 @@ export const findMany = (): Promise<Category[]> => {
             reject(err);
         });
     });
-}
+};
 
 /**
  * Updates a Category.
@@ -69,7 +69,7 @@ export const update = (id: number, category: Category): Promise<Category> => {
             reject(err);
         });
     });
-}
+};
 
 /**
  * Deletes a Category.
@@ -85,4 +85,4 @@ export const remove = (id: number): Promise<Category> => {
             reject(err);
         });
     });
-}
+};

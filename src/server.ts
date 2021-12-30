@@ -3,7 +3,7 @@
  * @author jquirossoto
  */
 
-import app from './app'
+import app from './app';
 import prisma from './utils/client.prisma';
 import logger from './utils/logger';
 

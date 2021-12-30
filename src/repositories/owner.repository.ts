@@ -11,7 +11,7 @@ export const create = (owner: Owner): Promise<Owner> => {
             reject(err);
         });
     });
-}
+};
 
 export const findUnique = (id: number): Promise<Owner> => {
     return new Promise<Owner>((resolve, reject) => {
@@ -21,7 +21,7 @@ export const findUnique = (id: number): Promise<Owner> => {
             reject(err);
         });
     });
-}
+};
 
 export const findMany = (): Promise<Owner[]> => {
     return new Promise<Owner[]>((resolve, reject) => {
@@ -31,7 +31,7 @@ export const findMany = (): Promise<Owner[]> => {
             reject(err);
         });
     });
-}
+};
 
 export const update = (id: number, owner: Owner): Promise<Owner> => {
     return new Promise<Owner>((resolve, reject) => {
@@ -41,7 +41,7 @@ export const update = (id: number, owner: Owner): Promise<Owner> => {
             reject(err);
         });
     });
-}
+};
 
 export const remove = (id: number): Promise<Owner> => {
     return new Promise<Owner>((resolve, reject) => {
@@ -51,4 +51,4 @@ export const remove = (id: number): Promise<Owner> => {
             reject(err);
         });
     });
-}
+};

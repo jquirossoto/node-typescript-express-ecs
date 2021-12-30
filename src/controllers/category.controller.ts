@@ -22,7 +22,7 @@ export const post = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
-}
+};
 
 /**
  * List handler.
@@ -37,7 +37,7 @@ export const list = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
-}
+};
 
 /**
  * Get handler.
@@ -52,7 +52,7 @@ export const get = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
-}
+};
 
 /**
  * Patch handler.
@@ -67,7 +67,7 @@ export const patch = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
-}
+};
 
 /**
  * Delete handler.
@@ -82,4 +82,4 @@ export const remove = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json(apiUtils.buildErrorResponse([(error as Error).message]));
     }
-}
+};

@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { getMockReq, getMockRes } from '@jest-mock/express'
+import { getMockReq, getMockRes } from '@jest-mock/express';
 
 import { buildErrorResponse } from './../utils/api.utils';
 import { authorize, validateSchema } from './app.middlewares';
@@ -25,7 +25,7 @@ describe('App Middlewares', () => {
             const { res, next } = getMockRes();
             authorize(req, res, next);
             expect(res.status).toHaveBeenCalledWith(403);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse(['UNAUTHORIZED']))
+            expect(res.json).toHaveBeenCalledWith(buildErrorResponse(['UNAUTHORIZED']));
             expect(next).toHaveBeenCalledTimes(0);
         });
 
@@ -54,7 +54,7 @@ describe('App Middlewares', () => {
                 },
                 required: ["name"],
                 additionalProperties: false
-            }
+            };
             const validateSchemaMiddleware = validateSchema(schema);
             validateSchemaMiddleware(req, res, next);
             expect(next).toHaveBeenCalledTimes(1);
@@ -76,7 +76,7 @@ describe('App Middlewares', () => {
                 },
                 required: ["name"],
                 additionalProperties: false
-            }
+            };
             const validateSchemaMiddleware = validateSchema(schema);
             validateSchemaMiddleware(req, res, next);
             expect(res.status).toHaveBeenCalledWith(422);
