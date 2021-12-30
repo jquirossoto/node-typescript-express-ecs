@@ -7,6 +7,7 @@ import { Request, Response, NextFunction } from 'express';
 import Ajv, { DefinedError, AnySchema } from "ajv";
 
 import { buildErrorResponse } from './../utils/api.utils';
+import { ExpressWinstonRequest } from 'express-winston';
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -41,6 +42,28 @@ export const validateSchema = (schema: AnySchema) => {
                 }
             }
             return res.status(422).json(buildErrorResponse(errors));
+        }
+        return next();
+    };
+};
+
+export interface WhitelistOptions {
+    body?: string[];
+    req?: string[];
+    res?: string[];
+}
+
+export const whitelist = (options: WhitelistOptions) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        const ewReq = req as ExpressWinstonRequest;
+        if (options.body) {
+            ewReq._routeWhitelists.body = options.body;
+        }
+        if (options.req) {
+            ewReq._routeWhitelists.req = options.req;
+        }
+        if (options.res) {
+            ewReq._routeWhitelists.res = options.res;
         }
         return next();
     };
