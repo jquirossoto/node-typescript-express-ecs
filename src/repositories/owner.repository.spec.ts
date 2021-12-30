@@ -1,16 +1,7 @@
-import { Owner as PrismaOwner } from '@prisma/client';
 import { prismaMock } from './../../prisma/singleton';
 
 import { create, findUnique, findMany, update, remove } from './owner.repository';
-import Owner from './../models/owner.model';
-import Address from '../models/address.model';
-
-// For more info refer to: https://www.prisma.io/docs/concepts/components/prisma-client/advanced-type-safety
-type GeneratedOwner = PrismaOwner & {
-    address: Address & {
-        id: number
-    }
-};
+import Owner, { GeneratedOwner } from './../models/owner.model';
 
 describe('Owner Repository', () => {
 

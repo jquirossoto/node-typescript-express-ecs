@@ -48,24 +48,20 @@ export default class Owner {
     }
 
     static toModel (owner: null): null;
-    static toModel (owner: PrismaOwner | null): Owner;
-    static toModel (owners: PrismaOwner[]): Owner[];
+    static toModel (owner: GeneratedOwner | null): Owner;
+    static toModel (owners: GeneratedOwner[]): Owner[];
     
-    static toModel (owner: PrismaOwner | PrismaOwner[] | null): Owner | Owner[] | null {
+    static toModel (owner: GeneratedOwner | GeneratedOwner[] | null): Owner | Owner[] | null {
         let result: Owner | Owner[] | null;
         if (Array.isArray(owner)) {
             result = [];
             for (let i = 0; i < owner.length; i++) {
-                // @ts-ignore
                 delete owner[i].address.id;
-                // @ts-ignore
                 result.push(new Owner(owner[i].id, owner[i].firstName, owner[i].middleInitial, owner[i].lastName, owner[i].identification_number, owner[i].address));
             }
         } else {
             if (owner) {
-                // @ts-ignore
                 delete owner.address.id;
-                // @ts-ignore
                 result = new Owner(owner.id, owner.firstName, owner.middleInitial, owner.lastName, owner.identification_number, owner.address);
             } else {
                 result = null;
@@ -75,3 +71,10 @@ export default class Owner {
     }
     
 }
+
+// For more info refer to: https://www.prisma.io/docs/concepts/components/prisma-client/advanced-type-safety
+export type GeneratedOwner = PrismaOwner & {
+    address: Address & {
+        id?: number
+    }
+};
