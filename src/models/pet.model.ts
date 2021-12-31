@@ -41,8 +41,7 @@ export default class Pet {
         };
     };
 
-    static toModel (pet: null): null;
-    static toModel (pet: PrismaPet | null): Pet;
+    static toModel (pet: PrismaPet | null): Pet | null;
     static toModel (pets: PrismaPet[]): Pet[];
     
     static toModel (pet: PrismaPet | PrismaPet[] | null): Pet | Pet[] | null {
