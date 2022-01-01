@@ -27,6 +27,7 @@ export default class Category {
         };
     };
 
+    static toModel (category: null): null;
     static toModel (category: PrismaCategory | null): Category;
     static toModel (categories: PrismaCategory[]): Category[];
     

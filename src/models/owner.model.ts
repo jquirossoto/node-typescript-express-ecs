@@ -47,7 +47,8 @@ export default class Owner {
         };
     }
 
-    static toModel (owner: GeneratedOwner | null): Owner | null;
+    static toModel (owner: null): null;
+    static toModel (owner: GeneratedOwner | null): Owner;
     static toModel (owners: GeneratedOwner[]): Owner[];
     
     static toModel (owner: GeneratedOwner | GeneratedOwner[] | null): Owner | Owner[] | null {
