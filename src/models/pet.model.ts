@@ -21,7 +21,7 @@ export default class Pet {
     }
 
     static toCreateInput = (pet: Pet): Prisma.PetCreateInput => {
-        return {
+        const createInput: Prisma.PetCreateInput = {
             name: pet.name,
             status: pet.status,
             category: {
@@ -30,6 +30,14 @@ export default class Pet {
                 }
             }
         };
+        if (pet.owner_id) {
+            createInput.owner = {
+                connect: {
+                    id: pet.owner_id
+                }
+            };
+        }
+        return createInput;
     };
 
     static toUpdateInput = (pet: Pet): Prisma.PetUncheckedUpdateInput => {
