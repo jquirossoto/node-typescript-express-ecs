@@ -22,12 +22,12 @@ async function main() {
         update: {
             name: 'Seeded pet',
             status: PetStatus.AVAILABLE,
-            category_id: category.id
+            categoryId: category.id
         },
         create: {
             name: 'Seeded pet',
             status: PetStatus.AVAILABLE,
-            category_id: category.id
+            categoryId: category.id
         }
     });
 }

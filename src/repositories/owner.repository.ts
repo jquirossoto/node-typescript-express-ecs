@@ -1,5 +1,6 @@
 import prisma from './../utils/client.prisma';
 import Owner, { GeneratedOwner } from './../models/owner.model';
+import { Address } from '@prisma/client';
 
 export const create = (owner: Owner): Promise<Owner> => {
     return new Promise<Owner> ((resolve, reject) => {
@@ -44,7 +45,11 @@ export const update = (id: number, owner: Owner): Promise<Owner> => {
 export const remove = (id: number): Promise<Owner> => {
     return new Promise<Owner>((resolve, reject) => {
         prisma.owner.delete({ where: { id }, include: { address: true } }).then((data: GeneratedOwner) => {
-            resolve(Owner.toModel(data));
+            prisma.address.delete({ where: { id: data.addressId } }).then(() => {
+                resolve(Owner.toModel(data));
+            }).catch(() => {
+                resolve(Owner.toModel(data));
+            });
         }).catch((err: Error) => {
             reject(err);
         });
