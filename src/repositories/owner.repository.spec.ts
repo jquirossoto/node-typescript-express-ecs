@@ -2,6 +2,7 @@ import { prismaMock } from './../../prisma/singleton';
 
 import { create, findUnique, findMany, update, remove } from './owner.repository';
 import Owner, { GeneratedOwner } from './../models/owner.model';
+import { Address } from '@prisma/client';
 
 describe('Owner Repository', () => {
 
@@ -29,7 +30,7 @@ describe('Owner Repository', () => {
                 middleInitial: 'M',
                 lastName: 'Doe',
                 identificationNumber: '109876543',
-                address_id: 1,
+                addressId: 1,
                 address: {
                     id: 1,
                     street: '995 Huel Curve',
@@ -98,7 +99,7 @@ describe('Owner Repository', () => {
                 middleInitial: 'M',
                 lastName: 'Doe',
                 identificationNumber: '109876543',
-                address_id: 1,
+                addressId: 1,
                 address: {
                     id: 1,
                     street: '995 Huel Curve',
@@ -151,7 +152,7 @@ describe('Owner Repository', () => {
                     middleInitial: 'M',
                     lastName: 'Doe',
                     identificationNumber: '109876543',
-                    address_id: 1,
+                    addressId: 1,
                     address: {
                         id: 1,
                         street: '995 Huel Curve',
@@ -168,7 +169,7 @@ describe('Owner Repository', () => {
                     middleInitial: 'P',
                     lastName: 'Doe',
                     identificationNumber: '109876541',
-                    address_id: 2,
+                    addressId: 2,
                     address: {
                         id: 2,
                         street: '995 Huel Curve',
@@ -237,7 +238,7 @@ describe('Owner Repository', () => {
                 middleInitial: 'M',
                 lastName: 'Doe',
                 identificationNumber: '109876543',
-                address_id: 1,
+                addressId: 1,
                 address: {
                     id: 1,
                     street: '995 Huel Curve',
@@ -314,22 +315,23 @@ describe('Owner Repository', () => {
     describe('remove()', () => {
 
         it('Should delete a owner', async () => {
+            const deletedAddress: Address = {
+                id: 1,
+                street: '995 Huel Curve',
+                buildingNumber: 'Suite 204',
+                city: 'Grimesview',
+                state: 'Bilzen',
+                countryCode: 'US',
+                postalCode: '65888-1483'
+            };
             const deletedOwner: GeneratedOwner = {
                 id: 1,
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
                 identificationNumber: '109876543',
-                address_id: 1,
-                address: {
-                    id: 1,
-                    street: '995 Huel Curve',
-                    buildingNumber: 'Suite 204',
-                    city: 'Grimesview',
-                    state: 'Bilzen',
-                    countryCode: 'US',
-                    postalCode: '65888-1483'
-                }
+                addressId: 1,
+                address: deletedAddress
             };
             const returnedOwner: Owner = {
                 id: 1,
@@ -348,9 +350,12 @@ describe('Owner Repository', () => {
             };
             // @ts-ignore
             prismaMock.owner.delete.mockResolvedValue(deletedOwner);
+            // @ts-ignore
+            prismaMock.address.delete.mockResolvedValue(deletedAddress);
 
             await expect(remove(1)).resolves.toEqual(returnedOwner);
 
+            expect(prismaMock.address.delete).toHaveBeenCalledTimes(1);
             expect(prismaMock.owner.delete).toHaveBeenCalledTimes(1);
         });
 
