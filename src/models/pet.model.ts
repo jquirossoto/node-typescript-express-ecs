@@ -44,8 +44,8 @@ export default class Pet {
         return {
             name: pet.name,
             status: pet.status,
-            category_id: pet.categoryId,
-            owner_id: pet.ownerId
+            categoryId: pet.categoryId,
+            ownerId: pet.ownerId
         };
     };
 
@@ -58,11 +58,11 @@ export default class Pet {
         if (Array.isArray(pet)) {
             result = [];
             for (let i = 0; i < pet.length; i++) {
-                result.push(new Pet(pet[i].id, pet[i].name, pet[i].status, pet[i].category_id, pet[i].owner_id));
+                result.push(new Pet(pet[i].id, pet[i].name, pet[i].status, pet[i].categoryId, pet[i].ownerId));
             }
         } else {
             if (pet) {
-                result = new Pet(pet.id, pet.name, pet.status, pet.category_id, pet.owner_id);
+                result = new Pet(pet.id, pet.name, pet.status, pet.categoryId, pet.ownerId);
             } else {
                 result = null;
             }

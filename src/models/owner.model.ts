@@ -24,7 +24,7 @@ export default class Owner {
             firstName: owner.firstName,
             middleInitial: owner.middleInitial,
             lastName: owner.lastName,
-            identification_number: owner.identificationNumber,
+            identificationNumber: owner.identificationNumber,
             address: {
                 create: {
                     ...owner.address
@@ -38,7 +38,7 @@ export default class Owner {
             firstName: owner.firstName,
             middleInitial: owner.middleInitial,
             lastName: owner.lastName,
-            identification_number: owner.identificationNumber,
+            identificationNumber: owner.identificationNumber,
             address: {
                 update: {
                     ...owner.address
@@ -57,12 +57,12 @@ export default class Owner {
             result = [];
             for (let i = 0; i < owner.length; i++) {
                 delete owner[i].address.id;
-                result.push(new Owner(owner[i].id, owner[i].firstName, owner[i].middleInitial, owner[i].lastName, owner[i].identification_number, owner[i].address));
+                result.push(new Owner(owner[i].id, owner[i].firstName, owner[i].middleInitial, owner[i].lastName, owner[i].identificationNumber, owner[i].address));
             }
         } else {
             if (owner) {
                 delete owner.address.id;
-                result = new Owner(owner.id, owner.firstName, owner.middleInitial, owner.lastName, owner.identification_number, owner.address);
+                result = new Owner(owner.id, owner.firstName, owner.middleInitial, owner.lastName, owner.identificationNumber, owner.address);
             } else {
                 result = null;
             }
