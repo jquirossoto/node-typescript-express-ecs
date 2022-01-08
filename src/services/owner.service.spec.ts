@@ -14,7 +14,7 @@ describe('Owner Service', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -29,7 +29,7 @@ describe('Owner Service', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -56,7 +56,7 @@ describe('Owner Service', () => {
                     firstName: 'Jane',
                     middleInitial: 'M',
                     lastName: 'Doe',
-                    identification_number: '109876543',
+                    identificationNumber: '109876543',
                     address: {
                         street: '995 Huel Curve',
                         buildingNumber: 'Suite 204',
@@ -71,7 +71,7 @@ describe('Owner Service', () => {
                     firstName: 'Jane',
                     middleInitial: 'M',
                     lastName: 'Doe',
-                    identification_number: '109876543',
+                    identificationNumber: '109876543',
                     address: {
                         street: '995 Huel Curve',
                         buildingNumber: 'Suite 204',
@@ -98,7 +98,7 @@ describe('Owner Service', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -126,7 +126,7 @@ describe('Owner Service', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -141,7 +141,7 @@ describe('Owner Service', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -169,7 +169,7 @@ describe('Owner Service', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',

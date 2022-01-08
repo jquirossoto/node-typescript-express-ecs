@@ -328,7 +328,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"Jane\",\n    \"middleInitial\": \"M\",\n    \"lastName\": \"Doe\",\n    \"identification_number\": \"187659844\",\n    \"address\": {\n        \"street\": \"995 Huel Curve\",\n        \"buildingNumber\": \"Suite 204\",\n        \"city\": \"Grimesview\",\n        \"state\": \"Bilzen\",\n        \"countryCode\": \"US\",\n        \"postalCode\": \"65888-1483\"\n    }\n}",
+							"raw": "{\n    \"firstName\": \"Jane\",\n    \"lastName\": \"Doe\",\n    \"middleInitial\": \"M\",\n    \"identificationNumber\": \"187659844\",\n    \"address\": {\n        \"street\": \"995 Huel Curve\",\n        \"buildingNumber\": \"Suite 204\",\n        \"city\": \"Grimesview\",\n        \"state\": \"Bilzen\",\n        \"countryCode\": \"US\",\n        \"postalCode\": \"65888-1483\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -499,7 +499,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"Jane updated\",\n    \"middleInitial\": \"M\",\n    \"lastName\": \"Doe\",\n    \"identification_number\": \"187659844\",\n    \"address\": {\n        \"street\": \"995 Huel Curve updated\",\n        \"buildingNumber\": \"Suite 204\",\n        \"city\": \"Grimesview\",\n        \"state\": \"Bilzen\",\n        \"countryCode\": \"US\",\n        \"postalCode\": \"65888-1483\"\n    }\n}",
+							"raw": "{\n    \"firstName\": \"Jane updated\",\n    \"middleInitial\": \"M\",\n    \"lastName\": \"Doe\",\n    \"identificationNumber\": \"187659844\",\n    \"address\": {\n        \"street\": \"995 Huel Curve updated\",\n        \"buildingNumber\": \"Suite 204\",\n        \"city\": \"Grimesview\",\n        \"state\": \"Bilzen\",\n        \"countryCode\": \"US\",\n        \"postalCode\": \"65888-1483\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -624,7 +624,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"First pet\",\n    \"status\": \"AVAILABLE\",\n    \"category_id\": {{category_id}},\n    \"owner_id\": {{owner_id}}\n}",
+							"raw": "{\n    \"name\": \"First pet\",\n    \"status\": \"AVAILABLE\",\n    \"categoryId\": {{category_id}},\n    \"ownerId\": {{owner_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -799,7 +799,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Updated pet\",\n    \"category_id\": {{category_id}},\n    \"owner_id\": {{owner_id}}\n}",
+							"raw": "{\n    \"name\": \"Updated pet\",\n    \"status\": \"SOLD\",\n    \"categoryId\": {{category_id}},\n    \"ownerId\": {{owner_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -9,15 +9,15 @@ export default class Pet {
     id: number | null;
     name: string;
     status: 'AVAILABLE' | 'PENDING' | 'SOLD';
-    category_id: number;
-    owner_id: number | null;
+    categoryId: number;
+    ownerId: number | null;
 
-    constructor(id: number | null, name: string, status: 'AVAILABLE' | 'PENDING' | 'SOLD', category_id: number, owner_id: number | null) {
+    constructor(id: number | null, name: string, status: 'AVAILABLE' | 'PENDING' | 'SOLD', categoryId: number, ownerId: number | null) {
         this.id = id;
         this.name = name;
         this.status = status;
-        this.category_id = category_id;
-        this.owner_id = owner_id;
+        this.categoryId = categoryId;
+        this.ownerId = ownerId;
     }
 
     static toCreateInput = (pet: Pet): Prisma.PetCreateInput => {
@@ -26,14 +26,14 @@ export default class Pet {
             status: pet.status,
             category: {
                 connect: {
-                    id: pet.category_id
+                    id: pet.categoryId
                 }
             }
         };
-        if (pet.owner_id) {
+        if (pet.ownerId) {
             createInput.owner = {
                 connect: {
-                    id: pet.owner_id
+                    id: pet.ownerId
                 }
             };
         }
@@ -44,8 +44,8 @@ export default class Pet {
         return {
             name: pet.name,
             status: pet.status,
-            category_id: pet.category_id,
-            owner_id: pet.owner_id
+            category_id: pet.categoryId,
+            owner_id: pet.ownerId
         };
     };
 

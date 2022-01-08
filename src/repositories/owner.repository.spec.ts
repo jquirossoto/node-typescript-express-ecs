@@ -13,7 +13,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -28,7 +28,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address_id: 1,
                 address: {
                     id: 1,
@@ -45,7 +45,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -69,7 +69,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -97,7 +97,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address_id: 1,
                 address: {
                     id: 1,
@@ -114,7 +114,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -150,7 +150,7 @@ describe('Owner Repository', () => {
                     firstName: 'Jane',
                     middleInitial: 'M',
                     lastName: 'Doe',
-                    identification_number: '109876543',
+                    identificationNumber: '109876543',
                     address_id: 1,
                     address: {
                         id: 1,
@@ -167,7 +167,7 @@ describe('Owner Repository', () => {
                     firstName: 'John',
                     middleInitial: 'P',
                     lastName: 'Doe',
-                    identification_number: '109876541',
+                    identificationNumber: '109876541',
                     address_id: 2,
                     address: {
                         id: 2,
@@ -186,7 +186,7 @@ describe('Owner Repository', () => {
                     firstName: 'Jane',
                     middleInitial: 'M',
                     lastName: 'Doe',
-                    identification_number: '109876543',
+                    identificationNumber: '109876543',
                     address: {
                         street: '995 Huel Curve',
                         buildingNumber: 'Suite 204',
@@ -201,7 +201,7 @@ describe('Owner Repository', () => {
                     firstName: 'John',
                     middleInitial: 'P',
                     lastName: 'Doe',
-                    identification_number: '109876541',
+                    identificationNumber: '109876541',
                     address: {
                         street: '995 Huel Curve',
                         buildingNumber: 'Suite 204',
@@ -236,7 +236,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address_id: 1,
                 address: {
                     id: 1,
@@ -253,7 +253,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -268,7 +268,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -292,7 +292,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',
@@ -319,7 +319,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address_id: 1,
                 address: {
                     id: 1,
@@ -336,7 +336,7 @@ describe('Owner Repository', () => {
                 firstName: 'Jane',
                 middleInitial: 'M',
                 lastName: 'Doe',
-                identification_number: '109876543',
+                identificationNumber: '109876543',
                 address: {
                     street: '995 Huel Curve',
                     buildingNumber: 'Suite 204',

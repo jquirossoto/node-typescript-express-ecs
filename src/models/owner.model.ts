@@ -7,15 +7,15 @@ export default class Owner {
     firstName: string;
     middleInitial: string;
     lastName: string;
-    identification_number: string;
+    identificationNumber: string;
     address: Address;
 
-    constructor(id: number | null, firstName: string, middleInitial: string, lastName: string, identification_number: string, address: Address) {
+    constructor(id: number | null, firstName: string, middleInitial: string, lastName: string, identificationNumber: string, address: Address) {
         this.id = id;
         this.firstName = firstName;
         this.middleInitial = middleInitial;
         this.lastName = lastName;
-        this.identification_number = identification_number;
+        this.identificationNumber = identificationNumber;
         this.address = address;
     }
 
@@ -24,7 +24,7 @@ export default class Owner {
             firstName: owner.firstName,
             middleInitial: owner.middleInitial,
             lastName: owner.lastName,
-            identification_number: owner.identification_number,
+            identification_number: owner.identificationNumber,
             address: {
                 create: {
                     ...owner.address
@@ -38,7 +38,7 @@ export default class Owner {
             firstName: owner.firstName,
             middleInitial: owner.middleInitial,
             lastName: owner.lastName,
-            identification_number: owner.identification_number,
+            identification_number: owner.identificationNumber,
             address: {
                 update: {
                     ...owner.address

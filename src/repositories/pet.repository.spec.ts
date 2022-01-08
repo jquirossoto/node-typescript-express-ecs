@@ -13,22 +13,22 @@ describe('Pet Repository', () => {
                 id: null,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             const createdPet: PrismaPet = {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             const returnedPet: Pet = {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             /* @ts-ignore */
             prismaMock.pet.create.mockResolvedValue(createdPet);
@@ -41,8 +41,8 @@ describe('Pet Repository', () => {
                 id: null,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             prismaMock.pet.create.mockRejectedValue(new Error('Unable to process request'));
             await expect(create(newPet)).rejects.toThrow(Error);
@@ -59,15 +59,15 @@ describe('Pet Repository', () => {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             const returnedPet: Pet = {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             prismaMock.pet.findUnique.mockResolvedValue(foundPet);
             await expect(findUnique(1)).resolves.toEqual(returnedPet);
@@ -91,15 +91,15 @@ describe('Pet Repository', () => {
                     id: 1,
                     name: 'My pet',
                     status: 'AVAILABLE',
-                    category_id: 1,
-                    owner_id: 1
+                    categoryId: 1,
+                    ownerId: 1
                 },
                 {
                     id: 2,
                     name: 'My second pet',
                     status: 'AVAILABLE',
-                    category_id: 1,
-                    owner_id: 1
+                    categoryId: 1,
+                    ownerId: 1
                 }
             ];
             const returnedPets: Pet [] = [
@@ -107,15 +107,15 @@ describe('Pet Repository', () => {
                     id: 1,
                     name: 'My pet',
                     status: 'AVAILABLE',
-                    category_id: 1,
-                    owner_id: 1
+                    categoryId: 1,
+                    ownerId: 1
                 },
                 {
                     id: 2,
                     name: 'My second pet',
                     status: 'AVAILABLE',
-                    category_id: 1,
-                    owner_id: 1
+                    categoryId: 1,
+                    ownerId: 1
                 }
             ];
             prismaMock.pet.findMany.mockResolvedValue(foundPets);
@@ -138,22 +138,22 @@ describe('Pet Repository', () => {
                 id: 1,
                 name: 'Updated pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             const returnedPet: Pet = {
                 id: 1,
                 name: 'Updated pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             const dataToUpdate: Pet = {
                 id: null,
                 name: 'Updated pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             prismaMock.pet.update.mockResolvedValue(updatedPet);
             await expect(update(1, dataToUpdate)).resolves.toEqual(returnedPet);
@@ -165,8 +165,8 @@ describe('Pet Repository', () => {
                 id: null,
                 name: 'Updated pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: null
+                categoryId: 1,
+                ownerId: null
             };
             prismaMock.pet.update.mockRejectedValue(new Error('Unable to process request'));
             await expect(update(1, dataToUpdate)).rejects.toThrow(Error);
@@ -182,15 +182,15 @@ describe('Pet Repository', () => {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             const returnedPet: Pet = {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             prismaMock.pet.delete.mockResolvedValue(deletedPet);
             await expect(remove(1)).resolves.toEqual(returnedPet);

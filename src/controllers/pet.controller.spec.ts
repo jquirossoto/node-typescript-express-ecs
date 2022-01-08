@@ -17,8 +17,8 @@ describe('Pet Controller', () => {
                 id: null,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             const req: Request = getMockReq({
                 body: newPet
@@ -28,8 +28,8 @@ describe('Pet Controller', () => {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             // @ts-ignore
             petService.create.mockResolvedValue(createdCategory);
@@ -46,8 +46,8 @@ describe('Pet Controller', () => {
                 id: null,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             const req: Request = getMockReq({
                 body: newPet
@@ -74,15 +74,15 @@ describe('Pet Controller', () => {
                     id: 1,
                     name: 'My pet',
                     status: 'AVAILABLE',
-                    category_id: 1,
-                    owner_id: 1
+                    categoryId: 1,
+                    ownerId: 1
                 },
                 {
                     id: 2,
                     name: 'Second pet',
                     status: 'SOLD',
-                    category_id: 1,
-                    owner_id: 1
+                    categoryId: 1,
+                    ownerId: 1
                 }
             ];
             const req: Request = getMockReq();
@@ -140,8 +140,8 @@ describe('Pet Controller', () => {
                 id: 1,
                 name: 'My pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             // @ts-ignore
             petService.get.mockResolvedValue(foundPet);
@@ -197,8 +197,8 @@ describe('Pet Controller', () => {
                 id: null,
                 name: 'Patched pet',
                 status: 'PENDING',
-                category_id: 2,
-                owner_id: 2
+                categoryId: 2,
+                ownerId: 2
             };
             const req: Request = getMockReq({
                 params: {
@@ -211,8 +211,8 @@ describe('Pet Controller', () => {
                 id: 1,
                 name: 'Patched pet',
                 status: 'PENDING',
-                category_id: 2,
-                owner_id: 2
+                categoryId: 2,
+                ownerId: 2
             };
             // @ts-ignore
             petService.update.mockResolvedValue(patchedPet);
@@ -229,8 +229,8 @@ describe('Pet Controller', () => {
                 id: null,
                 name: 'Patched pet',
                 status: 'PENDING',
-                category_id: 2,
-                owner_id: 2
+                categoryId: 2,
+                ownerId: 2
              };
             const req: Request = getMockReq({
                 params: {
@@ -266,8 +266,8 @@ describe('Pet Controller', () => {
                 id: 1,
                 name: 'Deleted pet',
                 status: 'AVAILABLE',
-                category_id: 1,
-                owner_id: 1
+                categoryId: 1,
+                ownerId: 1
             };
             // @ts-ignore
             petService.remove.mockResolvedValue(deletedPet);

@@ -5,18 +5,125 @@
     "definitions": {
         "Category": {
             "type": "object",
+            "required": [ "name" ],
             "properties": {
                 "id": {
+                    "type": "number",
                     "title": "Id",
-                    "description": "Category identifier",
-                    "type": "number"
+                    "description": "Category identifier"
                 },
                 "name": {
+                    "type": "string",
                     "title": "Name",
                     "description": "Category name",
-                    "type": "string",
                     "minLength": 3,
                     "maxLength": 50
+                }
+            },
+            "additionalProperties": false
+        },
+        "Owner": {
+            "type": "object",
+            "required": [ "firstName", "lastName", "identificationNumber", "address" ],
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "title": "Id",
+                    "description": "Owner identifier."
+                },
+                "firstName": {
+                    "type": "string",
+                    "title": "First name",
+                    "description": "Owner's first name.",
+                    "minLength": 2
+                },
+                "middleInitial": {
+                    "type": "string",
+                    "title": "Middle initial",
+                    "description": "Owner's middle initial.",
+                    "minLength": 1,
+                    "maxLength": 1
+                },
+                "lastName": {
+                    "type": "string",
+                    "title": "Last name",
+                    "description": "Owner's last name.",
+                    "minLength": 2
+                },
+                "identificationNumber": {
+                    "type": "string",
+                    "title": "Identification number",
+                    "description": "Alphanumeric value that carries the identification number issued to the owner by the government or an authorized national entity."
+                },
+                "address": {
+                    "type": "object",
+                    "title": "Address",
+                    "description": "Owner's address.",
+                    "required": [ "street", "city", "countryCode", "postalCode" ],
+                    "properties": {
+                        "street": {
+                            "type": "string",
+                            "title": "Street"
+                        },
+                        "buildingNumber": {
+                            "type": "string",
+                            "title": "Building number"
+                        },
+                        "city": {
+                            "type": "string",
+                            "title": "City"
+                        },
+                        "state": {
+                            "type": "string",
+                            "title": "State"
+                        },
+                        "countryCode": {
+                            "type": "string",
+                            "title": "Country code",
+                            "description": "2-character alpha country code. Refer to ISO country codes.",
+                            "minLength": 2,
+                            "maxLength": 2
+                        },
+                        "postalCode": {
+                            "type": "string",
+                            "title": "Postal code"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "Pet": {
+            "type": "object",
+            "required": [ "name", "status", "categoryId" ],
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "title": "Id",
+                    "description": "Owner identifier."
+                },
+                "name": {
+                    "type": "string",
+                    "title": "Name",
+                    "description": "Pet's name",
+                    "minLength": 2
+                },
+                "status": {
+                    "type": "string",
+                    "title": "Status",
+                    "description": "Pet's status",
+                    "enum": [ "AVAILABLE", "PENDING", "SOLD" ]
+                },
+                "categoryId": {
+                    "type": "number",
+                    "title": "Category Id",
+                    "description": "Category identifier"
+                },
+                "ownerId": {
+                    "type": "number",
+                    "title": "Owner Id",
+                    "description": "Owner identifier"
                 }
             },
             "additionalProperties": false
