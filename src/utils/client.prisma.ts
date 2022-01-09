@@ -3,12 +3,12 @@
  * @author jquirossoto
  */
 
-import Prisma from "@prisma/client";
+import Prisma from '@prisma/client';
 
 let prisma;
 
 if (Prisma === undefined) {
-	import("@prisma/client").then(({ PrismaClient }) => {
+	import('@prisma/client').then(({ PrismaClient }) => {
 		prisma = new PrismaClient();
 	});
 } else {
