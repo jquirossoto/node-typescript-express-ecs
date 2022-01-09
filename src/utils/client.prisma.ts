@@ -5,7 +5,13 @@
 
 import Prisma from "@prisma/client";
 
-const PrismaClient = Prisma.PrismaClient;
+let prisma;
 
-const prisma = new PrismaClient();
+if (Prisma === undefined) {
+	import("@prisma/client").then(({ PrismaClient }) => {
+		prisma = new PrismaClient();
+	});
+} else {
+	prisma = new Prisma.PrismaClient();
+}
 export default prisma;
