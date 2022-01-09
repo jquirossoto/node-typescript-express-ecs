@@ -5,9 +5,9 @@
 
 import { Request, Response } from 'express';
 
-import Category from './../models/category.model';
-import * as categoryService from './../services/category.service';
-import * as apiUtils from './../utils/api.utils';
+import Category from './../models/category.model.js';
+import * as categoryService from './../services/category.service.js';
+import * as apiUtils from './../utils/api.utils.js';
 
 /**
  * Post handler.

@@ -4,9 +4,12 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "noImplicitReturns": true,
-        "strict": true,
+        "strict": false,
         "sourceMap": true,
-        "outDir": "dist"
+        "outDir": "dist",
+        "module": "es2022",
+        "target": "es2017",
+        "moduleResolution": "node"
     },
     "include": [
         "src/**/*"

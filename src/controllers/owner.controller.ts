@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import Owner from './../models/owner.model';
-import * as ownerService from './../services/owner.service';
-import * as apiUtils from './../utils/api.utils';
+import Owner from './../models/owner.model.js';
+import * as ownerService from './../services/owner.service.js';
+import * as apiUtils from './../utils/api.utils.js';
 
 export const post = async (req: Request, res: Response) => {
     try {

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { authorize, whitelist } from './../middlewares/app.middlewares';
-import { post, get, list, patch, remove } from './../controllers/owner.controller';
+import { authorize, whitelist } from './../middlewares/app.middlewares.js';
+import { post, get, list, patch, remove } from './../controllers/owner.controller.js';
 
 const router: Router = Router();
 router.route('/owners')

@@ -5,7 +5,7 @@
 
 import { Router } from 'express';
 
-import { list } from './../controllers/health.controller';
+import { list } from './../controllers/health.controller.js';
 
 export const router = Router();
 router.route('/health')

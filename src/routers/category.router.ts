@@ -5,10 +5,10 @@
 
 import { Router } from 'express';
 
-import { authorize, validateSchema } from './../middlewares/app.middlewares';
+import { authorize, validateSchema } from './../middlewares/app.middlewares.js';
 import postSchema from './../schemas/create-categories-request.schema.json';
 import patchSchema from './../schemas/update-categories-request.schema.json';
-import { post, list, get, patch, remove } from './../controllers/category.controller';
+import { post, list, get, patch, remove } from './../controllers/category.controller.js';
 
 const router = Router();
 router.route('/categories')

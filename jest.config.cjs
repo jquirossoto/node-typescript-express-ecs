@@ -5,6 +5,7 @@ module.exports = {
     testEnvironment: 'node',
     verbose: false,
     roots: ['<rootDir>/src'],
+    resolver: "jest-ts-webcompat-resolver",
     coveragePathIgnorePatterns: [
         "routers"
     ],

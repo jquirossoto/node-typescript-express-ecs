@@ -6,11 +6,11 @@
 import express, { Application } from 'express';
 import winstonMiddleware from 'express-winston';
 
-import logger from './utils/logger';
-import categoryRouter from './routers/category.router';
-import petRouter from './routers/pet.router';
-import ownerRouter from './routers/owner.router';
-import healthRouter from './routers/health.router';
+import logger from './utils/logger.js';
+import categoryRouter from './routers/category.router.js';
+import petRouter from './routers/pet.router.js';
+import ownerRouter from './routers/owner.router.js';
+import healthRouter from './routers/health.router.js';
 
 const app: Application = express();
 

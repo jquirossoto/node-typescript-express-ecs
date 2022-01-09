@@ -3,8 +3,8 @@
  * @author jquirossoto
  */
 
-import * as repo from './../repositories/pet.repository';
-import Pet from './../models/pet.model';
+import * as repo from './../repositories/pet.repository.js';
+import Pet from './../models/pet.model.js';
 
 /**
  * Creates a new Pet.

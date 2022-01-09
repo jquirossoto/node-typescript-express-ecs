@@ -1,5 +1,6 @@
-import Address  from './address.model';
 import { Owner as PrismaOwner, Prisma } from '@prisma/client';
+
+import Address  from './address.model.js';
 
 export default class Owner {
 

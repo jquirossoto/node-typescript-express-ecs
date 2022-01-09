@@ -1,6 +1,5 @@
-import prisma from './../utils/client.prisma';
-import Owner, { GeneratedOwner } from './../models/owner.model';
-import { Address } from '@prisma/client';
+import prisma from './../utils/client.prisma.js';
+import Owner, { GeneratedOwner } from './../models/owner.model.js';
 
 export const create = (owner: Owner): Promise<Owner> => {
     return new Promise<Owner> ((resolve, reject) => {

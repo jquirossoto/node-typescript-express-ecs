@@ -5,8 +5,8 @@
 
 import { Router } from 'express';
 
-import { authorize } from './../middlewares/app.middlewares';
-import { post, list, get, patch, remove } from './../controllers/pet.controller';
+import { authorize } from './../middlewares/app.middlewares.js';
+import { post, list, get, patch, remove } from './../controllers/pet.controller.js';
 
 export const router = Router();
 router.route('/pets')

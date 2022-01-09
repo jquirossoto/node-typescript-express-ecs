@@ -5,9 +5,9 @@
 
 import { Request, Response, NextFunction } from 'express';
 import Ajv, { DefinedError, AnySchema } from 'ajv';
-
-import { buildErrorResponse } from './../utils/api.utils';
 import { ExpressWinstonRequest } from 'express-winston';
+
+import { buildErrorResponse } from './../utils/api.utils.js';
 
 const ajv = new Ajv({ allErrors: true });
 
