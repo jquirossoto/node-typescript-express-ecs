@@ -13,7 +13,7 @@
     "prestart": "npm run build",
     "start": "node --experimental-json-modules .",
     "start:watch": "nodemon --watch dist server.js",
-    "test": "jest --coverage",
+    "test": "npm run test:clean && jest --coverage",
     "test:watch": "npm run test -- --watchAll",
     "test:coverage:view": "serve jest/coverage/lcov-report",
     "test:clean": "rm -rf jest",
