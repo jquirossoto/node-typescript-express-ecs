@@ -4,11 +4,17 @@
  */
 
 import { Router } from 'express';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+// @ts-ignore
+import loader from 'speccy/lib/loader.js';
 
 import { authorize, validateSchema } from './../middlewares/app.middlewares.js';
-import postSchema from './../schemas/create-categories-request.schema.json';
-import patchSchema from './../schemas/update-categories-request.schema.json';
 import { post, list, get, patch, remove } from './../controllers/category.controller.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const postSchema = await loader.loadSpec(`${__dirname}/../schemas/create-categories-request.schema.json`, { resolve: true, jsonSchema: true });
+const patchSchema = await loader.loadSpec(`${__dirname}/../schemas/update-categories-request.schema.json`, { resolve: true, jsonSchema: true });
 
 const router = Router();
 router.route('/categories')

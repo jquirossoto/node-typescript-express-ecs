@@ -2,7 +2,6 @@
     "extends": "@tsconfig/node16/tsconfig.json",
     "compilerOptions": {
         "esModuleInterop": true,
-        "resolveJsonModule": true,
         "noImplicitReturns": true,
         "strict": false,
         "sourceMap": true,
