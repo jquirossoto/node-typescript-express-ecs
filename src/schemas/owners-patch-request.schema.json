@@ -1,0 +1,11 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Update owners request",
+    "description": "Update owners request schema.",
+    "required": [ "id", "firstName", "middleInitial", "lastName", "identificationNumber", "address" ],
+    "allOf": [
+        {
+            "$ref": "common.schema.json#/definitions/owner"
+        }
+    ]
+}

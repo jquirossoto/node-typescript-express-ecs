@@ -36,7 +36,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCategoriesRequest"
+                "$ref": "#/components/schemas/PostCategoriesRequest"
               }
             }
           },
@@ -48,7 +48,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateCategoriesResponse"
+                  "$ref": "#/components/schemas/PostCategoriesResponse"
                 }
               }
             }
@@ -190,7 +190,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateCategoriesRequest"
+                "$ref": "#/components/schemas/PatchCategoriesRequest"
               }
             }
           },
@@ -202,7 +202,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateCategoriesResponse"
+                  "$ref": "#/components/schemas/PatchCategoriesResponse"
                 }
               }
             }
@@ -229,7 +229,7 @@
           }
         }
       },
-      "delete":{
+      "delete": {
         "operationId": "053a45b2-3cf7-41ce-95fb-335f35533e64",
         "summary": "Delete categories",
         "description": "Service to delete categories",
@@ -249,7 +249,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Get categories success response"
+            "description": "Delete categories success response"
           },
           "400": {
             "description": "Default 4xx response",
@@ -273,31 +273,568 @@
           }
         }
       }
-    }
+    },
+    "/owners":{
+      "post": {
+        "operationId": "219886aa-54f9-4851-aceb-00c191fc5ff5",
+        "summary": "Create owners",
+        "description": "Service to create owners",
+        "tags": [
+          "Owners"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostOwnersRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Create owners success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostOwnersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "dad1dc43-7d89-4513-843d-8be5f2acaaa3",
+        "summary": "List owners",
+        "description": "Service to list owners",
+        "tags": [
+          "Owners"
+        ],
+        "responses": {
+          "200": {
+            "description": "Create owners success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostOwnersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/owners/{id}": {
+      "get": {
+        "operationId": "89c53dff-c180-45a1-a8be-88a3e0d14479",
+        "summary": "Get owners",
+        "description": "Service to get owners",
+        "tags": [
+          "Owners"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Owner Identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get owners success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOwnersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "3a5ed3d7-f35e-48db-8060-93284d8f573b",
+        "summary": "Update owners",
+        "description": "Service to update owners",
+        "tags": [
+          "Owners"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Owner Identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchOwnersRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Get owners success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchOwnersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "f7487fde-f9c3-40f0-b73b-f4e9005f840d",
+        "summary": "Delete owners",
+        "description": "Service to delete owners",
+        "tags": [
+          "Owners"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Owner Identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete owners success response"
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets": {
+      "post": {
+        "operationId": "ed9fcb84-c2fc-476a-a4ee-583e289ea4ab",
+        "summary": "Create pets",
+        "description": "Service to create pets",
+        "tags": [
+          "Pets"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostPetsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Create pets success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostPetsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "88e5fcd6-130c-4163-a328-8c3728a6181c",
+        "summary": "List pets",
+        "description": "Service to list pets",
+        "tags": [
+          "Pets"
+        ],
+        "responses": {
+          "200": {
+            "description": "List pets success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListPetsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets/{id}": {
+      "get": {
+        "operationId": "60f19129-c122-4134-a496-4b43796aa260",
+        "summary": "Get pets",
+        "description": "Service to get pets",
+        "tags": [
+          "Pets"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Pet Identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get pets success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPetsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "4238b535-8d68-4afe-a15b-6deaa4783e3c",
+        "summary": "Update pets",
+        "description": "Service to update pets",
+        "tags": [
+          "Pets"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Pet Identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchPetsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Get owners success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchOwnersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "ec212619-ef5a-4b5f-9453-296da06feeaa",
+        "summary": "Delete pets",
+        "description": "Service to delete pets",
+        "tags": [
+          "Pets"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Pet Identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete pets success response"
+          },
+          "400": {
+            "description": "Default 4xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default 5xx response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
       "ErrorResponse": {
-        "$ref": "./src/schemas/error-response.schema.json"
+        "$ref": "src/schemas/error-response.schema.json"
       },
-      "CreateCategoriesRequest": {
-        "$ref": "./src/schemas/create-categories-request.schema.json"
+      "PostCategoriesRequest": {
+        "$ref": "src/schemas/categories-post-request.schema.json"
       },
-      "CreateCategoriesResponse": {
-        "$ref": "./src/schemas/create-categories-response.schema.json"
+      "PostCategoriesResponse": {
+        "$ref": "src/schemas/categories-post-response.schema.json"
       },
       "ListCategoriesResponse": {
-        "$ref": "./src/schemas/list-categories-response.schema.json"
+        "$ref": "src/schemas/categories-list-response.schema.json"
       },
       "GetCategoriesResponse": {
-        "$ref": "./src/schemas/get-categories-response.schema.json"
+        "$ref": "src/schemas/categories-get-response.schema.json"
       },
-      "UpdateCategoriesRequest": {
-        "$ref": "./src/schemas/update-categories-request.schema.json"
+      "PatchCategoriesRequest": {
+        "$ref": "src/schemas/categories-patch-request.schema.json"
       },
-      "UpdateCategoriesResponse": {
-        "$ref": "./src/schemas/update-categories-response.schema.json"
+      "PatchCategoriesResponse": {
+        "$ref": "src/schemas/categories-patch-response.schema.json"
+      },
+      "PostOwnersRequest": {
+        "$ref": "src/schemas/owners-post-request.schema.json"
+      },
+      "PostOwnersResponse": {
+        "$ref": "src/schemas/owners-post-response.schema.json"
+      },
+      "ListOwnersResponse": {
+        "$ref": "src/schemas/owners-list-response.schema.json"
+      },
+      "GetOwnersResponse": {
+        "$ref": "src/schemas/owners-get-response.schema.json"
+      },
+      "PatchOwnersRequest": {
+        "$ref": "src/schemas/owners-patch-request.schema.json"
+      },
+      "PatchOwnersResponse": {
+        "$ref": "src/schemas/owners-patch-response.schema.json"
+      },
+      "PostPetsRequest": {
+        "$ref": "src/schemas/pets-post-request.schema.json"
+      },
+      "PostPetsResponse": {
+        "$ref": "src/schemas/pets-post-response.schema.json"
+      },
+      "ListPetsResponse": {
+        "$ref": "src/schemas/pets-list-response.schema.json"
+      },
+      "GetPetsResponse": {
+        "$ref": "src/schemas/pets-get-response.schema.json"
+      },
+      "PatchPetsRequest": {
+        "$ref": "src/schemas/pets-patch-request.schema.json"
+      },
+      "PatchPetsResponse": {
+        "$ref": "src/schemas/pets-patch-response.schema.json"
       }
+
     },
     "securitySchemes": {
       "Authorization": {
@@ -314,7 +851,15 @@
   "tags": [
     {
       "name": "Categories",
-      "description": "Categories operations"
+      "description": "Category operations"
+    },
+    {
+      "name": "Owners",
+      "description": "Owner operations"
+    }, 
+    {
+      "name": "Pets",
+      "description": "Pet operations"
     }
   ]
 }

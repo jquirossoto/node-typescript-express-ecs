@@ -1,0 +1,11 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Create owners request",
+    "description": "Create owners request schema.",
+    "required": [ "firstName", "middleInitial", "lastName", "identificationNumber", "address" ],
+    "allOf": [
+        {
+            "$ref": "common.schema.json#/definitions/owner"
+        }
+    ]
+}

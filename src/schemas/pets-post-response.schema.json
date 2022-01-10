@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "title": "Create pets response",
+    "description": "Create pets response schema.",
+    "properties": {
+        "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Status of the response.",
+            "enum": ["SUCCESS"]
+        },
+        "result": {
+            "required": [ "id", "name", "status", "categoryId" ],
+            "allOf": [
+                {
+                    "$ref": "common.schema.json#/definitions/id"
+                },
+                {
+                    "$ref": "common.schema.json#/definitions/pet"
+                }
+            ]
+        }
+    },
+    "additionalProperties": false
+}

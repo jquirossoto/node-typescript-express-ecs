@@ -9,7 +9,7 @@
                 "id": {
                     "type": "number",
                     "title": "Id",
-                    "description": "Category identifier"
+                    "description": "Identifier"
                 }
             }
         },
@@ -28,13 +28,7 @@
         },
         "owner": {
             "type": "object",
-            "required": [ "firstName", "lastName", "identificationNumber", "address" ],
             "properties": {
-                "id": {
-                    "type": "number",
-                    "title": "Id",
-                    "description": "Owner identifier."
-                },
                 "firstName": {
                     "type": "string",
                     "title": "First name",
@@ -60,53 +54,50 @@
                     "description": "Alphanumeric value that carries the identification number issued to the owner by the government or an authorized national entity."
                 },
                 "address": {
-                    "type": "object",
-                    "title": "Address",
-                    "description": "Owner's address.",
-                    "required": [ "street", "city", "countryCode", "postalCode" ],
-                    "properties": {
-                        "street": {
-                            "type": "string",
-                            "title": "Street"
-                        },
-                        "buildingNumber": {
-                            "type": "string",
-                            "title": "Building number"
-                        },
-                        "city": {
-                            "type": "string",
-                            "title": "City"
-                        },
-                        "state": {
-                            "type": "string",
-                            "title": "State"
-                        },
-                        "countryCode": {
-                            "type": "string",
-                            "title": "Country code",
-                            "description": "2-character alpha country code. Refer to ISO country codes.",
-                            "minLength": 2,
-                            "maxLength": 2
-                        },
-                        "postalCode": {
-                            "type": "string",
-                            "title": "Postal code"
-                        }
-                    },
-                    "additionalProperties": false
+                    "$ref": "#/definitions/address"
+                }
+            },
+            "additionalProperties": false
+        },
+        "address": {
+            "type": "object",
+            "title": "Address",
+            "description": "Owner's address.",
+            "required": [ "street", "city", "state", "countryCode", "postalCode" ],
+            "properties": {
+                "street": {
+                    "type": "string",
+                    "title": "Street"
+                },
+                "buildingNumber": {
+                    "type": "string",
+                    "title": "Building number"
+                },
+                "city": {
+                    "type": "string",
+                    "title": "City"
+                },
+                "state": {
+                    "type": "string",
+                    "title": "State"
+                },
+                "countryCode": {
+                    "type": "string",
+                    "title": "Country code",
+                    "description": "2-character alpha country code. Refer to ISO country codes.",
+                    "minLength": 2,
+                    "maxLength": 2
+                },
+                "postalCode": {
+                    "type": "string",
+                    "title": "Postal code"
                 }
             },
             "additionalProperties": false
         },
         "pet": {
             "type": "object",
-            "required": [ "name", "status", "categoryId" ],
             "properties": {
-                "id": {
-                    "type": "number",
-                    "title": "Id",
-                    "description": "Owner identifier."
-                },
                 "name": {
                     "type": "string",
                     "title": "Name",
