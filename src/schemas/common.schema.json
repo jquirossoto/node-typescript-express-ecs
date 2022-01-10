@@ -3,14 +3,19 @@
     "type": "object",
     "additionalProperties": false,
     "definitions": {
-        "Category": {
+        "id": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "number",
                     "title": "Id",
                     "description": "Category identifier"
-                },
+                }
+            }
+        },
+        "category": {
+            "type": "object",
+            "properties": {
                 "name": {
                     "type": "string",
                     "title": "Name",
@@ -21,7 +26,7 @@
             },
             "additionalProperties": false
         },
-        "Owner": {
+        "owner": {
             "type": "object",
             "required": [ "firstName", "lastName", "identificationNumber", "address" ],
             "properties": {
@@ -93,7 +98,7 @@
             },
             "additionalProperties": false
         },
-        "Pet": {
+        "pet": {
             "type": "object",
             "required": [ "name", "status", "categoryId" ],
             "properties": {

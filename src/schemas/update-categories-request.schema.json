@@ -5,7 +5,7 @@
     "required": [ "name" ],
     "allOf": [
         {
-            "$ref": "common.schema.json#/definitions/Category"
+            "$ref": "common.schema.json#/definitions/category"
         }
     ]
 }

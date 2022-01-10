@@ -11,7 +11,15 @@
             "enum": ["SUCCESS"]
         },
         "result": {
-            "$ref": "common.schema.json#/definitions/Category"
+            "required": [ "id", "name" ],
+            "allOf": [
+                {
+                    "$ref": "common.schema.json#/definitions/id"
+                },
+                {
+                    "$ref": "common.schema.json#/definitions/category"
+                }
+            ]
         }
     },
     "additionalProperties": false
