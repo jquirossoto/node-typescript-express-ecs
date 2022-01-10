@@ -3,6 +3,7 @@
     "type": "object",
     "title": "List pets response",
     "description": "List pets response schema.",
+    "required": [ "status", "result" ],
     "properties": {
         "status": {
             "type": "string",

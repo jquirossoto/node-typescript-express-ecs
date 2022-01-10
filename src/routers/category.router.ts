@@ -12,7 +12,7 @@ import { resolveDirname } from '../utils/utils.js';
 
 const __dirname = resolveDirname(import.meta.url);
 const postSchema = await loader.loadSpec(`${__dirname}/../schemas/categories-post-request.schema.json`, { resolve: true, jsonSchema: true });
-const patchSchema = await loader.loadSpec(`${__dirname}/../schemas/categories-patch-request.schema.json`, { resolve: true, jsonSchema: true });
+const putSchema = await loader.loadSpec(`${__dirname}/../schemas/categories-put-request.schema.json`, { resolve: true, jsonSchema: true });
 
 const router = Router();
 router.route('/categories')
@@ -20,7 +20,7 @@ router.route('/categories')
     .get(authorize, list);
 router.route('/categories/:id')
     .get(authorize, get)
-    .patch([ authorize, validateSchema(patchSchema) ], patch)
+    .put([ authorize, validateSchema(putSchema) ], patch)
     .delete(authorize, remove);
 
 export default router;

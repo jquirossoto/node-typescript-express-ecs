@@ -11,7 +11,7 @@ export default class Owner {
     identificationNumber: string;
     address: Address;
 
-    constructor(id: number | null, firstName: string, middleInitial: string, lastName: string, identificationNumber: string, address: Address) {
+    constructor (id: number | null, firstName: string, middleInitial: string, lastName: string, identificationNumber: string, address: Address) {
         this.id = id;
         this.firstName = firstName;
         this.middleInitial = middleInitial;

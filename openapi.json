@@ -36,7 +36,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PostCategoriesRequest"
+                "$ref": "#/components/schemas/postCategoriesRequest"
               }
             }
           },
@@ -48,7 +48,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostCategoriesResponse"
+                  "$ref": "#/components/schemas/postCategoriesResponse"
                 }
               }
             }
@@ -58,7 +58,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -68,7 +68,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -88,7 +88,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListCategoriesResponse"
+                  "$ref": "#/components/schemas/listCategoriesResponse"
                 }
               }
             }
@@ -98,7 +98,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -108,7 +108,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -141,7 +141,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetCategoriesResponse"
+                  "$ref": "#/components/schemas/getCategoriesResponse"
                 }
               }
             }
@@ -151,7 +151,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -161,14 +161,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
           }
         }
       },
-      "patch":{
+      "put":{
         "operationId": "44a6dab0-2ca7-4276-b38e-dd18c8d14ce8",
         "summary": "Update categories",
         "description": "Service to update categories",
@@ -190,7 +190,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PatchCategoriesRequest"
+                "$ref": "#/components/schemas/putCategoriesRequest"
               }
             }
           },
@@ -202,7 +202,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PatchCategoriesResponse"
+                  "$ref": "#/components/schemas/putCategoriesResponse"
                 }
               }
             }
@@ -212,7 +212,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -222,7 +222,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -256,7 +256,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -266,7 +266,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -286,7 +286,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PostOwnersRequest"
+                "$ref": "#/components/schemas/postOwnersRequest"
               }
             }
           },
@@ -298,7 +298,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostOwnersResponse"
+                  "$ref": "#/components/schemas/postOwnersResponse"
                 }
               }
             }
@@ -308,7 +308,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -318,7 +318,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -338,7 +338,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostOwnersResponse"
+                  "$ref": "#/components/schemas/postOwnersResponse"
                 }
               }
             }
@@ -348,7 +348,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -358,7 +358,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -391,7 +391,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetOwnersResponse"
+                  "$ref": "#/components/schemas/getOwnersResponse"
                 }
               }
             }
@@ -401,7 +401,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -411,7 +411,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -440,7 +440,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PatchOwnersRequest"
+                "$ref": "#/components/schemas/patchOwnersRequest"
               }
             }
           },
@@ -452,7 +452,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PatchOwnersResponse"
+                  "$ref": "#/components/schemas/patchOwnersResponse"
                 }
               }
             }
@@ -462,7 +462,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -472,7 +472,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -506,7 +506,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -516,7 +516,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -536,7 +536,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PostPetsRequest"
+                "$ref": "#/components/schemas/postPetsRequest"
               }
             }
           },
@@ -548,7 +548,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostPetsResponse"
+                  "$ref": "#/components/schemas/postPetsResponse"
                 }
               }
             }
@@ -558,7 +558,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -568,7 +568,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -588,7 +588,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListPetsResponse"
+                  "$ref": "#/components/schemas/listPetsResponse"
                 }
               }
             }
@@ -598,7 +598,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -608,7 +608,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -641,7 +641,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetPetsResponse"
+                  "$ref": "#/components/schemas/getPetsResponse"
                 }
               }
             }
@@ -651,7 +651,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -661,7 +661,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -690,7 +690,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PatchPetsRequest"
+                "$ref": "#/components/schemas/patchPetsRequest"
               }
             }
           },
@@ -702,7 +702,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PatchOwnersResponse"
+                  "$ref": "#/components/schemas/patchOwnersResponse"
                 }
               }
             }
@@ -712,7 +712,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -722,7 +722,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -756,7 +756,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
@@ -766,72 +766,72 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/errorResponse"
                 }
               }
             }
           }
         }
       }
-    },
+    }
   },
   "components": {
     "schemas": {
-      "ErrorResponse": {
+      "errorResponse": {
         "$ref": "src/schemas/error-response.schema.json"
       },
-      "PostCategoriesRequest": {
+      "postCategoriesRequest": {
         "$ref": "src/schemas/categories-post-request.schema.json"
       },
-      "PostCategoriesResponse": {
+      "postCategoriesResponse": {
         "$ref": "src/schemas/categories-post-response.schema.json"
       },
-      "ListCategoriesResponse": {
+      "listCategoriesResponse": {
         "$ref": "src/schemas/categories-list-response.schema.json"
       },
-      "GetCategoriesResponse": {
+      "getCategoriesResponse": {
         "$ref": "src/schemas/categories-get-response.schema.json"
       },
-      "PatchCategoriesRequest": {
-        "$ref": "src/schemas/categories-patch-request.schema.json"
+      "putCategoriesRequest": {
+        "$ref": "src/schemas/categories-put-request.schema.json"
       },
-      "PatchCategoriesResponse": {
-        "$ref": "src/schemas/categories-patch-response.schema.json"
+      "putCategoriesResponse": {
+        "$ref": "src/schemas/categories-put-response.schema.json"
       },
-      "PostOwnersRequest": {
+      "postOwnersRequest": {
         "$ref": "src/schemas/owners-post-request.schema.json"
       },
-      "PostOwnersResponse": {
+      "postOwnersResponse": {
         "$ref": "src/schemas/owners-post-response.schema.json"
       },
-      "ListOwnersResponse": {
+      "listOwnersResponse": {
         "$ref": "src/schemas/owners-list-response.schema.json"
       },
-      "GetOwnersResponse": {
+      "getOwnersResponse": {
         "$ref": "src/schemas/owners-get-response.schema.json"
       },
-      "PatchOwnersRequest": {
+      "patchOwnersRequest": {
         "$ref": "src/schemas/owners-patch-request.schema.json"
       },
-      "PatchOwnersResponse": {
+      "patchOwnersResponse": {
         "$ref": "src/schemas/owners-patch-response.schema.json"
       },
-      "PostPetsRequest": {
+      "postPetsRequest": {
         "$ref": "src/schemas/pets-post-request.schema.json"
       },
-      "PostPetsResponse": {
+      "postPetsResponse": {
         "$ref": "src/schemas/pets-post-response.schema.json"
       },
-      "ListPetsResponse": {
+      "listPetsResponse": {
         "$ref": "src/schemas/pets-list-response.schema.json"
       },
-      "GetPetsResponse": {
+      "getPetsResponse": {
         "$ref": "src/schemas/pets-get-response.schema.json"
       },
-      "PatchPetsRequest": {
+      "patchPetsRequest": {
         "$ref": "src/schemas/pets-patch-request.schema.json"
       },
-      "PatchPetsResponse": {
+      "patchPetsResponse": {
         "$ref": "src/schemas/pets-patch-response.schema.json"
       }
 

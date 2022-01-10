@@ -3,7 +3,6 @@
     "type": "object",
     "definitions": {
         "id": {
-            "type": "object",
             "properties": {
                 "id": {
                     "type": "number",
@@ -13,7 +12,6 @@
             }
         },
         "category": {
-            "type": "object",
             "properties": {
                 "name": {
                     "type": "string",
@@ -26,7 +24,6 @@
             "additionalProperties": false
         },
         "owner": {
-            "type": "object",
             "properties": {
                 "firstName": {
                     "type": "string",
@@ -95,7 +92,6 @@
             "additionalProperties": false
         },
         "pet": {
-            "type": "object",
             "properties": {
                 "name": {
                     "type": "string",

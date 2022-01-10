@@ -3,6 +3,7 @@
     "type": "object",
     "title": "List owners response",
     "description": "List owners response schema.",
+    "required": [ "status", "result" ],
     "properties": {
         "status": {
             "type": "string",

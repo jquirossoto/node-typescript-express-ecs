@@ -3,6 +3,7 @@
     "type": "object",
     "title": "List categories response",
     "description": "List categories response schema.",
+    "required": [ "status", "result" ],
     "properties": {
         "status": {
             "type": "string",
