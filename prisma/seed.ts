@@ -1,6 +1,6 @@
 import { Category, PetStatus } from '@prisma/client';
 
-import prisma from './../src/utils/client.prisma';
+import prisma from './../src/utils/prisma';
 import logger from './../src/utils/logger';
 
 async function main() {

@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { getMockReq, getMockRes } from '@jest-mock/express';
 
-import { buildErrorResponse } from './../utils/api.utils';
+import { buildErrorResponse } from './../utils/utils';
 import { authorize, validateSchema } from './app.middlewares';
 import Category from './../models/category.model';
 

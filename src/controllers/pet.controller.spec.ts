@@ -4,7 +4,7 @@ import { getMockReq, getMockRes } from '@jest-mock/express';
 import { post, list, get, patch, remove } from './pet.controller';
 import Pet from '../models/pet.model';
 import * as petService from '../services/pet.service';
-import { buildSuccessResponse, buildErrorResponse } from '../utils/api.utils';
+import { buildSuccessResponse, buildErrorResponse } from '../utils/utils';
 
 jest.mock('./../services/pet.service');
 

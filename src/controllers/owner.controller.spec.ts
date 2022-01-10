@@ -4,7 +4,7 @@ import { getMockReq, getMockRes } from '@jest-mock/express';
 import Owner from '../models/owner.model';
 import * as ownerService from './../services/owner.service';
 import { post, list, get, patch, remove } from './owner.controller';
-import { buildErrorResponse, buildSuccessResponse } from '../utils/api.utils';
+import { buildErrorResponse, buildSuccessResponse } from '../utils/utils';
 
 jest.mock('./../services/owner.service');
 

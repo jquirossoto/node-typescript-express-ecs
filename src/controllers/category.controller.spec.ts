@@ -4,7 +4,7 @@ import { getMockReq, getMockRes } from '@jest-mock/express';
 import { post, list, get, patch, remove } from './category.controller';
 import Category from './../models/category.model';
 import * as categoryService from './../services/category.service';
-import { buildSuccessResponse, buildErrorResponse } from './../utils/api.utils';
+import { buildSuccessResponse, buildErrorResponse } from './../utils/utils';
 
 jest.mock('./../services/category.service');
 
