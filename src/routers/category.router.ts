@@ -11,8 +11,8 @@ import { post, list, get, patch, remove } from './../controllers/category.contro
 import { resolveDirname } from '../utils/utils.js';
 
 const __dirname = resolveDirname(import.meta.url);
-const postSchema = await loader.loadSpec(`${__dirname}/../schemas/create-categories-request.schema.json`, { resolve: true, jsonSchema: true });
-const patchSchema = await loader.loadSpec(`${__dirname}/../schemas/update-categories-request.schema.json`, { resolve: true, jsonSchema: true });
+const postSchema = await loader.loadSpec(`${__dirname}/../schemas/categories-post-request.schema.json`, { resolve: true, jsonSchema: true });
+const patchSchema = await loader.loadSpec(`${__dirname}/../schemas/categories-patch-request.schema.json`, { resolve: true, jsonSchema: true });
 
 const router = Router();
 router.route('/categories')
