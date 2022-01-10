@@ -116,7 +116,7 @@
         }
       }
     },
-    "/categories/${id}": {
+    "/categories/{id}": {
       "get":{
         "operationId": "36bdce6b-1fcd-41c6-8614-046e991d0d3d",
         "summary": "Get categories",
