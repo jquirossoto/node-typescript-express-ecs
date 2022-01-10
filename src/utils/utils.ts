@@ -30,6 +30,6 @@ export const buildErrorResponse = (errors: string[]) => {
     };
 };
 
-export const resolveDirname =async (url: string) => {
+export const resolveDirname = (url: string) => {
     return dirname(fileURLToPath(url));
 };
