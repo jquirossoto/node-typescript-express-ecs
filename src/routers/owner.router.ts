@@ -15,7 +15,7 @@ router.route('/owners')
     .get(authorize, list);
 router.route('/owners/:id')
     .get(authorize, get)
-    .patch([ authorize, validateSchema(patchSchema), whitelist({body: [ 'firstName', 'lastName', 'address.countryCode' ] }) ], patch)
+    .patch([ authorize, validateSchema(patchSchema), whitelist({ body: [ 'firstName', 'lastName', 'address.countryCode' ] }) ], patch)
     .delete(authorize, remove);
 
 export default router;
