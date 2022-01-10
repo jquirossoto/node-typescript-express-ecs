@@ -60,7 +60,7 @@ export const get = async (req: Request, res: Response) => {
  * @param  {Request} req
  * @param  {Response} res
  */
-export const patch = async (req: Request, res: Response) => {
+export const put = async (req: Request, res: Response) => {
     try {
         const pet: Pet = await petService.update(+req.params.id, req.body);
         res.status(200).json(apiUtils.buildSuccessResponse(pet));

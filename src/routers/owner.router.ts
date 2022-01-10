@@ -2,7 +2,7 @@ import { Router } from 'express';
 import loader from 'speccy/lib/loader.js';
 
 import { authorize, validateSchema, whitelist } from './../middlewares/app.middlewares.js';
-import { post, get, list, patch, remove } from './../controllers/owner.controller.js';
+import { post, get, list, put, remove } from './../controllers/owner.controller.js';
 import { resolveDirname } from '../utils/utils.js';
 
 const __dirname = resolveDirname(import.meta.url);
@@ -15,7 +15,7 @@ router.route('/owners')
     .get(authorize, list);
 router.route('/owners/:id')
     .get(authorize, get)
-    .put([ authorize, validateSchema(putSchema), whitelist({ body: [ 'firstName', 'lastName', 'address.countryCode' ] }) ], patch)
+    .put([ authorize, validateSchema(putSchema), whitelist({ body: [ 'firstName', 'lastName', 'address.countryCode' ] }) ], put)
     .delete(authorize, remove);
 
 export default router;

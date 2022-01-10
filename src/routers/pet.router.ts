@@ -7,7 +7,7 @@ import { Router } from 'express';
 import loader from 'speccy/lib/loader.js';
 
 import { authorize, validateSchema } from './../middlewares/app.middlewares.js';
-import { post, list, get, patch, remove } from './../controllers/pet.controller.js';
+import { post, list, get, put, remove } from './../controllers/pet.controller.js';
 import { resolveDirname } from '../utils/utils.js';
 
 const __dirname = resolveDirname(import.meta.url);
@@ -20,7 +20,7 @@ router.route('/pets')
     .get(authorize, list);
 router.route('/pets/:id')
     .get(authorize, get)
-    .put([ authorize, validateSchema(putSchema) ], patch)
+    .put([ authorize, validateSchema(putSchema) ], put)
     .delete(authorize, remove);
 
 export default router;

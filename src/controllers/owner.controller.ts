@@ -31,7 +31,7 @@ export const get = async (req: Request, res: Response) => {
     }
 };
 
-export const patch = async (req: Request, res: Response) => {
+export const put = async (req: Request, res: Response) => {
     try {
         const owner: Owner = await ownerService.update(+req.params.id, req.body);
         res.status(200).json(apiUtils.buildSuccessResponse(owner)); 
