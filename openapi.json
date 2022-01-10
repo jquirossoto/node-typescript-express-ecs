@@ -418,7 +418,7 @@
           }
         }
       },
-      "patch": {
+      "put": {
         "operationId": "3a5ed3d7-f35e-48db-8060-93284d8f573b",
         "summary": "Update owners",
         "description": "Service to update owners",
@@ -440,7 +440,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/patchOwnersRequest"
+                "$ref": "#/components/schemas/putOwnersRequest"
               }
             }
           },
@@ -452,7 +452,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/patchOwnersResponse"
+                  "$ref": "#/components/schemas/putOwnersResponse"
                 }
               }
             }
@@ -668,7 +668,7 @@
           }
         }
       },
-      "patch": {
+      "put": {
         "operationId": "4238b535-8d68-4afe-a15b-6deaa4783e3c",
         "summary": "Update pets",
         "description": "Service to update pets",
@@ -690,7 +690,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/patchPetsRequest"
+                "$ref": "#/components/schemas/putPetsRequest"
               }
             }
           },
@@ -702,7 +702,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/patchOwnersResponse"
+                  "$ref": "#/components/schemas/putPetsResponse"
                 }
               }
             }
@@ -810,11 +810,11 @@
       "getOwnersResponse": {
         "$ref": "src/schemas/owners-get-response.schema.json"
       },
-      "patchOwnersRequest": {
-        "$ref": "src/schemas/owners-patch-request.schema.json"
+      "putOwnersRequest": {
+        "$ref": "src/schemas/owners-put-request.schema.json"
       },
-      "patchOwnersResponse": {
-        "$ref": "src/schemas/owners-patch-response.schema.json"
+      "putOwnersResponse": {
+        "$ref": "src/schemas/owners-put-response.schema.json"
       },
       "postPetsRequest": {
         "$ref": "src/schemas/pets-post-request.schema.json"
@@ -828,13 +828,12 @@
       "getPetsResponse": {
         "$ref": "src/schemas/pets-get-response.schema.json"
       },
-      "patchPetsRequest": {
-        "$ref": "src/schemas/pets-patch-request.schema.json"
+      "putPetsRequest": {
+        "$ref": "src/schemas/pets-put-request.schema.json"
       },
-      "patchPetsResponse": {
-        "$ref": "src/schemas/pets-patch-response.schema.json"
+      "putPetsResponse": {
+        "$ref": "src/schemas/pets-put-response.schema.json"
       }
-
     },
     "securitySchemes": {
       "Authorization": {

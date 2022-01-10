@@ -7,7 +7,7 @@ import { resolveDirname } from '../utils/utils.js';
 
 const __dirname = resolveDirname(import.meta.url);
 const postSchema = await loader.loadSpec(`${__dirname}/../schemas/owners-post-request.schema.json`, { resolve: true, jsonSchema: true });
-const patchSchema = await loader.loadSpec(`${__dirname}/../schemas/owners-patch-request.schema.json`, { resolve: true, jsonSchema: true });
+const putSchema = await loader.loadSpec(`${__dirname}/../schemas/owners-put-request.schema.json`, { resolve: true, jsonSchema: true });
 
 const router: Router = Router();
 router.route('/owners')
@@ -15,7 +15,7 @@ router.route('/owners')
     .get(authorize, list);
 router.route('/owners/:id')
     .get(authorize, get)
-    .patch([ authorize, validateSchema(patchSchema), whitelist({ body: [ 'firstName', 'lastName', 'address.countryCode' ] }) ], patch)
+    .put([ authorize, validateSchema(putSchema), whitelist({ body: [ 'firstName', 'lastName', 'address.countryCode' ] }) ], patch)
     .delete(authorize, remove);
 
 export default router;

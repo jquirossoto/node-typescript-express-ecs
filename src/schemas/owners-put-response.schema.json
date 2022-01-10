@@ -9,7 +9,7 @@
             "type": "string",
             "title": "Status",
             "description": "Status of the response.",
-            "enum": ["SUCCESS"]
+            "enum": [ "SUCCESS" ]
         },
         "result": {
             "required": [ "id", "firstName", "middleInitial", "lastName", "identificationNumber", "address" ],

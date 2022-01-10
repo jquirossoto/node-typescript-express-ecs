@@ -47,7 +47,8 @@
                 "identificationNumber": {
                     "type": "string",
                     "title": "Identification number",
-                    "description": "Alphanumeric value that carries the identification number issued to the owner by the government or an authorized national entity."
+                    "description": "Alphanumeric value that carries the identification number issued to the owner by the government or an authorized national entity.",
+                    "minLength": 2
                 },
                 "address": {
                     "$ref": "#/definitions/address"
@@ -63,19 +64,23 @@
             "properties": {
                 "street": {
                     "type": "string",
-                    "title": "Street"
+                    "title": "Street",
+                    "minLength": 2
                 },
                 "buildingNumber": {
                     "type": "string",
-                    "title": "Building number"
+                    "title": "Building number",
+                    "minLength": 2
                 },
                 "city": {
                     "type": "string",
-                    "title": "City"
+                    "title": "City",
+                    "minLength": 2
                 },
                 "state": {
                     "type": "string",
-                    "title": "State"
+                    "title": "State",
+                    "minLength": 2
                 },
                 "countryCode": {
                     "type": "string",
@@ -86,7 +91,8 @@
                 },
                 "postalCode": {
                     "type": "string",
-                    "title": "Postal code"
+                    "title": "Postal code",
+                    "minLength": 2
                 }
             },
             "additionalProperties": false

@@ -12,7 +12,7 @@ import { resolveDirname } from '../utils/utils.js';
 
 const __dirname = resolveDirname(import.meta.url);
 const postSchema = await loader.loadSpec(`${__dirname}/../schemas/pets-post-request.schema.json`, { resolve: true, jsonSchema: true });
-const patchSchema = await loader.loadSpec(`${__dirname}/../schemas/pets-patch-request.schema.json`, { resolve: true, jsonSchema: true });
+const putSchema = await loader.loadSpec(`${__dirname}/../schemas/pets-put-request.schema.json`, { resolve: true, jsonSchema: true });
 
 export const router = Router();
 router.route('/pets')
@@ -20,7 +20,7 @@ router.route('/pets')
     .get(authorize, list);
 router.route('/pets/:id')
     .get(authorize, get)
-    .patch([ authorize, validateSchema(patchSchema) ], patch)
+    .put([ authorize, validateSchema(putSchema) ], patch)
     .delete(authorize, remove);
 
 export default router;
