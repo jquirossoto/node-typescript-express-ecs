@@ -4,7 +4,7 @@
  */
 import { Category as PrismaCategory } from '@prisma/client';
 
-import prisma from './../utils/client.prisma.js';
+import prisma from '../utils/prisma.js';
 import Category from './../models/category.model.js';
 
 /**

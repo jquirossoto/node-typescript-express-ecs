@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import Owner from './../models/owner.model.js';
 import * as ownerService from './../services/owner.service.js';
-import * as apiUtils from './../utils/api.utils.js';
+import * as apiUtils from '../utils/utils.js';
 
 export const post = async (req: Request, res: Response) => {
     try {

@@ -4,7 +4,7 @@
  */
 
 import app from './app.js';
-import prisma from './utils/client.prisma.js';
+import prisma from './utils/prisma.js';
 import logger from './utils/logger.js';
 
 const port = process.env.PORT || 3000;

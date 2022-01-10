@@ -4,7 +4,7 @@
  */
 import { Pet as PrismaPet } from '@prisma/client';
 
-import prisma from './../utils/client.prisma.js';
+import prisma from '../utils/prisma.js';
 import Pet from './../models/pet.model.js';
 
 /**

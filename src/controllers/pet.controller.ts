@@ -7,7 +7,7 @@ import { Request, Response } from 'express';
 
 import Pet from './../models/pet.model.js';
 import * as petService from './../services/pet.service.js';
-import * as apiUtils from './../utils/api.utils.js';
+import * as apiUtils from '../utils/utils.js';
 
 /**
  * Post handler.

@@ -4,8 +4,8 @@
  */
 
 import Prisma from '@prisma/client';
-
-let prisma;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let prisma: any;
 
 if (Prisma === undefined) {
 	import('@prisma/client').then(({ PrismaClient }) => {
