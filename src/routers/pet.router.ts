@@ -6,7 +6,7 @@
 import { Router } from 'express';
 import loader from 'speccy/lib/loader.js';
 
-import { authorize, validateSchema } from './../middlewares/app.middlewares.js';
+import { authorize, validateSchema, whitelist } from './../middlewares/app.middlewares.js';
 import { post, list, get, put, remove } from './../controllers/pet.controller.js';
 import { resolveDirname } from '../utils/utils.js';
 
@@ -16,11 +16,11 @@ const putSchema = await loader.loadSpec(`${__dirname}/../schemas/pets-put-reques
 
 export const router = Router();
 router.route('/pets')
-    .post([ authorize, validateSchema(postSchema) ], post)
+    .post([ authorize, validateSchema(postSchema), whitelist({ body: [ "name", "status", "categoryId", "ownerId" ], res: [ "body" ] }) ], post)
     .get(authorize, list);
 router.route('/pets/:id')
     .get(authorize, get)
-    .put([ authorize, validateSchema(putSchema) ], put)
+    .put([ authorize, validateSchema(putSchema), whitelist({ body: [ "id", "name", "status", "categoryId", "ownerId" ], res: [ "body" ] }) ], put)
     .delete(authorize, remove);
 
 export default router;

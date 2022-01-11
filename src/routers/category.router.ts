@@ -6,7 +6,7 @@
 import { Router } from 'express';
 import loader from 'speccy/lib/loader.js';
 
-import { authorize, validateSchema } from './../middlewares/app.middlewares.js';
+import { authorize, validateSchema, whitelist } from './../middlewares/app.middlewares.js';
 import { post, list, get, put, remove } from './../controllers/category.controller.js';
 import { resolveDirname } from '../utils/utils.js';
 
@@ -16,11 +16,11 @@ const putSchema = await loader.loadSpec(`${__dirname}/../schemas/categories-put-
 
 const router = Router();
 router.route('/categories')
-    .post([ authorize, validateSchema(postSchema) ], post)
+    .post([ authorize, validateSchema(postSchema), whitelist({ body: [ "name" ], res: [ "body" ] }) ], post)
     .get(authorize, list);
 router.route('/categories/:id')
     .get(authorize, get)
-    .put([ authorize, validateSchema(putSchema) ], put)
+    .put([ authorize, validateSchema(putSchema), whitelist({ body: [ "id", "name" ], res: [ "body" ] }) ], put)
     .delete(authorize, remove);
 
 export default router;
