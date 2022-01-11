@@ -117,7 +117,7 @@
                     "description": "Category identifier"
                 },
                 "ownerId": {
-                    "type": "number",
+                    "type": [ "number", "null" ],
                     "title": "Owner Id",
                     "description": "Owner identifier"
                 }

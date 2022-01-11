@@ -3,7 +3,7 @@
     "type": "object",
     "title": "Update pets request",
     "description": "Update pets request schema.",
-    "required": [ "name", "status", "categoryId" ],
+    "required": [ "name", "status", "categoryId", "ownerId" ],
     "allOf": [
         {
             "$ref": "common.schema.json#/definitions/pet"
