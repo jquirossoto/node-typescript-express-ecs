@@ -12,7 +12,7 @@
             "enum": ["SUCCESS"]
         },
         "result": {
-            "required": [ "id", "name", "status", "categoryId" ],
+            "required": [ "id", "name", "status", "categoryId", "ownerId" ],
             "allOf": [
                 {
                     "$ref": "common.schema.json#/definitions/id"
