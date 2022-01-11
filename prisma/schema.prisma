@@ -30,7 +30,7 @@ model Pet {
 model Owner {
   id                    Int     @id @default(autoincrement())
   firstName             String  @map("first_name")
-  middleInitial         String  @map("middle_initial")
+  middleInitial         String? @map("middle_initial")
   lastName              String  @map("last_name")
   identificationNumber  String  @map("identification_number")
   addressId             Int     @map("address_id")
@@ -41,13 +41,13 @@ model Owner {
 }
 
 model Address {
-  id             Int    @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   street         String
-  buildingNumber String @map("building_number")
+  buildingNumber String?  @map("building_number")
   city           String
   state          String
-  countryCode    String @map("country_code")
-  postalCode     String @map("postal_code")
+  countryCode    String   @map("country_code")
+  postalCode     String   @map("postal_code")
   Owner          Owner?
 
   @@map("addresses")

@@ -32,7 +32,7 @@
                     "minLength": 2
                 },
                 "middleInitial": {
-                    "type": "string",
+                    "type": [ "string", "null" ],
                     "title": "Middle initial",
                     "description": "Owner's middle initial.",
                     "minLength": 1,
@@ -60,7 +60,7 @@
             "type": "object",
             "title": "Address",
             "description": "Owner's address.",
-            "required": [ "street", "city", "state", "countryCode", "postalCode" ],
+            "required": [ "street", "buildingNumber", "city", "state", "countryCode", "postalCode" ],
             "properties": {
                 "street": {
                     "type": "string",
@@ -68,7 +68,7 @@
                     "minLength": 2
                 },
                 "buildingNumber": {
-                    "type": "string",
+                    "type": [ "string", "null" ],
                     "title": "Building number",
                     "minLength": 2
                 },

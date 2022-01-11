@@ -3,7 +3,7 @@
     "type": "object",
     "title": "Create owners request",
     "description": "Create owners request schema.",
-    "required": [ "firstName", "middleInitial", "lastName", "identificationNumber", "address" ],
+    "required": [ "firstName", "lastName", "identificationNumber", "address" ],
     "allOf": [
         {
             "$ref": "common.schema.json#/definitions/owner"

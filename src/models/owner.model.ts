@@ -6,12 +6,12 @@ export default class Owner {
 
     id: number | null;
     firstName: string;
-    middleInitial: string;
+    middleInitial: string | null;
     lastName: string;
     identificationNumber: string;
     address: Address;
 
-    constructor (id: number | null, firstName: string, middleInitial: string, lastName: string, identificationNumber: string, address: Address) {
+    constructor (id: number | null, firstName: string, middleInitial: string | null, lastName: string, identificationNumber: string, address: Address) {
         this.id = id;
         this.firstName = firstName;
         this.middleInitial = middleInitial;
