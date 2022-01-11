@@ -202,7 +202,7 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "X-API-Key",
@@ -489,7 +489,7 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "X-API-Key",
@@ -789,7 +789,7 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "X-API-Key",

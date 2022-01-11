@@ -3,6 +3,9 @@
  * @author jquirossoto
  */
 
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
 /**
  * Builds a success response.
  *
@@ -25,4 +28,8 @@ export const buildErrorResponse = (errors: string[]) => {
         status: 'ERROR',
         errors
     };
+};
+
+export const resolveDirname = (url: string) => {
+    return dirname(fileURLToPath(url));
 };

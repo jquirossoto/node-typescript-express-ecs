@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "title": "List owners response",
+    "description": "List owners response schema.",
+    "required": [ "status", "result" ],
+    "properties": {
+        "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Status of the response.",
+            "enum": ["SUCCESS"]
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "required": [ "id", "firstName", "middleInitial", "lastName", "identificationNumber", "address" ],
+                "allOf": [
+                    {
+                        "$ref": "common.schema.json#/definitions/id"
+                    },
+                    {
+                        "$ref": "common.schema.json#/definitions/owner"
+                    }
+                ]
+            }
+        }
+    },
+    "additionalProperties": false
+}

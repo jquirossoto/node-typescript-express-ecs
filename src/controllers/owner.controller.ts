@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import Owner from './../models/owner.model';
-import * as ownerService from './../services/owner.service';
-import * as apiUtils from './../utils/api.utils';
+import Owner from './../models/owner.model.js';
+import * as ownerService from './../services/owner.service.js';
+import * as apiUtils from '../utils/utils.js';
 
 export const post = async (req: Request, res: Response) => {
     try {
@@ -31,7 +31,7 @@ export const get = async (req: Request, res: Response) => {
     }
 };
 
-export const patch = async (req: Request, res: Response) => {
+export const put = async (req: Request, res: Response) => {
     try {
         const owner: Owner = await ownerService.update(+req.params.id, req.body);
         res.status(200).json(apiUtils.buildSuccessResponse(owner)); 

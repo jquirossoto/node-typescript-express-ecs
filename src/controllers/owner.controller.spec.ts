@@ -3,8 +3,8 @@ import { getMockReq, getMockRes } from '@jest-mock/express';
 
 import Owner from '../models/owner.model';
 import * as ownerService from './../services/owner.service';
-import { post, list, get, patch, remove } from './owner.controller';
-import { buildErrorResponse, buildSuccessResponse } from '../utils/api.utils';
+import { post, list, get, put, remove } from './owner.controller';
+import { buildErrorResponse, buildSuccessResponse } from '../utils/utils';
 
 jest.mock('./../services/owner.service');
 
@@ -225,7 +225,7 @@ describe('Owner controller', () => {
 
     });
 
-    describe('patch', () => {
+    describe('put', () => {
 
         it('Should respond 200 with patched owner', async () => {
             const dataToPatch: Owner = {
@@ -268,7 +268,7 @@ describe('Owner controller', () => {
             // @ts-ignore
             ownerService.update.mockResolvedValue(patchedOwner);
 
-            await patch(req, res);
+            await put(req, res);
 
             expect(ownerService.update).toHaveBeenCalledWith(1, dataToPatch);
             expect(res.status).toHaveBeenCalledWith(200);
@@ -302,7 +302,7 @@ describe('Owner controller', () => {
             // @ts-ignore
             ownerService.update.mockRejectedValue(error);
 
-            await patch(req, res);
+            await put(req, res);
 
             expect(ownerService.update).toHaveBeenCalledWith(1, dataToPatch);
             expect(res.status).toHaveBeenCalledWith(500);

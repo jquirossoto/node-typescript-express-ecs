@@ -4,19 +4,23 @@
  */
 
 import { Router } from 'express';
+import loader from 'speccy/lib/loader.js';
 
-import { authorize, validateSchema } from './../middlewares/app.middlewares';
-import postSchema from './../schemas/create-categories-request.schema.json';
-import patchSchema from './../schemas/update-categories-request.schema.json';
-import { post, list, get, patch, remove } from './../controllers/category.controller';
+import { authorize, validateSchema, whitelist } from './../middlewares/app.middlewares.js';
+import { post, list, get, put, remove } from './../controllers/category.controller.js';
+import { resolveDirname } from '../utils/utils.js';
 
-const router = Router();
+const __dirname = resolveDirname(import.meta.url);
+const postSchema = await loader.loadSpec(`${__dirname}/../schemas/categories-post-request.schema.json`, { resolve: true, jsonSchema: true });
+const putSchema = await loader.loadSpec(`${__dirname}/../schemas/categories-put-request.schema.json`, { resolve: true, jsonSchema: true });
+
+const router: Router = Router();
 router.route('/categories')
-    .post([authorize, validateSchema(postSchema)], post)
+    .post([ authorize, validateSchema(postSchema), whitelist({ body: [ "name" ], res: [ "body" ] }) ], post)
     .get(authorize, list);
 router.route('/categories/:id')
     .get(authorize, get)
-    .patch([authorize, validateSchema(patchSchema)], patch)
+    .put([ authorize, validateSchema(putSchema), whitelist({ body: [ "id", "name" ], res: [ "body" ] }) ], put)
     .delete(authorize, remove);
 
 export default router;

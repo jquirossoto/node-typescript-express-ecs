@@ -1,0 +1,12 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "title": "Update pets request",
+    "description": "Update pets request schema.",
+    "required": [ "name", "status", "categoryId", "ownerId" ],
+    "allOf": [
+        {
+            "$ref": "common.schema.json#/definitions/pet"
+        }
+    ]
+}

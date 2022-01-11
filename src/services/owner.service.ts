@@ -1,5 +1,5 @@
-import * as repo from './../repositories/owner.repository';
-import Owner from '../models/owner.model';
+import Owner from './../models/owner.model.js';
+import * as repo from '../repositories/owner.repository.js';
 
 export const create = async (owner: Owner) => {
     return await repo.create(owner);

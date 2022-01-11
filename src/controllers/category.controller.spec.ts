@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
 import { getMockReq, getMockRes } from '@jest-mock/express';
 
-import { post, list, get, patch, remove } from './category.controller';
+import { post, list, get, put, remove } from './category.controller';
 import Category from './../models/category.model';
 import * as categoryService from './../services/category.service';
-import { buildSuccessResponse, buildErrorResponse } from './../utils/api.utils';
-
+import { buildSuccessResponse, buildErrorResponse } from './../utils/utils';
 jest.mock('./../services/category.service');
 
 describe('Category Controller', () => {
@@ -158,12 +157,12 @@ describe('Category Controller', () => {
 
     });
 
-    describe('patch', () => {
+    describe('put', () => {
 
-        it('Should respond 200 with patched category', async () => {
+        it('Should respond 200 with updated category', async () => {
             const dataToPatch: Category = {
                 id: null,
-                name: 'Patched category'
+                name: 'Updated category'
             };
             const req: Request = getMockReq({
                 params: {
@@ -174,12 +173,12 @@ describe('Category Controller', () => {
             const res: Response = getMockRes().res;
             const patchedCategory: Category = {
                 id: 1,
-                name: 'Patched category'
+                name: 'Updated category'
             };
             // @ts-ignore
             categoryService.update.mockResolvedValue(patchedCategory);
 
-            await patch(req, res);
+            await put(req, res);
 
             expect(categoryService.update).toHaveBeenCalledWith(1, dataToPatch);
             expect(res.status).toHaveBeenCalledWith(200);
@@ -189,7 +188,7 @@ describe('Category Controller', () => {
         it('Should respond 500 with error response', async () => {
             const dataToPatch: Category = {
                 id: null,
-                name: 'Patched category'
+                name: 'Updated category'
             };
             const req: Request = getMockReq({
                 params: {
@@ -202,7 +201,7 @@ describe('Category Controller', () => {
             // @ts-ignore
             categoryService.update.mockRejectedValue(error);
 
-            await patch(req, res);
+            await put(req, res);
 
             expect(categoryService.update).toHaveBeenCalledWith(1, dataToPatch);
             expect(res.status).toHaveBeenCalledWith(500);

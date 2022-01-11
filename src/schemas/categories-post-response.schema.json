@@ -3,6 +3,7 @@
     "type": "object",
     "title": "Create categories response",
     "description": "Create categories response schema.",
+    "required": [ "status", "result" ],
     "properties": {
         "status": {
             "type": "string",
@@ -11,7 +12,15 @@
             "enum": ["SUCCESS"]
         },
         "result": {
-            "$ref": "common.schema.json#/definitions/Category"
+            "required": [ "id", "name" ],
+            "allOf": [
+                {
+                    "$ref": "common.schema.json#/definitions/id"
+                },
+                {
+                    "$ref": "common.schema.json#/definitions/category"
+                }
+            ]
         }
     },
     "additionalProperties": false

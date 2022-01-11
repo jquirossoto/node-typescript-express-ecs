@@ -3,8 +3,8 @@
  * @author jquirossoto
  */
 
-import * as repo from './../repositories/category.repository';
-import Category from './../models/category.model';
+import * as repo from './../repositories/category.repository.js';
+import Category from './../models/category.model.js';
 
 /**
  * Creates a new Category.

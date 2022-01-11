@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { getMockReq, getMockRes } from '@jest-mock/express';
 
-import { post, list, get, patch, remove } from './pet.controller';
+import { post, list, get, put, remove } from './pet.controller';
 import Pet from '../models/pet.model';
 import * as petService from '../services/pet.service';
-import { buildSuccessResponse, buildErrorResponse } from '../utils/api.utils';
+import { buildSuccessResponse, buildErrorResponse } from '../utils/utils';
 
 jest.mock('./../services/pet.service');
 
@@ -192,10 +192,10 @@ describe('Pet Controller', () => {
 
     describe('patch', () => {
 
-        it('Should respond 200 with patched pet', async () => {
+        it('Should respond 200 with updated pet', async () => {
             const dataToPatch: Pet = {
                 id: null,
-                name: 'Patched pet',
+                name: 'Updated pet',
                 status: 'PENDING',
                 categoryId: 2,
                 ownerId: 2
@@ -209,7 +209,7 @@ describe('Pet Controller', () => {
             const res: Response = getMockRes().res;
             const patchedPet: Pet = {
                 id: 1,
-                name: 'Patched pet',
+                name: 'Updated pet',
                 status: 'PENDING',
                 categoryId: 2,
                 ownerId: 2
@@ -217,7 +217,7 @@ describe('Pet Controller', () => {
             // @ts-ignore
             petService.update.mockResolvedValue(patchedPet);
 
-            await patch(req, res);
+            await put(req, res);
 
             expect(petService.update).toHaveBeenCalledWith(1, dataToPatch);
             expect(res.status).toHaveBeenCalledWith(200);
@@ -243,7 +243,7 @@ describe('Pet Controller', () => {
             // @ts-ignore
             petService.update.mockRejectedValue(error);
 
-            await patch(req, res);
+            await put(req, res);
 
             expect(petService.update).toHaveBeenCalledWith(1, dataToPatch);
             expect(res.status).toHaveBeenCalledWith(500);

@@ -1,17 +1,18 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
     "type": "object",
-    "additionalProperties": false,
     "definitions": {
-        "Category": {
-            "type": "object",
-            "required": [ "name" ],
+        "id": {
             "properties": {
                 "id": {
                     "type": "number",
                     "title": "Id",
-                    "description": "Category identifier"
-                },
+                    "description": "Identifier"
+                }
+            }
+        },
+        "category": {
+            "properties": {
                 "name": {
                     "type": "string",
                     "title": "Name",
@@ -22,15 +23,8 @@
             },
             "additionalProperties": false
         },
-        "Owner": {
-            "type": "object",
-            "required": [ "firstName", "lastName", "identificationNumber", "address" ],
+        "owner": {
             "properties": {
-                "id": {
-                    "type": "number",
-                    "title": "Id",
-                    "description": "Owner identifier."
-                },
                 "firstName": {
                     "type": "string",
                     "title": "First name",
@@ -38,7 +32,7 @@
                     "minLength": 2
                 },
                 "middleInitial": {
-                    "type": "string",
+                    "type": [ "string", "null" ],
                     "title": "Middle initial",
                     "description": "Owner's middle initial.",
                     "minLength": 1,
@@ -53,56 +47,58 @@
                 "identificationNumber": {
                     "type": "string",
                     "title": "Identification number",
-                    "description": "Alphanumeric value that carries the identification number issued to the owner by the government or an authorized national entity."
+                    "description": "Alphanumeric value that carries the identification number issued to the owner by the government or an authorized national entity.",
+                    "minLength": 2
                 },
                 "address": {
-                    "type": "object",
-                    "title": "Address",
-                    "description": "Owner's address.",
-                    "required": [ "street", "city", "countryCode", "postalCode" ],
-                    "properties": {
-                        "street": {
-                            "type": "string",
-                            "title": "Street"
-                        },
-                        "buildingNumber": {
-                            "type": "string",
-                            "title": "Building number"
-                        },
-                        "city": {
-                            "type": "string",
-                            "title": "City"
-                        },
-                        "state": {
-                            "type": "string",
-                            "title": "State"
-                        },
-                        "countryCode": {
-                            "type": "string",
-                            "title": "Country code",
-                            "description": "2-character alpha country code. Refer to ISO country codes.",
-                            "minLength": 2,
-                            "maxLength": 2
-                        },
-                        "postalCode": {
-                            "type": "string",
-                            "title": "Postal code"
-                        }
-                    },
-                    "additionalProperties": false
+                    "$ref": "#/definitions/address"
                 }
             },
             "additionalProperties": false
         },
-        "Pet": {
+        "address": {
             "type": "object",
-            "required": [ "name", "status", "categoryId" ],
+            "title": "Address",
+            "description": "Owner's address.",
+            "required": [ "street", "buildingNumber", "city", "state", "countryCode", "postalCode" ],
             "properties": {
-                "id": {
-                    "type": "number",
-                    "title": "Id",
-                    "description": "Owner identifier."
+                "street": {
+                    "type": "string",
+                    "title": "Street",
+                    "minLength": 2
                 },
+                "buildingNumber": {
+                    "type": [ "string", "null" ],
+                    "title": "Building number",
+                    "minLength": 2
+                },
+                "city": {
+                    "type": "string",
+                    "title": "City",
+                    "minLength": 2
+                },
+                "state": {
+                    "type": "string",
+                    "title": "State",
+                    "minLength": 2
+                },
+                "countryCode": {
+                    "type": "string",
+                    "title": "Country code",
+                    "description": "2-character alpha country code. Refer to ISO country codes.",
+                    "minLength": 2,
+                    "maxLength": 2
+                },
+                "postalCode": {
+                    "type": "string",
+                    "title": "Postal code",
+                    "minLength": 2
+                }
+            },
+            "additionalProperties": false
+        },
+        "pet": {
+            "properties": {
                 "name": {
                     "type": "string",
                     "title": "Name",
@@ -121,12 +117,13 @@
                     "description": "Category identifier"
                 },
                 "ownerId": {
-                    "type": "number",
+                    "type": [ "number", "null" ],
                     "title": "Owner Id",
                     "description": "Owner identifier"
                 }
             },
             "additionalProperties": false
         }
-    }
+    },
+    "additionalProperties": false
 }

@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "title": "List pets response",
+    "description": "List pets response schema.",
+    "required": [ "status", "result" ],
+    "properties": {
+        "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Status of the response.",
+            "enum": ["SUCCESS"]
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "required": [ "id", "name", "status", "categoryId" ],
+                "allOf": [
+                    {
+                        "$ref": "common.schema.json#/definitions/id"
+                    },
+                    {
+                        "$ref": "common.schema.json#/definitions/pet"
+                    }
+                ]
+            }
+        }
+    },
+    "additionalProperties": false
+}

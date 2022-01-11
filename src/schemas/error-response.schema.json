@@ -3,6 +3,7 @@
     "type": "object",
     "title": "Error response",
     "description": "Error response schema.",
+    "required": [ "status", "errors" ],
     "properties": {
         "status": {
             "description": "Status of the response.",

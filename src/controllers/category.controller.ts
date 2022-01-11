@@ -5,9 +5,9 @@
 
 import { Request, Response } from 'express';
 
-import Category from './../models/category.model';
-import * as categoryService from './../services/category.service';
-import * as apiUtils from './../utils/api.utils';
+import Category from './../models/category.model.js';
+import * as categoryService from './../services/category.service.js';
+import * as apiUtils from '../utils/utils.js';
 
 /**
  * Post handler.
@@ -60,7 +60,7 @@ export const get = async (req: Request, res: Response) => {
  * @param  {Request} req
  * @param  {Response} res
  */
-export const patch = async (req: Request, res: Response) => {
+export const put = async (req: Request, res: Response) => {
     try {
         const category: Category = await categoryService.update(+req.params.id, req.body);
         res.status(200).json(apiUtils.buildSuccessResponse(category));

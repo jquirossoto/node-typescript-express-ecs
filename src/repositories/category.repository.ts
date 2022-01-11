@@ -4,8 +4,8 @@
  */
 import { Category as PrismaCategory } from '@prisma/client';
 
-import prisma from './../utils/client.prisma';
-import Category from './../models/category.model';
+import prisma from '../utils/prisma.js';
+import Category from './../models/category.model.js';
 
 /**
  * Creates a new Category.
