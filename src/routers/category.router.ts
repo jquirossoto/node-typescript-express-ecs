@@ -14,7 +14,7 @@ const __dirname = resolveDirname(import.meta.url);
 const postSchema = await loader.loadSpec(`${__dirname}/../schemas/categories-post-request.schema.json`, { resolve: true, jsonSchema: true });
 const putSchema = await loader.loadSpec(`${__dirname}/../schemas/categories-put-request.schema.json`, { resolve: true, jsonSchema: true });
 
-const router = Router();
+const router: Router = Router();
 router.route('/categories')
     .post([ authorize, validateSchema(postSchema), whitelist({ body: [ "name" ], res: [ "body" ] }) ], post)
     .get(authorize, list);

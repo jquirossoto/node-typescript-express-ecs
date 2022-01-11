@@ -14,7 +14,7 @@ const __dirname = resolveDirname(import.meta.url);
 const postSchema = await loader.loadSpec(`${__dirname}/../schemas/pets-post-request.schema.json`, { resolve: true, jsonSchema: true });
 const putSchema = await loader.loadSpec(`${__dirname}/../schemas/pets-put-request.schema.json`, { resolve: true, jsonSchema: true });
 
-export const router = Router();
+const router: Router = Router();
 router.route('/pets')
     .post([ authorize, validateSchema(postSchema), whitelist({ body: [ "name", "status", "categoryId", "ownerId" ], res: [ "body" ] }) ], post)
     .get(authorize, list);
