@@ -5,6 +5,8 @@
 
 import express, { Application } from 'express';
 import winstonMiddleware from 'express-winston';
+import helmet from 'helmet';
+import nocache from 'nocache';
 
 import logger from './utils/logger.js';
 import categoryRouter from './routers/category.router.js';
@@ -14,6 +16,24 @@ import healthRouter from './routers/health.router.js';
 
 const app: Application = express();
 
+// security headers according to https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#security-headers
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            'frame-ancestors': 'none'
+        }
+    },
+    hsts: {
+        maxAge: 63072000,
+        includeSubDomains: true,
+        preload: true
+    },
+    noSniff: true,    
+    frameguard: {
+        action: 'deny'
+    }
+}));
+app.use(nocache());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(winstonMiddleware.logger({
