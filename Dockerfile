@@ -1,5 +1,5 @@
 # ---------------------------- BASE ----------------------------
-FROM node:12-alpine@sha256:dfbebf17bfb014e1e7068e76325a117bccf8679c68aec6a28514184a209c8bae as base
+FROM node:16-alpine@sha256:2f50f4a428f8b5280817c9d4d896dbee03f072e93f4e0c70b90cc84bd1fcfe0d as base
 # installs tini (https://github.com/krallin/tini)
 RUN apk add --no-cache tini
 # installs curl
@@ -12,11 +12,12 @@ WORKDIR /usr/src/app
 # ---------------------------- DEPENDENCIES ----------------------------
 FROM base AS dependencies
 # copies package*.json files
-COPY package.json .
-COPY package-lock.json .
+COPY package*.json .
 # copies schema.prisma and .env to generate prisma client while installing modules (https://www.prisma.io/)
 COPY prisma/schema.prisma .
 COPY prisma/.env .
+# disables prepare script (https://typicode.github.io/husky/#/?id=disable-husky-in-cidocker)
+RUN npm set-script prepare ""
 # installs production modules
 RUN npm ci --only=production
 
@@ -28,12 +29,14 @@ USER node
 ENTRYPOINT ["/sbin/tini", "--"]
 # sets NODE_ENV to production
 ENV NODE_ENV production
-# copies the production modules from the dependencies image
+# copies package*.json files from dependencies stage
+COPY --chown=node:node --from=dependencies /usr/src/app/package*.json .
+# copies the production modules from the dependencies stage
 COPY --chown=node:node --from=dependencies /usr/src/app/node_modules node_modules/
-# copies the built app from the build image
-COPY --chown=node:node dist/ .
 # copies prisma .env to resolve database credentials from the dependencies image
 COPY --chown=node:node --from=dependencies /usr/src/app/.env .
+# copies the built app from the build image
+COPY --chown=node:node dist/ .
 # exposes port
 EXPOSE 3000
 # executes app
