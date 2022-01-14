@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "prepare": "husky install",
-    "prebuild": "eslint . --ext .ts --fix && npm run build:clean",
+    "lint": "eslint . --ext .ts --fix",
+    "prebuild": "npm run lint && npm run build:clean",
     "build": "tsc",
     "build:watch": "npm run build -- --watch",
     "build:clean": "rm -rf dist",
