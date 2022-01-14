@@ -13,7 +13,7 @@
     "postbuild": "cp -R src/schemas dist",
     "prestart": "npm run build",
     "start": "node .",
-    "start:watch": "nodemon --watch dist server.js",
+    "start:watch": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"node --loader ts-node/esm src/server.ts\"",
     "test": "npm run test:clean && jest --coverage",
     "test:watch": "npm run test -- --watchAll",
     "test:coverage:view": "serve jest/coverage/lcov-report",
