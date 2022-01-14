@@ -13,9 +13,14 @@ import categoryRouter from './routers/category.router.js';
 import petRouter from './routers/pet.router.js';
 import ownerRouter from './routers/owner.router.js';
 import healthRouter from './routers/health.router.js';
+import { allowedContentType, allowedHttpMethods } from './middlewares/app.middlewares.js';
 
 const app: Application = express();
 
+// http method according to https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#validate-content-types
+app.use(allowedHttpMethods);
+// content type according to https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#validate-content-types
+app.use(allowedContentType);
 // security headers according to https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#security-headers
 app.use(helmet({
     contentSecurityPolicy: {

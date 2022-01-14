@@ -68,3 +68,18 @@ export const whitelist = (options: WhitelistOptions) => {
         return next();
     };
 };
+
+export const allowedHttpMethods = (req: Request, res: Response, next: NextFunction) => {
+    const allowedMethods = ['POST', 'GET', 'PUT', 'DELETE'];
+    if (!allowedMethods.includes(req.method)) {
+        return res.status(405).json(buildErrorResponse(['Method Not Allowed']));
+    }
+    return next();
+};
+
+export const allowedContentType = (req: Request, res: Response, next: NextFunction) => {
+    if ((req.method === 'POST' || req.method === 'PUT') && !req.is('json')) {
+        return res.status(415).json(buildErrorResponse(['Unsupported Content-Type']));
+    }
+    return next();
+};
