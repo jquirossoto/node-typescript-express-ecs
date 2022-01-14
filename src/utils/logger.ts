@@ -12,7 +12,7 @@ const options: LoggerOptions = {
     transports: [
         new winston.transports.Console({
             format: winston.format.combine(
-                winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+                winston.format.timestamp(),
                 winston.format.prettyPrint(),
                 winston.format.colorize({ all: true })
             )
