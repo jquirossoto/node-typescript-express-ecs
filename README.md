@@ -11,7 +11,7 @@ Express API developed in Typescript and deployed to ECS Fargate that sits behind
 
 ## Architecture
 
-![petsapi-architecture](https://user-images.githubusercontent.com/4935587/140231043-719e83d2-b2af-40f2-bbd8-c98229c626c3.png)
+![petsapi-architecture](https://user-images.githubusercontent.com/4935587/149636345-63075b9d-a85d-463e-97eb-a8727bfe9814.png)
 
 ## How to run the application
 

@@ -4,10 +4,9 @@ Description: 'Express API developed in Typescript and deployed to ECS Fargate th
 ################################### APPLICATION PARAMETERS ###################################
 
 Parameters:
-
   CodestarConnectionId:
     Type: String
-    Description: Specify Codestar connection identifier that is configured and authenticated for the source provider. 
+    Description: Specify Codestar connection identifier that is configured and authenticated for the source provider.
 
   FullRepositoryId:
     Type: String
@@ -43,7 +42,6 @@ Parameters:
 ################################### APPLICATION MAPPINGS ###################################
 
 Mappings:
-
   SubnetConfig:
     VPC:
       CIDR: 10.2.0.0/16
@@ -73,13 +71,12 @@ Mappings:
 ################################### APPLICATION RESOURCES ###################################
 
 Resources:
-
   ################################### VPC ###################################
 
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: !FindInMap [ SubnetConfig, VPC, CIDR ]
+      CidrBlock: !FindInMap [SubnetConfig, VPC, CIDR]
       InstanceTenancy: default
       EnableDnsHostnames: false
       EnableDnsSupport: true
@@ -95,7 +92,7 @@ Resources:
       Tags:
         - Key: Name
           Value: PetsAPI-VPC-IG
-    
+
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
@@ -113,6 +110,8 @@ Resources:
           Value: PetsAPI-VPC-PubRT
 
   DefaultPublicRoute:
+    DependsOn:
+      - InternetGatewayAttachment
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref PublicRouteTable
@@ -126,8 +125,8 @@ Resources:
   PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: !FindInMap [ SubnetConfig, PublicSubnet1, CIDR ]
+      AvailabilityZone: !Select [0, !GetAZs '']
+      CidrBlock: !FindInMap [SubnetConfig, PublicSubnet1, CIDR]
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -147,7 +146,7 @@ Resources:
       Tags:
         - Key: Name
           Value: PetsAPI-VPC-PubSN1-NG-EIP
-      
+
   PublicSubnet1NatGateway:
     Type: AWS::EC2::NatGateway
     Properties:
@@ -162,8 +161,8 @@ Resources:
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [ 1, !GetAZs '' ]
-      CidrBlock: !FindInMap [ SubnetConfig, PublicSubnet2, CIDR ]
+      AvailabilityZone: !Select [1, !GetAZs '']
+      CidrBlock: !FindInMap [SubnetConfig, PublicSubnet2, CIDR]
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -183,7 +182,7 @@ Resources:
       Tags:
         - Key: Name
           Value: PetsAPI-VPC-PubSN2-NG-EIP
-      
+
   PublicSubnet2NatGateway:
     Type: AWS::EC2::NatGateway
     Properties:
@@ -200,8 +199,8 @@ Resources:
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: !FindInMap [ SubnetConfig, PrivateSubnet1, CIDR ]
+      AvailabilityZone: !Select [0, !GetAZs '']
+      CidrBlock: !FindInMap [SubnetConfig, PrivateSubnet1, CIDR]
       Tags:
         - Key: Name
           Value: PetsAPI-VPC-PrivSN1
@@ -234,8 +233,8 @@ Resources:
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [ 1, !GetAZs '' ]
-      CidrBlock: !FindInMap [ SubnetConfig, PrivateSubnet2, CIDR ]
+      AvailabilityZone: !Select [1, !GetAZs '']
+      CidrBlock: !FindInMap [SubnetConfig, PrivateSubnet2, CIDR]
       Tags:
         - Key: Name
           Value: PetsAPI-VPC-PrivSN2
@@ -271,7 +270,7 @@ Resources:
       GroupName: PetsAPI-VPCLink-SG
       GroupDescription: PetsAPI VPCLink SG
       SecurityGroupIngress:
-        - Description : Allow traffic from the internet
+        - Description: Allow traffic from the internet
           CidrIp: 0.0.0.0/0
           IpProtocol: tcp
           FromPort: 80
@@ -283,14 +282,14 @@ Resources:
 
   VPCLink:
     Type: AWS::ApiGatewayV2::VpcLink
-    Properties: 
+    Properties:
       Name: PetsAPI-VPCLink
-      SecurityGroupIds: 
+      SecurityGroupIds:
         - !Ref VPCLinkSecurityGroup
       SubnetIds:
         - !Ref PrivateSubnet1
         - !Ref PrivateSubnet2
-  
+
   ################################### LOAD BALANCER ###################################
 
   LoadBalancerSecurityGroup:
@@ -308,7 +307,7 @@ Resources:
         - Key: Name
           Value: PetsAPI-LB-SG
       VpcId: !Ref VPC
-  
+
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -368,7 +367,7 @@ Resources:
       IntegrationMethod: ANY
       ConnectionType: VPC_LINK
       ConnectionId: !Ref VPCLink
-      IntegrationUri: !Ref LoadBalancerListener 
+      IntegrationUri: !Ref LoadBalancerListener
       PayloadFormatVersion: 1.0
 
   APIGatewayRoute:
@@ -376,11 +375,11 @@ Resources:
     Properties:
       ApiId: !Ref APIGateway
       RouteKey: $default
-      Target: !Join [ '/', [ integrations, !Ref APIGatewayIntegration ]]
+      Target: !Join ['/', [integrations, !Ref APIGatewayIntegration]]
 
   APIGatewayLogGroup:
     Type: AWS::Logs::LogGroup
-    Properties: 
+    Properties:
       LogGroupName: /aws/apigateway/pets-api
       RetentionInDays: 1
 
@@ -390,36 +389,36 @@ Resources:
       StageName: $default
       AutoDeploy: true
       AccessLogSettings:
-        DestinationArn:  !Join [ ':', [ !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group', !Ref APIGatewayLogGroup ]]
-        Format: 
-          '{
-            "accountId": "$context.accountId",
-            "apiId": "$context.apiId",
-            "endpointRequestId": "$context.awsEndpointRequestId",
-            "endpointRequestId2": "$context.awsEndpointRequestId2",
-            "customDomain.basePathMatched": "$context.customDomain.basePathMatched",
-            "dataProcessed": "$context.dataProcessed",
-            "domainName": "$context.domainName",
-            "domainPrefix": "$context.domainPrefix",
-            "error.message": "$context.error.message",
-            "error.messageString": "$context.error.messageString",
-            "error.responseType": "$context.error.responseType",
-            "extendedRequestId": "$context.extendedRequestId",
-            "httpMethod": "$context.httpMethod",
-            "identity.accountId": "$context.identity.accountId",
-            "identity.caller": "$context.identity.caller",
-            "identity.sourceIp": "$context.identity.sourceIp",
-            "identity.userAgent": "$context.identity.userAgent",
-            "integration.error": "$context.integration.error",
-            "integration.integrationStatus": "$context.integration.integrationStatus",
-            "integration.latency": "$context.integration.latency",
-            "integration.requestId": "$context.integration.requestId",
-            "integration.status": "$context.integration.status",
-            "integration.error.message": "$context.integrationErrorMessage"
-            "integration.latency": "$context.integrationLatency"
-            "integration.status": "$context.integrationStatus",
-            "path": "$context.path",
-            "requestId": "$context.requestId", 
+        DestinationArn:
+          !Join [':', [!Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group', !Ref APIGatewayLogGroup]]
+        Format: '{
+          "accountId": "$context.accountId",
+          "apiId": "$context.apiId",
+          "endpointRequestId": "$context.awsEndpointRequestId",
+          "endpointRequestId2": "$context.awsEndpointRequestId2",
+          "customDomain.basePathMatched": "$context.customDomain.basePathMatched",
+          "dataProcessed": "$context.dataProcessed",
+          "domainName": "$context.domainName",
+          "domainPrefix": "$context.domainPrefix",
+          "error.message": "$context.error.message",
+          "error.messageString": "$context.error.messageString",
+          "error.responseType": "$context.error.responseType",
+          "extendedRequestId": "$context.extendedRequestId",
+          "httpMethod": "$context.httpMethod",
+          "identity.accountId": "$context.identity.accountId",
+          "identity.caller": "$context.identity.caller",
+          "identity.sourceIp": "$context.identity.sourceIp",
+          "identity.userAgent": "$context.identity.userAgent",
+          "integration.error": "$context.integration.error",
+          "integration.integrationStatus": "$context.integration.integrationStatus",
+          "integration.latency": "$context.integration.latency",
+          "integration.requestId": "$context.integration.requestId",
+          "integration.status": "$context.integration.status",
+          "integration.error.message": "$context.integrationErrorMessage"
+          "integration.latency": "$context.integrationLatency"
+          "integration.status": "$context.integrationStatus",
+          "path": "$context.path",
+          "requestId": "$context.requestId",
           }'
       ApiId: !Ref APIGateway
 
@@ -428,16 +427,16 @@ Resources:
   ECRRepository:
     Type: AWS::ECR::Repository
     Properties:
-      ImageScanningConfiguration: 
+      ImageScanningConfiguration:
         ScanOnPush: true
       ImageTagMutability: MUTABLE
-      RepositoryName: !FindInMap [ NameConfig, ECRRepository, Name ]
+      RepositoryName: !FindInMap [NameConfig, ECRRepository, Name]
 
   ################################### ECS ###################################
 
   ECSCluster:
     Type: AWS::ECS::Cluster
-    Properties: 
+    Properties:
       CapacityProviders:
         - FARGATE
       ClusterName: PetsAPI-ECSCluster
@@ -498,7 +497,7 @@ Resources:
 
   ECSLogGroup:
     Type: AWS::Logs::LogGroup
-    Properties: 
+    Properties:
       LogGroupName: /aws/ecs/pets-api
       RetentionInDays: 1
 
@@ -506,26 +505,26 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       ContainerDefinitions:
-          - Name: !FindInMap [ NameConfig, Container, Name ]
-            Image: !Join [ ':', [ !GetAtt ECRRepository.RepositoryUri, latest ] ]
-            HealthCheck:
-              Command: 
-                - CMD-SHELL
-                - curl -f http://localhost:3000/health || exit 1
-              Interval: 30
-              Retries: 3
-              Timeout: 5
-            LogConfiguration:
-              LogDriver: awslogs
-              Options:
-                awslogs-group: !Ref ECSLogGroup
-                awslogs-region: !Ref AWS::Region
-                awslogs-stream-prefix: pets-api
-            Essential: true
-            PortMappings: 
-                # For task definitions that use the awsvpc network mode, you should only specify the containerPort. The hostPort can be left blank or it must be the same value as the containerPort.
-              - ContainerPort: 3000
-                Protocol: tcp
+        - Name: !FindInMap [NameConfig, Container, Name]
+          Image: !Join [':', [!GetAtt ECRRepository.RepositoryUri, latest]]
+          HealthCheck:
+            Command:
+              - CMD-SHELL
+              - curl -f http://localhost:3000/health || exit 1
+            Interval: 30
+            Retries: 3
+            Timeout: 5
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref ECSLogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: pets-api
+          Essential: true
+          PortMappings:
+            # For task definitions that use the awsvpc network mode, you should only specify the containerPort. The hostPort can be left blank or it must be the same value as the containerPort.
+            - ContainerPort: 3000
+              Protocol: tcp
       Cpu: 256
       Memory: 1024
       ExecutionRoleArn: !Ref ECSTaskExecutionRole
@@ -541,7 +540,7 @@ Resources:
       GroupName: PetsAPI-ECS-SG
       GroupDescription: PetsAPI-ECS-SG
       SecurityGroupIngress:
-        - Description : Allow traffic from LoadBalancerSecurityGroup
+        - Description: Allow traffic from LoadBalancerSecurityGroup
           IpProtocol: tcp
           FromPort: 3000
           ToPort: 3000
@@ -554,7 +553,7 @@ Resources:
   ECSService:
     Type: AWS::ECS::Service
     DependsOn:
-     - LoadBalancerListener
+      - LoadBalancerListener
     Properties:
       ServiceName: PetsAPI-ECSService
       Cluster: !Ref ECSCluster
@@ -571,15 +570,15 @@ Resources:
             - !Ref PrivateSubnet1
             - !Ref PrivateSubnet2
       LoadBalancers:
-          # The name of the container (as it appears in a container definition)
-        - ContainerName: !FindInMap [ NameConfig, Container, Name ]
+        # The name of the container (as it appears in a container definition)
+        - ContainerName: !FindInMap [NameConfig, Container, Name]
           ContainerPort: 3000
           TargetGroupArn: !Ref LoadBalancerTargetGroup
 
   ECSServiceAutoScalingRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Join [ '', [ !GetAtt ECSService.Name, AutoScalingRole]]
+      RoleName: !Join ['', [!GetAtt ECSService.Name, AutoScalingRole]]
       AssumeRolePolicyDocument:
         Statement:
           - Effect: Allow
@@ -592,7 +591,7 @@ Resources:
   ECSServiceAutoScalingPolicy:
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
     Properties:
-      PolicyName: !Join [ '', [ !GetAtt ECSService.Name, AutoScalingPolicy ] ]
+      PolicyName: !Join ['', [!GetAtt ECSService.Name, AutoScalingPolicy]]
       PolicyType: TargetTrackingScaling
       ScalingTargetId: !Ref ECSServiceAutoScalingTarget
       TargetTrackingScalingPolicyConfiguration:
@@ -608,7 +607,7 @@ Resources:
     Properties:
       MinCapacity: !Ref AutoScalingMinCapacity
       MaxCapacity: !Ref AutoScalingMaxCapacity
-      ResourceId: !Join [ '/', [ service, !Ref ECSCluster, !GetAtt ECSService.Name ] ]
+      ResourceId: !Join ['/', [service, !Ref ECSCluster, !GetAtt ECSService.Name]]
       ScalableDimension: ecs:service:DesiredCount
       ServiceNamespace: ecs
       RoleARN: !GetAtt ECSServiceAutoScalingRole.Arn
@@ -621,12 +620,12 @@ Resources:
       GroupName: PetsAPI-Database-SG
       GroupDescription: PetsAPI-Database-SG
       SecurityGroupIngress:
-        - Description : Allow traffic from ECSServiceSecurityGroup
+        - Description: Allow traffic from ECSServiceSecurityGroup
           IpProtocol: tcp
           FromPort: 5432
           ToPort: 5432
           SourceSecurityGroupId: !Ref ECSServiceSecurityGroup
-        - Description : Allow traffic from CodeBuildSecurityGroup
+        - Description: Allow traffic from CodeBuildSecurityGroup
           IpProtocol: tcp
           FromPort: 5432
           ToPort: 5432
@@ -649,7 +648,7 @@ Resources:
     Type: AWS::SecretsManager::Secret
     Properties:
       Description: Secret for database instance
-      Name: !FindInMap [ NameConfig, DatabaseSecret, Name ]
+      Name: !FindInMap [NameConfig, DatabaseSecret, Name]
       GenerateSecretString:
         SecretStringTemplate: '{"username": "pets"}'
         GenerateStringKey: password
@@ -673,8 +672,8 @@ Resources:
       EnableIAMDatabaseAuthentication: false
       Engine: postgres
       EngineVersion: 13.3
-      MasterUsername: !Join [ '', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:username}}' ]]
-      MasterUserPassword: !Join [ '', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:password}}' ]]
+      MasterUsername: !Join ['', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:username}}']]
+      MasterUserPassword: !Join ['', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:password}}']]
       MultiAZ: false
       StorageType: gp2
       StorageEncrypted: false
@@ -694,7 +693,7 @@ Resources:
     Type: AWS::SecretsManager::Secret
     Properties:
       Description: Secret for DockerHub credentials
-      Name: !FindInMap [ NameConfig, DockerHubSecret, Name ]
+      Name: !FindInMap [NameConfig, DockerHubSecret, Name]
       SecretString: !Sub '{"username": "${DockerHubUsername}", "password": "${DockerHubPassword}"}'
 
   CodeBuildSecurityGroup:
@@ -727,17 +726,30 @@ Resources:
 
   CodeBuildBasePolicy:
     Type: AWS::IAM::Policy
-    Properties: 
+    Properties:
       PolicyName: PetsAPI-CodeBuildBasePolicy
       Roles:
         - !Ref CodeBuildRole
       PolicyDocument:
         Version: 2012-10-17
-        Statement: 
+        Statement:
           - Effect: Allow
             Resource:
-              - !Join [ '', [ !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/', !FindInMap [ NameConfig, CodeBuildProject, Name ] ] ]
-              - !Join [ '', [ !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/', !FindInMap [ NameConfig, CodeBuildProject, Name ], ':*' ] ]
+              - !Join [
+                  '',
+                  [
+                    !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/',
+                    !FindInMap [NameConfig, CodeBuildProject, Name]
+                  ]
+                ]
+              - !Join [
+                  '',
+                  [
+                    !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/',
+                    !FindInMap [NameConfig, CodeBuildProject, Name],
+                    ':*'
+                  ]
+                ]
             Action:
               - logs:CreateLogGroup
               - logs:CreateLogStream
@@ -753,7 +765,14 @@ Resources:
               - s3:GetBucketLocation
           - Effect: Allow
             Resource:
-              - !Join [ '', [ !Sub 'arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/', !FindInMap [ NameConfig, CodeBuildProject, Name ], '-*' ] ]
+              - !Join [
+                  '',
+                  [
+                    !Sub 'arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/',
+                    !FindInMap [NameConfig, CodeBuildProject, Name],
+                    '-*'
+                  ]
+                ]
             Action:
               - codebuild:CreateReportGroup
               - codebuild:CreateReport
@@ -761,10 +780,10 @@ Resources:
               - codebuild:BatchPutTestCases
               - codebuild:BatchPutCodeCoverages
           - Effect: Allow
-            Resource: 
+            Resource:
               - !Ref DatabaseSecret
               - !Ref DockerHubSecret
-            Action: 
+            Action:
               - secretsmanager:GetSecretValue
           - Effect: Allow
             Resource: '*'
@@ -794,8 +813,8 @@ Resources:
                 ec2:AuthorizedService: codebuild.amazonaws.com
               ArnEquals:
                 ec2:Subnet:
-                  - !Join [ '/', [ !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet', !Ref PrivateSubnet1 ] ]
-                  - !Join [ '/', [ !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet', !Ref PrivateSubnet2 ] ]
+                  - !Join ['/', [!Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet', !Ref PrivateSubnet1]]
+                  - !Join ['/', [!Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet', !Ref PrivateSubnet2]]
 
   CodeBuildCloudwatchPolicy:
     Type: AWS::IAM::Policy
@@ -805,21 +824,34 @@ Resources:
         - !Ref CodeBuildRole
       PolicyDocument:
         Version: 2012-10-17
-        Statement: 
+        Statement:
           - Effect: Allow
             Resource:
-              - !Join [ '', [ !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:', !FindInMap [ NameConfig, CodeBuildLogGroup, Name ] ] ]
-              - !Join [ '', [ !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:', !FindInMap [ NameConfig, CodeBuildLogGroup, Name ], ':*' ] ]
+              - !Join [
+                  '',
+                  [
+                    !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:',
+                    !FindInMap [NameConfig, CodeBuildLogGroup, Name]
+                  ]
+                ]
+              - !Join [
+                  '',
+                  [
+                    !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:',
+                    !FindInMap [NameConfig, CodeBuildLogGroup, Name],
+                    ':*'
+                  ]
+                ]
             Action:
               - logs:CreateLogGroup
               - logs:CreateLogStream
-              - logs:PutLogEvents      
-        
+              - logs:PutLogEvents
+
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     DependsOn:
       - DatabaseSecretAttachment
-    Properties: 
+    Properties:
       Artifacts:
         Type: CODEPIPELINE
         EncryptionDisabled: false
@@ -841,52 +873,52 @@ Resources:
             Value: !Ref AWS::Region
           - Name: REPOSITORY_NAME
             Type: PLAINTEXT
-            Value: !FindInMap [ NameConfig, ECRRepository, Name ]
+            Value: !FindInMap [NameConfig, ECRRepository, Name]
           - Name: CONTAINER_NAME
             Type: PLAINTEXT
-            Value: !FindInMap [ NameConfig, Container, Name ]
+            Value: !FindInMap [NameConfig, Container, Name]
           - Name: DOCKERHUB_USERNAME
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !FindInMap [ NameConfig, DockerHubSecret, Name ], username ] ]
+            Value: !Join [':', [!FindInMap [NameConfig, DockerHubSecret, Name], username]]
           - Name: DOCKERHUB_PASSWORD
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !FindInMap [ NameConfig, DockerHubSecret, Name ], password ] ]
+            Value: !Join [':', [!FindInMap [NameConfig, DockerHubSecret, Name], password]]
           - Name: DB_HOST
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], host ] ]
+            Value: !Join [':', [!FindInMap [NameConfig, DatabaseSecret, Name], host]]
           - Name: DB_PORT
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], port ] ]
+            Value: !Join [':', [!FindInMap [NameConfig, DatabaseSecret, Name], port]]
           - Name: DB_NAME
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], dbname ] ]
+            Value: !Join [':', [!FindInMap [NameConfig, DatabaseSecret, Name], dbname]]
           - Name: DB_USERNAME
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], username ] ]
+            Value: !Join [':', [!FindInMap [NameConfig, DatabaseSecret, Name], username]]
           - Name: DB_PASSWORD
             Type: SECRETS_MANAGER
-            Value: !Join [ ':', [ !FindInMap [ NameConfig, DatabaseSecret, Name ], password ] ]
+            Value: !Join [':', [!FindInMap [NameConfig, DatabaseSecret, Name], password]]
         Image: aws/codebuild/standard:5.0
         ImagePullCredentialsType: CODEBUILD
         PrivilegedMode: true
         Type: LINUX_CONTAINER
       LogsConfig:
-        CloudWatchLogs: 
-          GroupName: !FindInMap [ NameConfig, CodeBuildLogGroup, Name ]
+        CloudWatchLogs:
+          GroupName: !FindInMap [NameConfig, CodeBuildLogGroup, Name]
           Status: ENABLED
           StreamName: pets-api
         S3Logs:
           Status: DISABLED
-      Name: !FindInMap [ NameConfig, CodeBuildProject, Name ]
+      Name: !FindInMap [NameConfig, CodeBuildProject, Name]
       QueuedTimeoutInMinutes: 480
-      ServiceRole : !GetAtt CodeBuildRole.Arn
+      ServiceRole: !GetAtt CodeBuildRole.Arn
       Source:
         Type: CODEPIPELINE
       TimeoutInMinutes: 60
       VpcConfig:
-        SecurityGroupIds: 
+        SecurityGroupIds:
           - !Ref CodeBuildSecurityGroup
-        Subnets: 
+        Subnets:
           - !Ref PrivateSubnet1
           - !Ref PrivateSubnet2
         VpcId: !Ref VPC
@@ -895,7 +927,7 @@ Resources:
 
   OpenAPIBucket:
     Type: AWS::S3::Bucket
-    Properties: 
+    Properties:
       BucketName: !Sub pets-api-open-api-${AWS::Region}
 
   ################################### CODE PIPELINE ###################################
@@ -911,7 +943,7 @@ Resources:
           - Effect: Allow
             Principal:
               Service: codepipeline.amazonaws.com
-            Action: sts:AssumeRole      
+            Action: sts:AssumeRole
 
   CodePipelinePolicy:
     Type: AWS::IAM::Policy
@@ -1046,8 +1078,8 @@ Resources:
 
   CodePipeline:
     Type: AWS::CodePipeline::Pipeline
-    Properties: 
-      ArtifactStore: 
+    Properties:
+      ArtifactStore:
         Type: S3
         # default location
         Location: !Ref ArtifactStoreS3Location
@@ -1058,7 +1090,7 @@ Resources:
         - Name: Source
           Actions:
             - Name: Source
-              ActionTypeId: 
+              ActionTypeId:
                 Category: Source
                 Owner: AWS
                 Provider: CodeStarSourceConnection
@@ -1070,7 +1102,7 @@ Resources:
                 OutputArtifactFormat: CODE_ZIP
                 FullRepositoryId: !Ref FullRepositoryId
               Namespace: SourceVariables
-              OutputArtifacts: 
+              OutputArtifacts:
                 - Name: SourceArtifact
               Region: !Ref AWS::Region
         - Name: Build
