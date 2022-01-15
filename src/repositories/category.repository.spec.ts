@@ -1,13 +1,7 @@
 import { Category as PrismaCategory } from '@prisma/client';
 import { prismaMock } from './../../prisma/singleton';
 
-import {
-  create,
-  findUnique,
-  findMany,
-  update,
-  remove
-} from './category.repository';
+import { create, findUnique, findMany, update, remove } from './category.repository';
 import Category from './../models/category.model';
 
 describe('Category Repository', () => {
@@ -38,9 +32,7 @@ describe('Category Repository', () => {
         id: null,
         name: 'My category'
       };
-      prismaMock.category.create.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.category.create.mockRejectedValue(new Error('Unable to process request'));
       await expect(create(newCategory)).rejects.toThrow(Error);
       expect(prismaMock.category.create).toHaveBeenCalledTimes(1);
     });
@@ -62,9 +54,7 @@ describe('Category Repository', () => {
     });
 
     it('Should throw error when finding one category', async () => {
-      prismaMock.category.findUnique.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.category.findUnique.mockRejectedValue(new Error('Unable to process request'));
       await expect(findUnique(1)).rejects.toThrow(Error);
       expect(prismaMock.category.findUnique).toHaveBeenCalledTimes(1);
     });
@@ -100,9 +90,7 @@ describe('Category Repository', () => {
     });
 
     it('Should throw error when finding multiple categories', async () => {
-      prismaMock.category.findMany.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.category.findMany.mockRejectedValue(new Error('Unable to process request'));
 
       await expect(findMany()).rejects.toThrow(Error);
 
@@ -136,9 +124,7 @@ describe('Category Repository', () => {
         id: null,
         name: 'Updated category'
       };
-      prismaMock.category.update.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.category.update.mockRejectedValue(new Error('Unable to process request'));
 
       await expect(update(1, dataToUpdate)).rejects.toThrow(Error);
 
@@ -164,9 +150,7 @@ describe('Category Repository', () => {
     });
 
     it('Should throw error when deleting category', async () => {
-      prismaMock.category.delete.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.category.delete.mockRejectedValue(new Error('Unable to process request'));
 
       await expect(remove(1)).rejects.toThrow(Error);
 

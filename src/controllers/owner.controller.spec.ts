@@ -83,9 +83,7 @@ describe('Owner controller', () => {
 
       expect(ownerService.create).toHaveBeenCalledWith(newOwner);
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse([error.message])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
     });
   });
 
@@ -146,9 +144,7 @@ describe('Owner controller', () => {
 
       expect(ownerService.list).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse([error.message])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
     });
   });
 
@@ -217,9 +213,7 @@ describe('Owner controller', () => {
 
       expect(ownerService.get).toHaveBeenCalledWith(998);
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse([error.message])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
     });
   });
 
@@ -303,9 +297,7 @@ describe('Owner controller', () => {
 
       expect(ownerService.update).toHaveBeenCalledWith(1, dataToPatch);
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse([error.message])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
     });
   });
 
@@ -357,9 +349,7 @@ describe('Owner controller', () => {
 
       expect(ownerService.remove).toHaveBeenCalledWith(1);
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse([error.message])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
     });
   });
 });

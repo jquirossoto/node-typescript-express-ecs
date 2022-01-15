@@ -30,9 +30,7 @@ export default class Category {
   static toModel(category: PrismaCategory | null): Category;
   static toModel(categories: PrismaCategory[]): Category[];
 
-  static toModel(
-    category: PrismaCategory | PrismaCategory[] | null
-  ): Category | Category[] | null {
+  static toModel(category: PrismaCategory | PrismaCategory[] | null): Category | Category[] | null {
     let result: Category | Category[] | null;
     if (Array.isArray(category)) {
       result = [];

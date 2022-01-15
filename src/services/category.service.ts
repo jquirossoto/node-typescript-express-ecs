@@ -42,10 +42,7 @@ export const get = async (id: number): Promise<Category | null> => {
  * @param  {Category} category
  * @returns Promise
  */
-export const update = async (
-  id: number,
-  category: Category
-): Promise<Category> => {
+export const update = async (id: number, category: Category): Promise<Category> => {
   return await repo.update(id, category);
 };
 

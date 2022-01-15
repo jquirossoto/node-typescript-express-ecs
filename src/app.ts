@@ -13,10 +13,7 @@ import categoryRouter from './routers/category.router.js';
 import petRouter from './routers/pet.router.js';
 import ownerRouter from './routers/owner.router.js';
 import healthRouter from './routers/health.router.js';
-import {
-  allowedContentType,
-  allowedHttpMethods
-} from './middlewares/app.middlewares.js';
+import { allowedContentType, allowedHttpMethods } from './middlewares/app.middlewares.js';
 
 const app: Application = express();
 

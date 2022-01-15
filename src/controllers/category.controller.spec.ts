@@ -29,9 +29,7 @@ describe('Category Controller', () => {
 
       expect(categoryService.create).toHaveBeenCalledWith(newCategory);
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(
-        buildSuccessResponse(createdCategory)
-      );
+      expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(createdCategory));
     });
 
     it('Should respond 500 with error response', async () => {
@@ -51,9 +49,7 @@ describe('Category Controller', () => {
 
       expect(categoryService.create).toHaveBeenCalledWith(newCategory);
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse([error.message])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
     });
   });
 
@@ -78,9 +74,7 @@ describe('Category Controller', () => {
 
       expect(categoryService.list).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(
-        buildSuccessResponse(foundCategories)
-      );
+      expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundCategories));
     });
 
     it('Should respond 500 with an error response', async () => {
@@ -94,9 +88,7 @@ describe('Category Controller', () => {
 
       expect(categoryService.list).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse([error.message])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
     });
   });
 
@@ -119,9 +111,7 @@ describe('Category Controller', () => {
 
       expect(categoryService.get).toHaveBeenCalledWith(1);
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(
-        buildSuccessResponse(foundCategory)
-      );
+      expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundCategory));
     });
 
     it('Should respond 200 without category', async () => {
@@ -156,9 +146,7 @@ describe('Category Controller', () => {
 
       expect(categoryService.get).toHaveBeenCalledWith(998);
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse([error.message])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
     });
   });
 
@@ -186,9 +174,7 @@ describe('Category Controller', () => {
 
       expect(categoryService.update).toHaveBeenCalledWith(1, dataToPatch);
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(
-        buildSuccessResponse(patchedCategory)
-      );
+      expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(patchedCategory));
     });
 
     it('Should respond 500 with error response', async () => {
@@ -211,9 +197,7 @@ describe('Category Controller', () => {
 
       expect(categoryService.update).toHaveBeenCalledWith(1, dataToPatch);
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse([error.message])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
     });
   });
 
@@ -254,9 +238,7 @@ describe('Category Controller', () => {
 
       expect(categoryService.remove).toHaveBeenCalledWith(1);
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse([error.message])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
     });
   });
 });

@@ -23,9 +23,7 @@ describe('App Middlewares', () => {
       const { res, next } = getMockRes();
       authorize(req, res, next);
       expect(res.status).toHaveBeenCalledWith(403);
-      expect(res.json).toHaveBeenCalledWith(
-        buildErrorResponse(['UNAUTHORIZED'])
-      );
+      expect(res.json).toHaveBeenCalledWith(buildErrorResponse(['UNAUTHORIZED']));
       expect(next).toHaveBeenCalledTimes(0);
     });
   });

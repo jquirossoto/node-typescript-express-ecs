@@ -42,9 +42,7 @@ describe('Pet Repository', () => {
         categoryId: 1,
         ownerId: 1
       };
-      prismaMock.pet.create.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.pet.create.mockRejectedValue(new Error('Unable to process request'));
       await expect(create(newPet)).rejects.toThrow(Error);
       expect(prismaMock.pet.create).toHaveBeenCalledTimes(1);
     });
@@ -72,9 +70,7 @@ describe('Pet Repository', () => {
     });
 
     it('Should throw error when finding one pet', async () => {
-      prismaMock.pet.findUnique.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.pet.findUnique.mockRejectedValue(new Error('Unable to process request'));
       await expect(findUnique(1)).rejects.toThrow(Error);
       expect(prismaMock.pet.findUnique).toHaveBeenCalledTimes(1);
     });
@@ -120,9 +116,7 @@ describe('Pet Repository', () => {
     });
 
     it('Should throw error when finding multiple categories', async () => {
-      prismaMock.pet.findMany.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.pet.findMany.mockRejectedValue(new Error('Unable to process request'));
       await expect(findMany()).rejects.toThrow(Error);
       expect(prismaMock.pet.findMany).toHaveBeenCalledTimes(1);
     });
@@ -164,9 +158,7 @@ describe('Pet Repository', () => {
         categoryId: 1,
         ownerId: null
       };
-      prismaMock.pet.update.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.pet.update.mockRejectedValue(new Error('Unable to process request'));
       await expect(update(1, dataToUpdate)).rejects.toThrow(Error);
       expect(prismaMock.pet.update).toHaveBeenCalledTimes(1);
     });
@@ -194,9 +186,7 @@ describe('Pet Repository', () => {
     });
 
     it('Should throw error when deleting pet', async () => {
-      prismaMock.pet.delete.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.pet.delete.mockRejectedValue(new Error('Unable to process request'));
       await expect(remove(1)).rejects.toThrow(Error);
       expect(prismaMock.pet.delete).toHaveBeenCalledTimes(1);
     });

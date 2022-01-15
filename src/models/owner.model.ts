@@ -63,9 +63,7 @@ export default class Owner {
   static toModel(owner: GeneratedOwner | null): Owner;
   static toModel(owners: GeneratedOwner[]): Owner[];
 
-  static toModel(
-    owner: GeneratedOwner | GeneratedOwner[] | null
-  ): Owner | Owner[] | null {
+  static toModel(owner: GeneratedOwner | GeneratedOwner[] | null): Owner | Owner[] | null {
     let result: Owner | Owner[] | null;
     if (Array.isArray(owner)) {
       result = [];

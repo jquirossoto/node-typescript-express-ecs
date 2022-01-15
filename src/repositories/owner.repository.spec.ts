@@ -1,12 +1,6 @@
 import { prismaMock } from './../../prisma/singleton';
 
-import {
-  create,
-  findUnique,
-  findMany,
-  update,
-  remove
-} from './owner.repository';
+import { create, findUnique, findMany, update, remove } from './owner.repository';
 import Owner, { GeneratedOwner } from './../models/owner.model';
 import { Address } from '@prisma/client';
 
@@ -84,9 +78,7 @@ describe('Owner Repository', () => {
           postalCode: '65888-1483'
         }
       };
-      prismaMock.owner.create.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.owner.create.mockRejectedValue(new Error('Unable to process request'));
 
       await expect(create(newOwner)).rejects.toThrow(Error);
 
@@ -137,9 +129,7 @@ describe('Owner Repository', () => {
     });
 
     it('Should throw error when finding one owner', async () => {
-      prismaMock.owner.findUnique.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.owner.findUnique.mockRejectedValue(new Error('Unable to process request'));
       await expect(findUnique(1)).rejects.toThrow(Error);
       expect(prismaMock.owner.findUnique).toHaveBeenCalledTimes(1);
     });
@@ -224,9 +214,7 @@ describe('Owner Repository', () => {
     });
 
     it('Should throw error when finding multiple categories', async () => {
-      prismaMock.owner.findMany.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.owner.findMany.mockRejectedValue(new Error('Unable to process request'));
       await expect(findMany()).rejects.toThrow(Error);
       expect(prismaMock.owner.findMany).toHaveBeenCalledTimes(1);
     });
@@ -305,9 +293,7 @@ describe('Owner Repository', () => {
           postalCode: '65888-1483'
         }
       };
-      prismaMock.owner.update.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.owner.update.mockRejectedValue(new Error('Unable to process request'));
 
       await expect(update(1, dataToUpdate)).rejects.toThrow(Error);
 
@@ -362,9 +348,7 @@ describe('Owner Repository', () => {
     });
 
     it('Should throw error when deleting owner', async () => {
-      prismaMock.owner.delete.mockRejectedValue(
-        new Error('Unable to process request')
-      );
+      prismaMock.owner.delete.mockRejectedValue(new Error('Unable to process request'));
       await expect(remove(1)).rejects.toThrow(Error);
       expect(prismaMock.owner.delete).toHaveBeenCalledTimes(1);
     });

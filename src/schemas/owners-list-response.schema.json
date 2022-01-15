@@ -14,14 +14,7 @@
     "result": {
       "type": "array",
       "items": {
-        "required": [
-          "id",
-          "firstName",
-          "middleInitial",
-          "lastName",
-          "identificationNumber",
-          "address"
-        ],
+        "required": ["id", "firstName", "middleInitial", "lastName", "identificationNumber", "address"],
         "allOf": [
           {
             "$ref": "common.schema.json#/definitions/id"
