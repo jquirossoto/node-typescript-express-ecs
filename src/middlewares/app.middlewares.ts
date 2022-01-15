@@ -101,7 +101,7 @@ export const allowedHttpMethods = (req: Request, res: Response, next: NextFuncti
  * @param  {NextFunction} next
  */
 export const allowedContentType = (req: Request, res: Response, next: NextFunction) => {
-  if ((req.method === 'POST' || req.method === 'PUT') && !req.is('json')) {
+  if ((req.method === 'POST' || req.method === 'PUT') && !req.is('application/json')) {
     return res.status(415).json(buildErrorResponse(['Unsupported Content-Type']));
   }
   return next();
