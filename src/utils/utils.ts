@@ -1,5 +1,5 @@
 /**
- * @file API utils.
+ * @file Utils.
  * @author jquirossoto
  */
 
@@ -30,6 +30,11 @@ export const buildErrorResponse = (errors: string[]) => {
   };
 };
 
+/**
+ * Resolves a directory path
+ *
+ * @param  {string} url
+ */
 export const resolveDirname = (url: string) => {
   return dirname(fileURLToPath(url));
 };

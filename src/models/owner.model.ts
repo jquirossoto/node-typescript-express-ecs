@@ -1,3 +1,8 @@
+/**
+ * @file Owner model.
+ * @author jquirossoto
+ */
+
 import { Owner as PrismaOwner, Prisma } from '@prisma/client';
 
 import Address from './address.model.js';

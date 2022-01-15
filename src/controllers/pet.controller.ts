@@ -61,7 +61,7 @@ export const get = async (req: Request, res: Response) => {
 };
 
 /**
- * Patch handler.
+ * Put handler.
  *
  * @param  {Request} req
  * @param  {Response} res

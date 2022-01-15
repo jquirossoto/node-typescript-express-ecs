@@ -47,12 +47,21 @@ export const validateSchema = (schema: AnySchema) => {
   };
 };
 
+/**
+ * WhitelistOptions interface
+ *
+ */
 export interface WhitelistOptions {
   body?: string[];
   req?: string[];
   res?: string[];
 }
 
+/**
+ * Validate schema middleware.
+ *
+ * @param  {AnySchema} schema
+ */
 export const whitelist = (options: WhitelistOptions) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const ewReq = req as ExpressWinstonRequest;
@@ -69,6 +78,13 @@ export const whitelist = (options: WhitelistOptions) => {
   };
 };
 
+/**
+ * AllowedHttpMethods middleware.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ * @param  {NextFunction} next
+ */
 export const allowedHttpMethods = (
   req: Request,
   res: Response,
@@ -81,6 +97,13 @@ export const allowedHttpMethods = (
   return next();
 };
 
+/**
+ * AllowedContentType middleware.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ * @param  {NextFunction} next
+ */
 export const allowedContentType = (
   req: Request,
   res: Response,

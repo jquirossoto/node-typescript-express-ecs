@@ -1,3 +1,8 @@
+/**
+ * @file Owner router.
+ * @author jquirossoto
+ */
+
 import { Router } from 'express';
 import loader from 'speccy/lib/loader.js';
 

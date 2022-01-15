@@ -1,6 +1,12 @@
 import prisma from '../utils/prisma.js';
 import Owner, { GeneratedOwner } from './../models/owner.model.js';
 
+/**
+ * Creates a new Owner.
+ *
+ * @param  {Category} category
+ * @returns Promise
+ */
 export const create = (owner: Owner): Promise<Owner> => {
   return new Promise<Owner>((resolve, reject) => {
     prisma.owner
@@ -14,6 +20,12 @@ export const create = (owner: Owner): Promise<Owner> => {
   });
 };
 
+/**
+ * Finds an Owner by id.
+ *
+ * @param  {number} id
+ * @returns Promise
+ */
 export const findUnique = (id: number): Promise<Owner> => {
   return new Promise<Owner>((resolve, reject) => {
     prisma.owner
@@ -27,6 +39,11 @@ export const findUnique = (id: number): Promise<Owner> => {
   });
 };
 
+/**
+ * Finds a list of Owner.
+ *
+ * @returns Promise
+ */
 export const findMany = (): Promise<Owner[]> => {
   return new Promise<Owner[]>((resolve, reject) => {
     prisma.owner
@@ -40,6 +57,13 @@ export const findMany = (): Promise<Owner[]> => {
   });
 };
 
+/**
+ * Updates an Owner.
+ *
+ * @param  {number} id
+ * @param  {Category} category
+ * @returns Promise
+ */
 export const update = (id: number, owner: Owner): Promise<Owner> => {
   return new Promise<Owner>((resolve, reject) => {
     prisma.owner
@@ -57,6 +81,12 @@ export const update = (id: number, owner: Owner): Promise<Owner> => {
   });
 };
 
+/**
+ * Deletes an Owner.
+ *
+ * @param  {number} id
+ * @returns Promise
+ */
 export const remove = (id: number): Promise<Owner> => {
   return new Promise<Owner>((resolve, reject) => {
     prisma.owner

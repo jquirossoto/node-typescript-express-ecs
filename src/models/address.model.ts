@@ -1,3 +1,8 @@
+/**
+ * @file Address model.
+ * @author jquirossoto
+ */
+
 export default interface Address {
   street: string;
   buildingNumber?: string;

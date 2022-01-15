@@ -1,9 +1,20 @@
+/**
+ * @file Category controller.
+ * @author jquirossoto
+ */
+
 import { Request, Response } from 'express';
 
 import Owner from './../models/owner.model.js';
 import * as ownerService from './../services/owner.service.js';
 import * as apiUtils from '../utils/utils.js';
 
+/**
+ * Post handler.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 export const post = async (req: Request, res: Response) => {
   try {
     const owner: Owner = await ownerService.create(req.body);
@@ -15,6 +26,12 @@ export const post = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * List handler.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 export const list = async (req: Request, res: Response) => {
   try {
     const owners: Owner[] = await ownerService.list();
@@ -26,6 +43,12 @@ export const list = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Get handler.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 export const get = async (req: Request, res: Response) => {
   try {
     const owner: Owner = await ownerService.get(+req.params.id);
@@ -37,6 +60,12 @@ export const get = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Put handler.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 export const put = async (req: Request, res: Response) => {
   try {
     const owner: Owner = await ownerService.update(+req.params.id, req.body);
@@ -48,6 +77,12 @@ export const put = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Delete handler.
+ *
+ * @param  {Request} req
+ * @param  {Response} res
+ */
 export const remove = async (req: Request, res: Response) => {
   try {
     await ownerService.remove(+req.params.id);
