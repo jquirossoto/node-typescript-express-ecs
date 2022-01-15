@@ -20,9 +20,9 @@ model Pet {
   name        String
   status      PetStatus
   categoryId  Int       @map("category_id")
-  category    Category  @relation(fields: [categoryId], references: [id])
+  category    Category  @relation(fields: [categoryId], references: [id], onUpdate: Cascade)
   ownerId     Int?      @map("owner_id")
-  owner       Owner?    @relation(fields: [ownerId], references: [id])
+  owner       Owner?    @relation(fields: [ownerId], references: [id], onUpdate: Cascade)
 
   @@map(name: "pets")
 }
@@ -34,7 +34,7 @@ model Owner {
   lastName              String  @map("last_name")
   identificationNumber  String  @map("identification_number")
   addressId             Int     @map("address_id")
-  address               Address @relation(fields: [addressId], references: [id])
+  address               Address @relation(fields: [addressId], references: [id], onUpdate: Cascade)
   pets                  Pet[]
 
   @@map("owners")
