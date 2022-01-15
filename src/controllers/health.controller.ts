@@ -12,5 +12,5 @@ import { Request, Response } from 'express';
  * @param  {Response} res
  */
 export const list = async (req: Request, res: Response) => {
-    res.status(200).send();
+  res.status(200).send();
 };

@@ -12,10 +12,10 @@ import { fileURLToPath } from 'url';
  * @param  {any} data
  */
 export const buildSuccessResponse = (data: object | [] | null) => {
-    return {
-        status: 'SUCCESS',
-        result: data
-    };
+  return {
+    status: 'SUCCESS',
+    result: data
+  };
 };
 
 /**
@@ -24,12 +24,12 @@ export const buildSuccessResponse = (data: object | [] | null) => {
  * @param  {string[]} errors
  */
 export const buildErrorResponse = (errors: string[]) => {
-    return {
-        status: 'ERROR',
-        errors
-    };
+  return {
+    status: 'ERROR',
+    errors
+  };
 };
 
 export const resolveDirname = (url: string) => {
-    return dirname(fileURLToPath(url));
+  return dirname(fileURLToPath(url));
 };

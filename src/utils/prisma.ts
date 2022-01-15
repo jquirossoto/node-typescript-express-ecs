@@ -8,10 +8,10 @@ import Prisma from '@prisma/client';
 let prisma: any;
 
 if (Prisma === undefined) {
-	import('@prisma/client').then(({ PrismaClient }) => {
-		prisma = new PrismaClient();
-	});
+  import('@prisma/client').then(({ PrismaClient }) => {
+    prisma = new PrismaClient();
+  });
 } else {
-	prisma = new Prisma.PrismaClient();
+  prisma = new Prisma.PrismaClient();
 }
 export default prisma;

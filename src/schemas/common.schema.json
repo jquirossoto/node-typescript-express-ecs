@@ -1,129 +1,136 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
-    "type": "object",
-    "definitions": {
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "definitions": {
+    "id": {
+      "properties": {
         "id": {
-            "properties": {
-                "id": {
-                    "type": "number",
-                    "title": "Id",
-                    "description": "Identifier"
-                }
-            }
+          "type": "number",
+          "title": "Id",
+          "description": "Identifier"
+        }
+      }
+    },
+    "category": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "Category name",
+          "minLength": 3,
+          "maxLength": 50
+        }
+      },
+      "additionalProperties": false
+    },
+    "owner": {
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "title": "First name",
+          "description": "Owner's first name.",
+          "minLength": 2
         },
-        "category": {
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "title": "Name",
-                    "description": "Category name",
-                    "minLength": 3,
-                    "maxLength": 50
-                }
-            },
-            "additionalProperties": false
+        "middleInitial": {
+          "type": ["string", "null"],
+          "title": "Middle initial",
+          "description": "Owner's middle initial.",
+          "minLength": 1,
+          "maxLength": 1
         },
-        "owner": {
-            "properties": {
-                "firstName": {
-                    "type": "string",
-                    "title": "First name",
-                    "description": "Owner's first name.",
-                    "minLength": 2
-                },
-                "middleInitial": {
-                    "type": [ "string", "null" ],
-                    "title": "Middle initial",
-                    "description": "Owner's middle initial.",
-                    "minLength": 1,
-                    "maxLength": 1
-                },
-                "lastName": {
-                    "type": "string",
-                    "title": "Last name",
-                    "description": "Owner's last name.",
-                    "minLength": 2
-                },
-                "identificationNumber": {
-                    "type": "string",
-                    "title": "Identification number",
-                    "description": "Alphanumeric value that carries the identification number issued to the owner by the government or an authorized national entity.",
-                    "minLength": 2
-                },
-                "address": {
-                    "$ref": "#/definitions/address"
-                }
-            },
-            "additionalProperties": false
+        "lastName": {
+          "type": "string",
+          "title": "Last name",
+          "description": "Owner's last name.",
+          "minLength": 2
+        },
+        "identificationNumber": {
+          "type": "string",
+          "title": "Identification number",
+          "description": "Alphanumeric value that carries the identification number issued to the owner by the government or an authorized national entity.",
+          "minLength": 2
         },
         "address": {
-            "type": "object",
-            "title": "Address",
-            "description": "Owner's address.",
-            "required": [ "street", "buildingNumber", "city", "state", "countryCode", "postalCode" ],
-            "properties": {
-                "street": {
-                    "type": "string",
-                    "title": "Street",
-                    "minLength": 2
-                },
-                "buildingNumber": {
-                    "type": [ "string", "null" ],
-                    "title": "Building number",
-                    "minLength": 2
-                },
-                "city": {
-                    "type": "string",
-                    "title": "City",
-                    "minLength": 2
-                },
-                "state": {
-                    "type": "string",
-                    "title": "State",
-                    "minLength": 2
-                },
-                "countryCode": {
-                    "type": "string",
-                    "title": "Country code",
-                    "description": "2-character alpha country code. Refer to ISO country codes.",
-                    "minLength": 2,
-                    "maxLength": 2
-                },
-                "postalCode": {
-                    "type": "string",
-                    "title": "Postal code",
-                    "minLength": 2
-                }
-            },
-            "additionalProperties": false
-        },
-        "pet": {
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "title": "Name",
-                    "description": "Pet's name",
-                    "minLength": 2
-                },
-                "status": {
-                    "type": "string",
-                    "title": "Status",
-                    "description": "Pet's status",
-                    "enum": [ "AVAILABLE", "PENDING", "SOLD" ]
-                },
-                "categoryId": {
-                    "type": "number",
-                    "title": "Category Id",
-                    "description": "Category identifier"
-                },
-                "ownerId": {
-                    "type": [ "number", "null" ],
-                    "title": "Owner Id",
-                    "description": "Owner identifier"
-                }
-            },
-            "additionalProperties": false
+          "$ref": "#/definitions/address"
         }
+      },
+      "additionalProperties": false
     },
-    "additionalProperties": false
+    "address": {
+      "type": "object",
+      "title": "Address",
+      "description": "Owner's address.",
+      "required": [
+        "street",
+        "buildingNumber",
+        "city",
+        "state",
+        "countryCode",
+        "postalCode"
+      ],
+      "properties": {
+        "street": {
+          "type": "string",
+          "title": "Street",
+          "minLength": 2
+        },
+        "buildingNumber": {
+          "type": ["string", "null"],
+          "title": "Building number",
+          "minLength": 2
+        },
+        "city": {
+          "type": "string",
+          "title": "City",
+          "minLength": 2
+        },
+        "state": {
+          "type": "string",
+          "title": "State",
+          "minLength": 2
+        },
+        "countryCode": {
+          "type": "string",
+          "title": "Country code",
+          "description": "2-character alpha country code. Refer to ISO country codes.",
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "postalCode": {
+          "type": "string",
+          "title": "Postal code",
+          "minLength": 2
+        }
+      },
+      "additionalProperties": false
+    },
+    "pet": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "Pet's name",
+          "minLength": 2
+        },
+        "status": {
+          "type": "string",
+          "title": "Status",
+          "description": "Pet's status",
+          "enum": ["AVAILABLE", "PENDING", "SOLD"]
+        },
+        "categoryId": {
+          "type": "number",
+          "title": "Category Id",
+          "description": "Category identifier"
+        },
+        "ownerId": {
+          "type": ["number", "null"],
+          "title": "Owner Id",
+          "description": "Owner identifier"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
 }

@@ -13,7 +13,10 @@ import categoryRouter from './routers/category.router.js';
 import petRouter from './routers/pet.router.js';
 import ownerRouter from './routers/owner.router.js';
 import healthRouter from './routers/health.router.js';
-import { allowedContentType, allowedHttpMethods } from './middlewares/app.middlewares.js';
+import {
+  allowedContentType,
+  allowedHttpMethods
+} from './middlewares/app.middlewares.js';
 
 const app: Application = express();
 
@@ -22,28 +25,32 @@ app.use(allowedHttpMethods);
 // content type according to https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#validate-content-types
 app.use(allowedContentType);
 // security headers according to https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#security-headers
-app.use(helmet({
+app.use(
+  helmet({
     contentSecurityPolicy: {
-        directives: {
-            'frame-ancestors': 'none'
-        }
+      directives: {
+        'frame-ancestors': 'none'
+      }
     },
     hsts: {
-        maxAge: 63072000,
-        includeSubDomains: true,
-        preload: true
+      maxAge: 63072000,
+      includeSubDomains: true,
+      preload: true
     },
-    noSniff: true,    
+    noSniff: true,
     frameguard: {
-        action: 'deny'
+      action: 'deny'
     }
-}));
+  })
+);
 app.use(nocache());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(winstonMiddleware.logger({
+app.use(
+  winstonMiddleware.logger({
     winstonInstance: logger
-}));
+  })
+);
 app.use('/', categoryRouter);
 app.use('/', petRouter);
 app.use('/', ownerRouter);
