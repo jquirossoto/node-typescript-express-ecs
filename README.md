@@ -17,7 +17,7 @@ Express API developed in Typescript and deployed to ECS Fargate that sits behind
 
 ### Things you will need
 
-1. [NodeJS 12](https://nodejs.org/en/download/releases/)
+1. [NodeJS 16](https://nodejs.org/en/download/releases/)
 2. [Docker](https://docs.docker.com/get-docker/)
 
 To run the application execute the following procedure:
