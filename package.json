@@ -10,7 +10,6 @@
     "prettify": "prettier --write \"**/*.+(js|ts|json)\"",
     "prebuild": "npm run lint && npm run build:clean",
     "build": "tsc",
-    "build:watch": "npm run build -- --watch",
     "build:clean": "rm -rf dist",
     "postbuild": "cp -R src/schemas dist",
     "prestart": "npm run build",
