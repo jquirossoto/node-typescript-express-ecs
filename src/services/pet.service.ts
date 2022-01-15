@@ -13,7 +13,7 @@ import Pet from './../models/pet.model.js';
  * @returns Promise
  */
 export const create = async (pet: Pet): Promise<Pet> => {
-    return await repo.create(pet);
+  return await repo.create(pet);
 };
 
 /**
@@ -22,7 +22,7 @@ export const create = async (pet: Pet): Promise<Pet> => {
  * @returns Promise
  */
 export const list = async (): Promise<Pet[]> => {
-    return await repo.findMany();
+  return await repo.findMany();
 };
 
 /**
@@ -32,7 +32,7 @@ export const list = async (): Promise<Pet[]> => {
  * @returns Promise
  */
 export const get = async (id: number): Promise<Pet | null> => {
-    return await repo.findUnique(id);
+  return await repo.findUnique(id);
 };
 
 /**
@@ -43,7 +43,7 @@ export const get = async (id: number): Promise<Pet | null> => {
  * @returns Promise
  */
 export const update = async (id: number, pet: Pet): Promise<Pet> => {
-    return await repo.update(id, pet);
+  return await repo.update(id, pet);
 };
 
 /**
@@ -53,5 +53,5 @@ export const update = async (id: number, pet: Pet): Promise<Pet> => {
  * @returns Promise
  */
 export const remove = async (id: number): Promise<Pet> => {
-    return await repo.remove(id);
+  return await repo.remove(id);
 };

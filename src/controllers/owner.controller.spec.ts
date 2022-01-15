@@ -8,361 +8,358 @@ import { buildErrorResponse, buildSuccessResponse } from '../utils/utils';
 
 jest.mock('./../services/owner.service');
 
-
 describe('Owner controller', () => {
+  describe('post', () => {
+    it('Should respond 200 with created owner', async () => {
+      const newOwner: Owner = {
+        id: null,
+        firstName: 'Jane',
+        middleInitial: 'M',
+        lastName: 'Doe',
+        identificationNumber: '109876543',
+        address: {
+          street: '995 Huel Curve',
+          buildingNumber: 'Suite 204',
+          city: 'Grimesview',
+          state: 'Bilzen',
+          countryCode: 'US',
+          postalCode: '65888-1483'
+        }
+      };
+      const req: Request = getMockReq({
+        body: newOwner
+      });
+      const res: Response = getMockRes().res;
+      const createdOwner: Owner = {
+        id: 1,
+        firstName: 'Jane',
+        middleInitial: 'M',
+        lastName: 'Doe',
+        identificationNumber: '109876543',
+        address: {
+          street: '995 Huel Curve',
+          buildingNumber: 'Suite 204',
+          city: 'Grimesview',
+          state: 'Bilzen',
+          countryCode: 'US',
+          postalCode: '65888-1483'
+        }
+      };
+      // @ts-ignore
+      ownerService.create.mockResolvedValue(createdOwner);
 
-    describe('post', () => {
+      await post(req, res);
 
-        it('Should respond 200 with created owner', async () => {
-            const newOwner: Owner = {
-                id: null,
-                firstName: 'Jane',
-                middleInitial: 'M',
-                lastName: 'Doe',
-                identificationNumber: '109876543',
-                address: {
-                    street: '995 Huel Curve',
-                    buildingNumber: 'Suite 204',
-                    city: 'Grimesview',
-                    state: 'Bilzen',
-                    countryCode: 'US',
-                    postalCode: '65888-1483'
-                }
-            };
-            const req: Request = getMockReq({
-                body: newOwner
-            });
-            const res: Response = getMockRes().res;
-            const createdOwner: Owner = {
-                id: 1,
-                firstName: 'Jane',
-                middleInitial: 'M',
-                lastName: 'Doe',
-                identificationNumber: '109876543',
-                address: {
-                    street: '995 Huel Curve',
-                    buildingNumber: 'Suite 204',
-                    city: 'Grimesview',
-                    state: 'Bilzen',
-                    countryCode: 'US',
-                    postalCode: '65888-1483'
-                }
-            };
-            // @ts-ignore
-            ownerService.create.mockResolvedValue(createdOwner);
-
-            await post(req, res);
-
-            expect(ownerService.create).toHaveBeenCalledWith(newOwner);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(createdOwner));
-        });
-
-        it('Should respond 500 with error response', async () => {
-            const newOwner: Owner = {
-                id: null,
-                firstName: 'Jane',
-                middleInitial: 'M',
-                lastName: 'Doe',
-                identificationNumber: '109876543',
-                address: {
-                    street: '995 Huel Curve',
-                    buildingNumber: 'Suite 204',
-                    city: 'Grimesview',
-                    state: 'Bilzen',
-                    countryCode: 'US',
-                    postalCode: '65888-1483'
-                }
-            };
-            const req: Request = getMockReq({
-                body: newOwner
-            });
-            const res: Response = getMockRes().res;
-            const error: Error = new Error('Unable to process request');
-            // @ts-ignore
-            ownerService.create.mockRejectedValue(error);
-
-            await post(req, res);
-
-            expect(ownerService.create).toHaveBeenCalledWith(newOwner);
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
-        });
-
+      expect(ownerService.create).toHaveBeenCalledWith(newOwner);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(createdOwner));
     });
 
-    describe('list', () => {
+    it('Should respond 500 with error response', async () => {
+      const newOwner: Owner = {
+        id: null,
+        firstName: 'Jane',
+        middleInitial: 'M',
+        lastName: 'Doe',
+        identificationNumber: '109876543',
+        address: {
+          street: '995 Huel Curve',
+          buildingNumber: 'Suite 204',
+          city: 'Grimesview',
+          state: 'Bilzen',
+          countryCode: 'US',
+          postalCode: '65888-1483'
+        }
+      };
+      const req: Request = getMockReq({
+        body: newOwner
+      });
+      const res: Response = getMockRes().res;
+      const error: Error = new Error('Unable to process request');
+      // @ts-ignore
+      ownerService.create.mockRejectedValue(error);
 
-        it('Should responde 200 with list of owners', async () => {
-            const req: Request = getMockReq();
-            const res: Response = getMockRes().res;
-            const foundOwners: Owner[] = [
-                {
-                    id: 1,
-                    firstName: 'Jane',
-                    middleInitial: 'M',
-                    lastName: 'Doe',
-                    identificationNumber: '109876543',
-                    address: {
-                        street: '995 Huel Curve',
-                        buildingNumber: 'Suite 204',
-                        city: 'Grimesview',
-                        state: 'Bilzen',
-                        countryCode: 'US',
-                        postalCode: '65888-1483'
-                    }
-                },
-                {
-                    id: 2,
-                    firstName: 'John',
-                    middleInitial: 'M',
-                    lastName: 'Doe',
-                    identificationNumber: '109876544',
-                    address: {
-                        street: '995 Huel Curve',
-                        buildingNumber: 'Suite 204',
-                        city: 'Grimesview',
-                        state: 'Bilzen',
-                        countryCode: 'US',
-                        postalCode: '65888-1483'
-                    }
-                }
-            ];
-            // @ts-ignore
-            ownerService.list.mockResolvedValue(foundOwners);
+      await post(req, res);
 
-            await list(req, res);
+      expect(ownerService.create).toHaveBeenCalledWith(newOwner);
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith(
+        buildErrorResponse([error.message])
+      );
+    });
+  });
 
-            expect(ownerService.list).toHaveBeenCalled();
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundOwners));
-        });
+  describe('list', () => {
+    it('Should responde 200 with list of owners', async () => {
+      const req: Request = getMockReq();
+      const res: Response = getMockRes().res;
+      const foundOwners: Owner[] = [
+        {
+          id: 1,
+          firstName: 'Jane',
+          middleInitial: 'M',
+          lastName: 'Doe',
+          identificationNumber: '109876543',
+          address: {
+            street: '995 Huel Curve',
+            buildingNumber: 'Suite 204',
+            city: 'Grimesview',
+            state: 'Bilzen',
+            countryCode: 'US',
+            postalCode: '65888-1483'
+          }
+        },
+        {
+          id: 2,
+          firstName: 'John',
+          middleInitial: 'M',
+          lastName: 'Doe',
+          identificationNumber: '109876544',
+          address: {
+            street: '995 Huel Curve',
+            buildingNumber: 'Suite 204',
+            city: 'Grimesview',
+            state: 'Bilzen',
+            countryCode: 'US',
+            postalCode: '65888-1483'
+          }
+        }
+      ];
+      // @ts-ignore
+      ownerService.list.mockResolvedValue(foundOwners);
 
-        it('Should respond 500 with an error response', async () => {
-            const req: Request = getMockReq();
-            const res: Response = getMockRes().res;
-            const error: Error = new Error('Unable to process request');
-            // @ts-ignore
-            ownerService.list.mockRejectedValue(error);
+      await list(req, res);
 
-            await list(req, res);
-
-            expect(ownerService.list).toHaveBeenCalled();
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
-        });
-
+      expect(ownerService.list).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundOwners));
     });
 
-    describe('get', () => {
+    it('Should respond 500 with an error response', async () => {
+      const req: Request = getMockReq();
+      const res: Response = getMockRes().res;
+      const error: Error = new Error('Unable to process request');
+      // @ts-ignore
+      ownerService.list.mockRejectedValue(error);
 
-        it('Should respond 200 with a owner', async () => {
-            const req: Request = getMockReq({
-                params: {
-                    id: 1
-                }
-            });
-            const res: Response = getMockRes().res;
-            const foundOwner: Owner = {
-                id: 1,
-                firstName: 'Jane',
-                middleInitial: 'M',
-                lastName: 'Doe',
-                identificationNumber: '109876543',
-                address: {
-                    street: '995 Huel Curve',
-                    buildingNumber: 'Suite 204',
-                    city: 'Grimesview',
-                    state: 'Bilzen',
-                    countryCode: 'US',
-                    postalCode: '65888-1483'
-                }
-            };
-            // @ts-ignore
-            ownerService.get.mockResolvedValue(foundOwner);
+      await list(req, res);
 
-            await get(req, res);
+      expect(ownerService.list).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith(
+        buildErrorResponse([error.message])
+      );
+    });
+  });
 
-            expect(ownerService.get).toHaveBeenCalledWith(1);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundOwner));
-        });
+  describe('get', () => {
+    it('Should respond 200 with a owner', async () => {
+      const req: Request = getMockReq({
+        params: {
+          id: 1
+        }
+      });
+      const res: Response = getMockRes().res;
+      const foundOwner: Owner = {
+        id: 1,
+        firstName: 'Jane',
+        middleInitial: 'M',
+        lastName: 'Doe',
+        identificationNumber: '109876543',
+        address: {
+          street: '995 Huel Curve',
+          buildingNumber: 'Suite 204',
+          city: 'Grimesview',
+          state: 'Bilzen',
+          countryCode: 'US',
+          postalCode: '65888-1483'
+        }
+      };
+      // @ts-ignore
+      ownerService.get.mockResolvedValue(foundOwner);
 
-        it('Should respond 200 without owner', async () => {
-            const req: Request = getMockReq({
-                params: {
-                    id: 999
-                }
-            });
-            const res: Response = getMockRes().res;
-            // @ts-ignore
-            ownerService.get.mockResolvedValue(null);
+      await get(req, res);
 
-            await get(req, res);
-
-            expect(ownerService.get).toHaveBeenCalledWith(999);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(null));
-        });
-
-        it('Should respond 500 with error response', async () => {
-            const req: Request = getMockReq({
-                params: {
-                    id: 998
-                }
-            });
-            const res: Response = getMockRes().res;
-            const error: Error = new Error('Unable to process request');
-            // @ts-ignore
-            ownerService.get.mockRejectedValue(error);
-
-            await get(req, res);
-
-            expect(ownerService.get).toHaveBeenCalledWith(998);
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
-        });
-
+      expect(ownerService.get).toHaveBeenCalledWith(1);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(foundOwner));
     });
 
-    describe('put', () => {
+    it('Should respond 200 without owner', async () => {
+      const req: Request = getMockReq({
+        params: {
+          id: 999
+        }
+      });
+      const res: Response = getMockRes().res;
+      // @ts-ignore
+      ownerService.get.mockResolvedValue(null);
 
-        it('Should respond 200 with patched owner', async () => {
-            const dataToPatch: Owner = {
-                id: null,
-                firstName: 'Jane',
-                middleInitial: 'M',
-                lastName: 'Doe',
-                identificationNumber: '109876543',
-                address: {
-                    street: '995 Huel Curve',
-                    buildingNumber: 'Suite 204',
-                    city: 'Grimesview',
-                    state: 'Bilzen',
-                    countryCode: 'US',
-                    postalCode: '65888-1483'
-                }
-            };
-            const req: Request = getMockReq({
-                params: {
-                    id: 1
-                },
-                body: dataToPatch
-            });
-            const res: Response = getMockRes().res;
-            const patchedOwner: Owner = {
-                id: 1,
-                firstName: 'Jane',
-                middleInitial: 'M',
-                lastName: 'Doe',
-                identificationNumber: '109876543',
-                address: {
-                    street: '995 Huel Curve',
-                    buildingNumber: 'Suite 204',
-                    city: 'Grimesview',
-                    state: 'Bilzen',
-                    countryCode: 'US',
-                    postalCode: '65888-1483'
-                }
-            };
-            // @ts-ignore
-            ownerService.update.mockResolvedValue(patchedOwner);
+      await get(req, res);
 
-            await put(req, res);
-
-            expect(ownerService.update).toHaveBeenCalledWith(1, dataToPatch);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(patchedOwner));
-        });
-
-        it('Should respond 500 with error response', async () => {
-            const dataToPatch: Owner = {
-                id: null,
-                firstName: 'Jane',
-                middleInitial: 'M',
-                lastName: 'Doe',
-                identificationNumber: '109876543',
-                address: {
-                    street: '995 Huel Curve',
-                    buildingNumber: 'Suite 204',
-                    city: 'Grimesview',
-                    state: 'Bilzen',
-                    countryCode: 'US',
-                    postalCode: '65888-1483'
-                }
-            };
-            const req: Request = getMockReq({
-                params: {
-                    id: 1,
-                },
-                body: dataToPatch
-            });
-            const res: Response = getMockRes().res;
-            const error: Error = new Error('Unable to process request');
-            // @ts-ignore
-            ownerService.update.mockRejectedValue(error);
-
-            await put(req, res);
-
-            expect(ownerService.update).toHaveBeenCalledWith(1, dataToPatch);
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
-        });
-
+      expect(ownerService.get).toHaveBeenCalledWith(999);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(null));
     });
 
-    describe('remove', () => {
+    it('Should respond 500 with error response', async () => {
+      const req: Request = getMockReq({
+        params: {
+          id: 998
+        }
+      });
+      const res: Response = getMockRes().res;
+      const error: Error = new Error('Unable to process request');
+      // @ts-ignore
+      ownerService.get.mockRejectedValue(error);
 
-        it('Should respond 200', async () => {
-            const req: Request = getMockReq({
-                params: {
-                    id: 1
-                }
-            });
-            const res: Response = getMockRes().res;
-            const deletedOwner: Owner = {
-                id: 1,
-                firstName: 'Jane',
-                middleInitial: 'M',
-                lastName: 'Doe',
-                identificationNumber: '109876543',
-                address: {
-                    street: '995 Huel Curve',
-                    buildingNumber: 'Suite 204',
-                    city: 'Grimesview',
-                    state: 'Bilzen',
-                    countryCode: 'US',
-                    postalCode: '65888-1483'
-                }
-            };
-            // @ts-ignore
-            ownerService.remove.mockResolvedValue(deletedOwner);
+      await get(req, res);
 
-            await remove(req, res);
+      expect(ownerService.get).toHaveBeenCalledWith(998);
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith(
+        buildErrorResponse([error.message])
+      );
+    });
+  });
 
-            expect(ownerService.remove).toHaveBeenCalledWith(1);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(null));
-        });
+  describe('put', () => {
+    it('Should respond 200 with patched owner', async () => {
+      const dataToPatch: Owner = {
+        id: null,
+        firstName: 'Jane',
+        middleInitial: 'M',
+        lastName: 'Doe',
+        identificationNumber: '109876543',
+        address: {
+          street: '995 Huel Curve',
+          buildingNumber: 'Suite 204',
+          city: 'Grimesview',
+          state: 'Bilzen',
+          countryCode: 'US',
+          postalCode: '65888-1483'
+        }
+      };
+      const req: Request = getMockReq({
+        params: {
+          id: 1
+        },
+        body: dataToPatch
+      });
+      const res: Response = getMockRes().res;
+      const patchedOwner: Owner = {
+        id: 1,
+        firstName: 'Jane',
+        middleInitial: 'M',
+        lastName: 'Doe',
+        identificationNumber: '109876543',
+        address: {
+          street: '995 Huel Curve',
+          buildingNumber: 'Suite 204',
+          city: 'Grimesview',
+          state: 'Bilzen',
+          countryCode: 'US',
+          postalCode: '65888-1483'
+        }
+      };
+      // @ts-ignore
+      ownerService.update.mockResolvedValue(patchedOwner);
 
-        it('Should respond 500', async () => {
-            const req: Request = getMockReq({
-                params: {
-                    id: 1
-                }
-            });
-            const res: Response = getMockRes().res;
-            const error: Error = new Error('Unable to process request');
-            // @ts-ignore
-            ownerService.remove.mockRejectedValue(error);
+      await put(req, res);
 
-            await remove(req, res);
-
-            expect(ownerService.remove).toHaveBeenCalledWith(1);
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(buildErrorResponse([error.message]));
-        });
-
+      expect(ownerService.update).toHaveBeenCalledWith(1, dataToPatch);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(patchedOwner));
     });
 
+    it('Should respond 500 with error response', async () => {
+      const dataToPatch: Owner = {
+        id: null,
+        firstName: 'Jane',
+        middleInitial: 'M',
+        lastName: 'Doe',
+        identificationNumber: '109876543',
+        address: {
+          street: '995 Huel Curve',
+          buildingNumber: 'Suite 204',
+          city: 'Grimesview',
+          state: 'Bilzen',
+          countryCode: 'US',
+          postalCode: '65888-1483'
+        }
+      };
+      const req: Request = getMockReq({
+        params: {
+          id: 1
+        },
+        body: dataToPatch
+      });
+      const res: Response = getMockRes().res;
+      const error: Error = new Error('Unable to process request');
+      // @ts-ignore
+      ownerService.update.mockRejectedValue(error);
+
+      await put(req, res);
+
+      expect(ownerService.update).toHaveBeenCalledWith(1, dataToPatch);
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith(
+        buildErrorResponse([error.message])
+      );
+    });
+  });
+
+  describe('remove', () => {
+    it('Should respond 200', async () => {
+      const req: Request = getMockReq({
+        params: {
+          id: 1
+        }
+      });
+      const res: Response = getMockRes().res;
+      const deletedOwner: Owner = {
+        id: 1,
+        firstName: 'Jane',
+        middleInitial: 'M',
+        lastName: 'Doe',
+        identificationNumber: '109876543',
+        address: {
+          street: '995 Huel Curve',
+          buildingNumber: 'Suite 204',
+          city: 'Grimesview',
+          state: 'Bilzen',
+          countryCode: 'US',
+          postalCode: '65888-1483'
+        }
+      };
+      // @ts-ignore
+      ownerService.remove.mockResolvedValue(deletedOwner);
+
+      await remove(req, res);
+
+      expect(ownerService.remove).toHaveBeenCalledWith(1);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(buildSuccessResponse(null));
+    });
+
+    it('Should respond 500', async () => {
+      const req: Request = getMockReq({
+        params: {
+          id: 1
+        }
+      });
+      const res: Response = getMockRes().res;
+      const error: Error = new Error('Unable to process request');
+      // @ts-ignore
+      ownerService.remove.mockRejectedValue(error);
+
+      await remove(req, res);
+
+      expect(ownerService.remove).toHaveBeenCalledWith(1);
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith(
+        buildErrorResponse([error.message])
+      );
+    });
+  });
 });

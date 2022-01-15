@@ -1,20 +1,15 @@
 {
-    "extends": "@tsconfig/node16/tsconfig.json",
-    "compilerOptions": {
-        "esModuleInterop": true,
-        "noImplicitReturns": true,
-        "strict": false,
-        "sourceMap": true,
-        "outDir": "dist",
-        "module": "es2022",
-        "target": "es2017",
-        "moduleResolution": "node"
-    },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules", 
-        "**/*.spec.ts"
-    ]
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "noImplicitReturns": true,
+    "strict": false,
+    "sourceMap": true,
+    "outDir": "dist",
+    "module": "es2022",
+    "target": "es2017",
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

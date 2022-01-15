@@ -29,9 +29,7 @@
         "operationId": "ef2d7510-1929-4883-a37e-f1ef9525c005",
         "summary": "Create categories",
         "description": "Service to create categories",
-        "tags": [
-          "Categories"
-        ],
+        "tags": ["Categories"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -79,9 +77,7 @@
         "operationId": "bef61e11-dd7a-4f7c-9d63-075f86120838",
         "summary": "List categories",
         "description": "Service to list categories",
-        "tags": [
-          "Categories"
-        ],
+        "tags": ["Categories"],
         "responses": {
           "200": {
             "description": "List categories success response",
@@ -117,13 +113,11 @@
       }
     },
     "/categories/{id}": {
-      "get":{
+      "get": {
         "operationId": "36bdce6b-1fcd-41c6-8614-046e991d0d3d",
         "summary": "Get categories",
         "description": "Service to get categories",
-        "tags": [
-          "Categories"
-        ],
+        "tags": ["Categories"],
         "parameters": [
           {
             "name": "id",
@@ -168,13 +162,11 @@
           }
         }
       },
-      "put":{
+      "put": {
         "operationId": "44a6dab0-2ca7-4276-b38e-dd18c8d14ce8",
         "summary": "Update categories",
         "description": "Service to update categories",
-        "tags": [
-          "Categories"
-        ],
+        "tags": ["Categories"],
         "parameters": [
           {
             "name": "id",
@@ -233,9 +225,7 @@
         "operationId": "053a45b2-3cf7-41ce-95fb-335f35533e64",
         "summary": "Delete categories",
         "description": "Service to delete categories",
-        "tags": [
-          "Categories"
-        ],
+        "tags": ["Categories"],
         "parameters": [
           {
             "name": "id",
@@ -274,14 +264,12 @@
         }
       }
     },
-    "/owners":{
+    "/owners": {
       "post": {
         "operationId": "219886aa-54f9-4851-aceb-00c191fc5ff5",
         "summary": "Create owners",
         "description": "Service to create owners",
-        "tags": [
-          "Owners"
-        ],
+        "tags": ["Owners"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -329,9 +317,7 @@
         "operationId": "dad1dc43-7d89-4513-843d-8be5f2acaaa3",
         "summary": "List owners",
         "description": "Service to list owners",
-        "tags": [
-          "Owners"
-        ],
+        "tags": ["Owners"],
         "responses": {
           "200": {
             "description": "Create owners success response",
@@ -371,9 +357,7 @@
         "operationId": "89c53dff-c180-45a1-a8be-88a3e0d14479",
         "summary": "Get owners",
         "description": "Service to get owners",
-        "tags": [
-          "Owners"
-        ],
+        "tags": ["Owners"],
         "parameters": [
           {
             "name": "id",
@@ -422,9 +406,7 @@
         "operationId": "3a5ed3d7-f35e-48db-8060-93284d8f573b",
         "summary": "Update owners",
         "description": "Service to update owners",
-        "tags": [
-          "Owners"
-        ],
+        "tags": ["Owners"],
         "parameters": [
           {
             "name": "id",
@@ -483,9 +465,7 @@
         "operationId": "f7487fde-f9c3-40f0-b73b-f4e9005f840d",
         "summary": "Delete owners",
         "description": "Service to delete owners",
-        "tags": [
-          "Owners"
-        ],
+        "tags": ["Owners"],
         "parameters": [
           {
             "name": "id",
@@ -529,9 +509,7 @@
         "operationId": "ed9fcb84-c2fc-476a-a4ee-583e289ea4ab",
         "summary": "Create pets",
         "description": "Service to create pets",
-        "tags": [
-          "Pets"
-        ],
+        "tags": ["Pets"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -579,9 +557,7 @@
         "operationId": "88e5fcd6-130c-4163-a328-8c3728a6181c",
         "summary": "List pets",
         "description": "Service to list pets",
-        "tags": [
-          "Pets"
-        ],
+        "tags": ["Pets"],
         "responses": {
           "200": {
             "description": "List pets success response",
@@ -621,9 +597,7 @@
         "operationId": "60f19129-c122-4134-a496-4b43796aa260",
         "summary": "Get pets",
         "description": "Service to get pets",
-        "tags": [
-          "Pets"
-        ],
+        "tags": ["Pets"],
         "parameters": [
           {
             "name": "id",
@@ -672,9 +646,7 @@
         "operationId": "4238b535-8d68-4afe-a15b-6deaa4783e3c",
         "summary": "Update pets",
         "description": "Service to update pets",
-        "tags": [
-          "Pets"
-        ],
+        "tags": ["Pets"],
         "parameters": [
           {
             "name": "id",
@@ -733,9 +705,7 @@
         "operationId": "ec212619-ef5a-4b5f-9453-296da06feeaa",
         "summary": "Delete pets",
         "description": "Service to delete pets",
-        "tags": [
-          "Pets"
-        ],
+        "tags": ["Pets"],
         "parameters": [
           {
             "name": "id",
@@ -844,9 +814,11 @@
       }
     }
   },
-  "security": [{
-    "Authorization": []
-  }],
+  "security": [
+    {
+      "Authorization": []
+    }
+  ],
   "tags": [
     {
       "name": "Categories",
@@ -855,7 +827,7 @@
     {
       "name": "Owners",
       "description": "Owner operations"
-    }, 
+    },
     {
       "name": "Pets",
       "description": "Pet operations"

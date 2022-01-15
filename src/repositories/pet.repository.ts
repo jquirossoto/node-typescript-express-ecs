@@ -14,13 +14,16 @@ import Pet from './../models/pet.model.js';
  * @returns Promise
  */
 export const create = (pet: Pet): Promise<Pet> => {
-    return new Promise<Pet>((resolve, reject) => {
-        prisma.pet.create({ data: Pet.toCreateInput(pet) }).then((data: PrismaPet) => {
-            resolve(Pet.toModel(data));
-        }).catch((err: Error) => {
-            reject(err);
-        });
-    });
+  return new Promise<Pet>((resolve, reject) => {
+    prisma.pet
+      .create({ data: Pet.toCreateInput(pet) })
+      .then((data: PrismaPet) => {
+        resolve(Pet.toModel(data));
+      })
+      .catch((err: Error) => {
+        reject(err);
+      });
+  });
 };
 
 /**
@@ -30,13 +33,16 @@ export const create = (pet: Pet): Promise<Pet> => {
  * @returns Promise
  */
 export const findUnique = (id: number): Promise<Pet | null> => {
-    return new Promise<Pet | null>((resolve, reject) => {
-        prisma.pet.findUnique({ where: { id } }).then((data: PrismaPet | null) => {
-            resolve(Pet.toModel(data));
-        }).catch((err: Error) => {
-            reject(err);
-        });
-    });
+  return new Promise<Pet | null>((resolve, reject) => {
+    prisma.pet
+      .findUnique({ where: { id } })
+      .then((data: PrismaPet | null) => {
+        resolve(Pet.toModel(data));
+      })
+      .catch((err: Error) => {
+        reject(err);
+      });
+  });
 };
 
 /**
@@ -45,13 +51,16 @@ export const findUnique = (id: number): Promise<Pet | null> => {
  * @returns Promise
  */
 export const findMany = (): Promise<Pet[]> => {
-    return new Promise<Pet[]>((resolve, reject) => {
-        prisma.pet.findMany().then((data: PrismaPet[]) => {
-            resolve(Pet.toModel(data));
-        }).catch((err: Error) => {
-            reject(err);
-        });
-    });
+  return new Promise<Pet[]>((resolve, reject) => {
+    prisma.pet
+      .findMany()
+      .then((data: PrismaPet[]) => {
+        resolve(Pet.toModel(data));
+      })
+      .catch((err: Error) => {
+        reject(err);
+      });
+  });
 };
 
 /**
@@ -62,13 +71,16 @@ export const findMany = (): Promise<Pet[]> => {
  * @returns Promise
  */
 export const update = (id: number, pet: Pet): Promise<Pet> => {
-    return new Promise<Pet>((resolve, reject) => {
-        prisma.pet.update({ where: { id }, data: Pet.toUpdateInput(pet) }).then((data: PrismaPet) => {
-            resolve(Pet.toModel(data));
-        }).catch((err: Error) => {
-            reject(err);
-        });
-    });
+  return new Promise<Pet>((resolve, reject) => {
+    prisma.pet
+      .update({ where: { id }, data: Pet.toUpdateInput(pet) })
+      .then((data: PrismaPet) => {
+        resolve(Pet.toModel(data));
+      })
+      .catch((err: Error) => {
+        reject(err);
+      });
+  });
 };
 
 /**
@@ -78,11 +90,14 @@ export const update = (id: number, pet: Pet): Promise<Pet> => {
  * @returns Promise
  */
 export const remove = (id: number): Promise<Pet> => {
-    return new Promise<Pet>((resolve, reject) => {
-        prisma.pet.delete({ where: { id } }).then((data: PrismaPet) => {
-            resolve(Pet.toModel(data));
-        }).catch((err: Error) => {
-            reject(err);
-        });
-    });
+  return new Promise<Pet>((resolve, reject) => {
+    prisma.pet
+      .delete({ where: { id } })
+      .then((data: PrismaPet) => {
+        resolve(Pet.toModel(data));
+      })
+      .catch((err: Error) => {
+        reject(err);
+      });
+  });
 };
