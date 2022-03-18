@@ -3,7 +3,7 @@
  * @author jquirossoto
  */
 
-import express, { Application } from 'express';
+import express, { Application, Request, Response } from 'express';
 import winstonMiddleware from 'express-winston';
 import helmet from 'helmet';
 import nocache from 'nocache';
@@ -45,7 +45,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
   winstonMiddleware.logger({
-    winstonInstance: logger
+    winstonInstance: logger,
+    level: (req: Request, res: Response) => {
+      let level = 'info';
+      if (res.statusCode >= 500) {
+        level = 'error';
+      } else if (res.statusCode >= 300) {
+        level = 'warn';
+      }
+      return level;
+    }
   })
 );
 app.use('/', categoryRouter);
